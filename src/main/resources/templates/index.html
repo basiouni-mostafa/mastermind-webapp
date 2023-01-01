@@ -26,63 +26,68 @@
 </head>
 <body>
 <div class="container mt-5 mx-auto text-left justify-content-center">
-    <div class="row mt-5 text-center">
+    <div class="row mt-5 ">
         <div class="container mb-5">
 
             <p class="fs-2 title">Welcome to Mastermind Code Breaker game!</p>
             <p class="fs-4 rules">Game rules:</p>
             <ul class="fs-5 rules-list">
-                <li>The computer will set a number of 4 digits and it's up to you to guess what number it is!</li>
-                <li>You can enter the 4 digits number one number at a time</li>
-                <li>After entering the 4 digits, the computer will let you know how many correct digits you have and how
-                    many misplaced ones
+                <li>The computer will set a number of 4 numbers, and it's up to you to crack the code!</li>
+                <li>After entering your four digits guess, the computer will let you know how many correct numbers and
+                    how
+                    many correct numbers in the correct locations you have
                 </li>
-                <li>Correct digits are numbers that are correct and in the right place</li>
-                <li>Misplaced digits are numbers that are correct but not in the right place</li>
-                <li>P.S. If you didn't guess any correct numbers, the computer will show: 'Correct 0 - Misplaced 0'</li>
+                <li>Correct numbers are numbers that exist in your guess and in the wrong position</li>
+                <li>Correct locations are numbers that exist in your guess and in the right position</li>
+                <p>P.S. If you didn't guess any correct numbers, the computer will show: '0 correct number(s) - 0
+                    correct location(s)'
+                </p>
             </ul>
-        <p th:text="'Random Number = ' + ${game.getGameRandomNumberString()}" style="display: none"></p>
+            <p th:text="'Random Number = ' + ${game.getGameRandomNumberString()}" style="display: none"></p>
         </div>
 
-        <form action="#" th:action="@{/guess}" th:object="${game}" method="post">
-            <div th:if="${game.gameState != 'lost' && game.gameState!= 'won'}" class="form-group">
-                <label for="user_guess" class="control-label">Enter your number:</label>
-                <input type="text" class="form-control" id="user_guess" name="user_guess" autofocus required>
-                <div class="form-group">
-                    <button type="submit" class="btn btn-primary">Guess</button>
+        <div class="text-center">
+            <form action="#" th:action="@{/guess}" th:object="${game}" method="post">
+                <div th:if="${game.gameState != 'lost' && game.gameState!= 'won'}" class="form-group">
+                    <label for="user_guess" class="control-label">Enter your number:</label>
+                    <input type="text" class="form-control" id="user_guess" name="user_guess" autofocus required>
+                    <div class="form-group">
+                        <button type="submit" class="btn btn-primary">Guess</button>
+                    </div>
                 </div>
+            </form>
+
+            <div th:if="${game.gameState == 'in progress'}">
+                <pre th:text="${game.gameHistory}" style="white-space: pre-line;"></pre>
+                <p th:text="'Remaining Attempts: ' + ${game.getGameRemainingAttempts()}"></p>
             </div>
-        </form>
-
-        <div th:if="${game.gameState == 'in progress'}">
-            <pre th:text="${game.gameHistory}" style="white-space: pre-line;"></pre>
-            <p th:text="'Remaining Attempts: ' + ${game.getGameRemainingAttempts()}"></p>
-        </div>
-        <div th:if="${game.gameState == 'won'}">
-            <p class="fs-3">Congratulations! You are the Mastermind!</p>
-            <p>You guessed the correct number combination in <span th:text="${10 - game.getGameRemainingAttempts()}"></span>
-                attempts</p>
-            <form action="#" method="get">
-                <a href="/newgame" class="btn btn-primary">Play Again</a>
-            </form>
-        </div>
-        <div th:if="${game.gameState == 'lost'}">
-            <p class="fs3">Sorry! You lost :(</p>
-            <p>The correct number combination is <span th:text="${game.getGameRandomNumberString()}"></span>
-                attempts</p>
-            <form action="#" method="get">
-                <a href="/newgame" class="btn btn-primary">Play Again</a>
-            </form>
-        </div>
-        <br>
-        <div th:if="${game.gameState != 'lost' && game.gameState!= 'won'}">
-            <form action="#" method="get">
-                <a href="/newgame" class="btn btn-primary">New Game</a>
-            </form>
-        </div>
-        <br>
+            <div th:if="${game.gameState == 'won'}">
+                <p class="fs-3">Congratulations! You are the Mastermind!</p>
+                <p>You guessed the correct number combination in <span
+                        th:text="${10 - game.getGameRemainingAttempts()}"></span>
+                    attempts</p>
+                <form action="#" method="get">
+                    <a href="/newgame" class="btn btn-primary">Play Again</a>
+                </form>
+            </div>
+            <div th:if="${game.gameState == 'lost'}">
+                <p class="fs3">Sorry! You lost :(</p>
+                <p>The correct number combination is <span th:text="${game.getGameRandomNumberString()}"></span>
+                    attempts</p>
+                <form action="#" method="get">
+                    <a href="/newgame" class="btn btn-primary">Play Again</a>
+                </form>
+            </div>
+            <br>
+            <div th:if="${game.gameState != 'lost' && game.gameState!= 'won'}">
+                <form action="#" method="get">
+                    <a href="/newgame" class="btn btn-primary">New Game</a>
+                </form>
+            </div>
+            <br>
 
 
+        </div>
     </div>
 </div>
 </body>
