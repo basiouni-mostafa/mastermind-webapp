@@ -1,0 +1,61 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <!--    <link rel="icon" type="image/x-icon" th:href="@{/image/favicon.ico}">-->
+
+  <!--    <link rel="icon" type="image/x-icon" th:href="@{/image/favicon.ico}">-->
+  <!--animate.css cdn-->
+  <link rel="stylesheet"
+        href="https://cdnjs.cloudflare.com/ajax/libs/animate.css/4.1.1/animate.min.css"/>
+
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@300;500&family=Roboto&display=swap"
+        rel="stylesheet">
+
+  <meta charset="UTF-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <link rel="stylesheet" th:href="@{/styles/style.css}">
+  <!-- Bootstrap CSS only -->
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.2.1/dist/css/bootstrap.min.css" rel="stylesheet"
+        integrity="sha384-iYQeCzEYFbKjA/T2uDLTpkwGzCiq6soy8tYaI1GyVh/UjpbCx/TYkiZhlZB6+fzT" crossorigin="anonymous">
+
+  <!--    <script th:src="@{/js/script.js}" defer></script>-->
+  <title>Mastermind</title>
+</head>
+<body>
+<div class="hero row justify-content-center">
+  <!--    <div class="row">-->
+  <div>
+    <img id="hero-img" th:src="@{/image/hero.png}" alt="homepage" src="">
+  </div>
+
+  <div class="row hero-text">
+    <p class="title">Mastermind</p>
+    <p class="fs-5">Code Breaker Game!</p>
+
+    <div class="text-center">
+
+      <div th:if="${validationFailure != null}">
+        <p th:text="${validationFailure}"></p>
+      </div>
+
+    <div th:if="${hint != null}">
+      <p th:text="${hint}"></p>
+    </div>
+
+    <br>
+    <div>
+      <form action="#" method="get">
+        <a href="/new_game_abdo" class="btn btn-primary">New Game</a>
+      </form>
+    </div>
+    <br>
+  </div>
+</div>
+</div>
+</div>
+</div>
+</body>
+</html>
