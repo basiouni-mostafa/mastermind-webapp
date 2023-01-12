@@ -1,7 +1,10 @@
 ## Project Overview
 
-The Mastermind game web app that I created is a implementation of the classic game of Mastermind. It was built using the
-Spring Boot framework, Java, Thymeleaf as the template engine, CSS and JavaScript.
+The Mastermind game web app that I created is an implementation of the classic game of Mastermind. It was built using the
+Spring Boot framework.
+
+## Technology Used
+* Java | Spring Boot | Thymeleaf | Bootstrap | HTML | CSS | JavaScript
 
 ## Game Extensions
 
@@ -21,9 +24,9 @@ Spring Boot framework, Java, Thymeleaf as the template engine, CSS and JavaScrip
 
 2. Clone or download the repository
 3. Navigate to the project directory in your terminal
-4. Run the command mvn clean install to build and install the project
-5. Start the application by running the command mvn spring-boot:run
-6. The game should now be running on http://localhost:8080 in your browser
+4. Run the command 'mvn clean install' to build and install the project
+5. Start the application by running the command 'mvn spring-boot:run'
+6. The game should now be running on 'http://localhost:8080' in your browser
 
 ## Game Play
 
@@ -36,13 +39,15 @@ Spring Boot framework, Java, Thymeleaf as the template engine, CSS and JavaScrip
    based on the game type
 7. The game will track your score (wins and losses)
 8. The timer for the game is based on the difficulty level you select
+
 ## Code Structure
 The game is built on Spring boot framework and implements the Model-View-Controller (MVC) pattern.
 
-* The controller package handles all the HTTP requests and routes them to the appropriate services.
-* The model package contains all the game logic.
-* The view package contains all the Thymeleaf templates for the front-end.
-* The static folder contains all the images, css and javascript files.
+* The 'controller' package handles all the HTTP requests and routes them to the appropriate services.
+* The 'manager' package handles the game logic, generating random combinations, scoring, handling user input and other game related tasks.
+* The 'model' package contains the game state, guess history and other game-related data.
+* The 'view' package contains all the Thymeleaf templates for the front-end.
+* The 'static' folder contains all the images, css and javascript files.
 
 ## Conclusion
 This project is a fun and engaging implementation of the classic game of Mastermind with added features that enhances
