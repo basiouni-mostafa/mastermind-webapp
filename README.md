@@ -9,8 +9,7 @@ Spring Boot framework.
 ## Game Extensions
 
 * Added hint support
-* Combination to be cracked by the user can be colors instead of just numbers
-* Added a Colors game mode.
+* Added a Colors game mode
 * Added difficulty level of easy, medium and hard with configurable guess combination length and time for guessing
 * Added a landing page intro and animations to enhance user experience
 * Added score tracking for number of wins and number of losses
