@@ -10,8 +10,8 @@ Spring Boot framework.
 
 * Added hint support
 * Added a Colors game mode
-* Added difficulty level of easy, medium and hard with configurable guess combination length and time for guessing
-* Added a landing page intro and animations to enhance user experience
+* Added difficulty level of (Easy, Medium, Hard) with the option to configure the combination length and guessing time.
+* Added an intro and animations to enhance user experience
 * Added score tracking for number of wins and number of losses
 * Added a timer for each game that changes based on the difficulty level
 
@@ -35,8 +35,7 @@ Spring Boot framework.
 3. You will get feedback on each guess for the correct guesses and the correct locations of your guesses
 4. The game is won when you correctly guess the combination
 5. You can use a hint when you are stuck
-6. The game ends when you correctly guess the combination, when you run out of turns or when you run out of time
-   if the game difficulty level is set to Medium or Hard
+6. The game ends when you correctly guess the combination, when you run out of turns or when you run out of time (if the game difficulty level is set to Medium or Hard)
 7. The game will track your score (wins and losses)
 8. The timer for the game is based on the difficulty level you select and will be shown in minutes
 
