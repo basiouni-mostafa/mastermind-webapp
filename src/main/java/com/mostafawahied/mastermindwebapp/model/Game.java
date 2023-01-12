@@ -11,7 +11,7 @@ public class Game {
     private int correctResultLength;
     private int gameRemainingAttempts;
     private int originalGuessCount;
-    private List<String> gameHistory;
+    private List<GameHistory> gameHistory;
     private GameType gameType;
     private GameDifficulty gameDifficulty;
     private GameState gameState;

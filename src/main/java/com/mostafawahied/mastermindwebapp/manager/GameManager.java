@@ -15,8 +15,14 @@ public class GameManager {
         tracker = new ScoreTracker(0, 0);
     }
 
+
+    GameManager(Game game) {
+        currentGame = game;
+        tracker = new ScoreTracker(0, 0);
+    }
+
     private Game currentGame;
-    private ScoreTracker tracker;
+    private final ScoreTracker tracker;
 
     private List<String> generateRandomGuess(int numberOfGuesses, GameType type) {
         List<String> responseRandomList = new ArrayList<>();
@@ -48,7 +54,6 @@ public class GameManager {
         currentGame = new Game(randomString, difficulty.numOfGuesses, type, difficulty, difficulty.gameDuration);
         return currentGame;
     }
-
 
     public String validateGuess(List<String> userGuessList) {
         // guess only if state is valid
@@ -91,30 +96,32 @@ public class GameManager {
 
         int correctNumbers = 0;
         int correctLocations = 0;
-        for (int i = 0; i < userGuessList.size(); i++) {
-            if (userGuessList.get(i).equals(randomGuessList.get(i))) {
+
+        // Count number of values guesses that are in the result
+        final Set<String> resultDigits = new HashSet<>(randomGuessList);
+        final Set<String> guessDigits = new HashSet<>(userGuessList);
+        guessDigits.retainAll(resultDigits);
+        correctNumbers = guessDigits.size();
+
+        // Check correct locations
+        for (int index = 0; index < userGuessList.size(); index++) {
+            if (userGuessList.get(index).equals(randomGuessList.get(index))) {
                 correctLocations++;
-            } else {
-                for (String s : randomGuessList) {
-                    if (s.equals(userGuessList.get(i))) {
-                        correctNumbers++;
-                        break;
-                    }
-                }
             }
         }
+
+        System.out.println(resultDigits);
         System.out.println(String.join(",", randomGuessList));
         // Update the state, history, .... etc
         currentGame.setGameRemainingAttempts(currentGame.getGameRemainingAttempts() - 1);
 
         long remainingSeconds = (currentGame.getGameEndTime() - System.currentTimeMillis()) / 1000;
+        long remainingMinutes = remainingSeconds / 60;
 
-        currentGame.getGameHistory().add(
-                String.format("Guess: %s. Feedback: %s correct number(s) and %s correct locations and %s seconds remaining\n",
-                        String.join(" ", userGuessList),
-                        correctNumbers,
-                        correctLocations,
-                        remainingSeconds > 600 ? "unlimited" : remainingSeconds));
+        currentGame.getGameHistory().add(new GameHistory(userGuessList,
+                correctNumbers,
+                correctLocations,
+                remainingMinutes));
 
         if (correctLocations == currentGame.getCorrectResultLength()) {
             currentGame.setGameState(GameState.WON);

@@ -26,6 +26,8 @@ public class GameController {
             model.addAttribute("errorMessage", "Failed to create game. Try again.");
         }
         assert game != null;
+        ScoreTracker tracker = gameManager.getTracker();
+        addAttributes(tracker, model);
         addAttributes(game, model);
         System.out.println(game.getGameType());
         return "index";
@@ -33,15 +35,6 @@ public class GameController {
 
     @PostMapping("/guess")
     public String guess(@RequestParam("userGuesses") List<String> guesses, Model model) {
-        GameType gameType;
-        try {
-            gameType = Optional.ofNullable(gameManager.getGame().getGameType())
-                    .orElseThrow(() -> new IllegalArgumentException("Game cannot be null"));
-            // continue with processing
-        } catch (IllegalArgumentException e) {
-            model.addAttribute("errorMessage", e.getMessage());
-            return "index";
-        }
         String validationProblem = gameManager.validateGuess(guesses);
         if (validationProblem != null) {
             model.addAttribute("validationFailure", validationProblem);
@@ -73,12 +66,10 @@ public class GameController {
             model.addAttribute("errorMessage", "Failed to create game. Try again later.");
             return "index";
         }
-        // TODO: add remaining fields
         ScoreTracker tracker = gameManager.getTracker();
         addAttributes(tracker, model);
         addAttributes(game, model);
-//        model.addAttribute("gameDifficulty", String.valueOf(userDifficulty));
-//        model.addAttribute("gameType", userGameType);
+
         return "index";
     }
 
@@ -92,7 +83,7 @@ public class GameController {
         model.addAttribute("gameState", game.getGameState().toString());
         model.addAttribute("gameHistory", game.getGameHistory());
         model.addAttribute("originalGuessCount", game.getOriginalGuessCount());
-        model.addAttribute("correctNumber", String.join("", game.getCorrectResult()));
+        model.addAttribute("correctNumber", String.join(", ", game.getCorrectResult()));
         model.addAttribute("gameType", game.getGameType().toString());
         model.addAttribute("gameDifficulty", game.getGameDifficulty().toString());
         System.out.println(game.getGameDifficulty());
