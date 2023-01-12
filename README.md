@@ -22,7 +22,7 @@ Spring Boot framework.
 * Java 8 or higher
 * Maven
 
-2. Clone or download the repository
+2. Clone or download the repository 'https://github.com/Mostafa-Wahied/mastermind-webapp'
 3. Navigate to the project directory in your terminal
 4. Run the command 'mvn clean install' to build and install the project
 5. Start the application by running the command 'mvn spring-boot:run'
