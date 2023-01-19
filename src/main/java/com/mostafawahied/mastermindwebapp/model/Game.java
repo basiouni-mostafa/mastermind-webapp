@@ -18,16 +18,16 @@ public class Game {
     private long gameStartTime;
     private long gameEndTime;
 
-    public Game(List<String> correctResult, int remainingAttempts, GameType type, GameDifficulty gameDifficulty, long gameDuration) { // 10
+    public Game(List<String> correctResult, GameType type, GameDifficulty gameDifficulty) { // 10
         this.correctResult = correctResult;
         this.correctResultLength = correctResult.size();
-        this.gameRemainingAttempts = remainingAttempts; // 10 --> 9, 8, 7
-        this.originalGuessCount = remainingAttempts; // 10 --> 10, 10
+        this.gameRemainingAttempts = gameDifficulty.numOfGuesses; // 10 --> 9, 8, 7
+        this.originalGuessCount = gameDifficulty.guessLength; // 10 --> 10, 10
         this.gameHistory = new ArrayList<>();
         this.gameState = GameState.IN_PROGRESS;
         this.gameType = type;
         this.gameDifficulty = gameDifficulty;
         this.gameStartTime = System.currentTimeMillis();
-        this.gameEndTime = this.gameStartTime + gameDuration;
+        this.gameEndTime = this.gameStartTime + gameDifficulty.gameDuration;
     }
 }

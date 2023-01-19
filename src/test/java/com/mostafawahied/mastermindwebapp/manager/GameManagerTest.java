@@ -12,7 +12,7 @@ import static org.junit.jupiter.api.Assertions.*;
 class GameManagerTest {
 
     List<String> correctResult = Arrays.asList("1","2","2","3");
-    private Game game = new Game(correctResult, 2, GameType.NUMBERS, GameDifficulty.EASY, 100000);
+    private Game game = new Game(correctResult, GameType.NUMBERS, GameDifficulty.EASY);
     private GameManager gameManager;
     @BeforeEach
     void setUp() {

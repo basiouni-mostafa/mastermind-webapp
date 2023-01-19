@@ -5,7 +5,6 @@ import org.springframework.stereotype.Component;
 import org.springframework.web.client.RestTemplate;
 
 import java.util.*;
-import java.util.regex.Pattern;
 
 @Component
 public class GameManager {
@@ -14,7 +13,6 @@ public class GameManager {
         currentGame = null;
         tracker = new ScoreTracker(0, 0);
     }
-
 
     GameManager(Game game) {
         currentGame = game;
@@ -35,7 +33,6 @@ public class GameManager {
             // Split the response string on the newline characters
             assert responseString != null;
             responseRandomList = List.of(responseString.split("\n"));
-
         } else if (type.equals(GameType.COLORS)) {
             final List<String> COLOR_NAMES = List.of("red", "yellow", "green", "brown", "blue", "purple", "orange", "black");
             Random random = new Random();
@@ -51,7 +48,7 @@ public class GameManager {
     public Game createGame(GameDifficulty difficulty, GameType type) {
         List<String> randomString = generateRandomGuess(difficulty.guessLength, type);
         // Creating a default "easy" game
-        currentGame = new Game(randomString, difficulty.numOfGuesses, type, difficulty, difficulty.gameDuration);
+        currentGame = new Game(randomString, type, difficulty);
         return currentGame;
     }
 
@@ -110,8 +107,6 @@ public class GameManager {
             }
         }
 
-        System.out.println(resultDigits);
-        System.out.println(String.join(",", randomGuessList));
         // Update the state, history, .... etc
         currentGame.setGameRemainingAttempts(currentGame.getGameRemainingAttempts() - 1);
 
@@ -143,8 +138,8 @@ public class GameManager {
         return tracker;
     }
 
-    public String getHint(List<String> correctResult, List<String> userGuessList) {
-        correctResult = currentGame.getCorrectResult();
+    public String getHint(List<String> userGuessList) {
+        List<String> correctResult = currentGame.getCorrectResult();
         List<String> correctResultList = new ArrayList<>();
         for (String element : correctResult) {
             if (!userGuessList.contains(element)) {
@@ -162,7 +157,7 @@ public class GameManager {
             index = random.nextInt(userGuessList.size());
             hint = userGuessList.get(index);
         }
-
+// correctResult.indexOf(hint)
         return hint;
     }
 

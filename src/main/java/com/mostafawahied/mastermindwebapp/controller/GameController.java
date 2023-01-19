@@ -15,10 +15,22 @@ import java.util.*;
 public class GameController {
     @Autowired
     private GameManager gameManager;
+//    @Autowired Players players;
 
     @GetMapping("/")
-    public String homePage(Model model) {
-        // Extension: pass in game configs. Ex: difficulty
+    public String homePage(Model model
+//            , @RequestParam("playerName") String playerName
+    ) {
+//        List<Player> players = players.getPlayers();
+//        check if player exists in list of players
+//        if(players.contains(playerName)) {
+////            get the player object if it exists
+//        } else {
+////            create a new player and add it to the list of players
+//
+//        }
+
+//        player.getGames().add(game);
         Game game = null;
         try {
             game = gameManager.createGame(GameDifficulty.EASY, GameType.NUMBERS); // WILL take parameters. Handle exception by try catch, add attribute for error message
@@ -29,7 +41,7 @@ public class GameController {
         ScoreTracker tracker = gameManager.getTracker();
         addAttributes(tracker, model);
         addAttributes(game, model);
-        System.out.println(game.getGameType());
+
         return "index";
     }
 
@@ -45,8 +57,7 @@ public class GameController {
         addAttributes(game, model);
         addAttributes(tracker, model);
         // adding hint to the template by using the getHint method
-        List<String> correctResult = game.getCorrectResult();
-        String hintString = gameManager.getHint(correctResult, guesses);
+        String hintString = gameManager.getHint(guesses);
         model.addAttribute("hint", hintString);
 
         return "index";
@@ -86,6 +97,6 @@ public class GameController {
         model.addAttribute("correctNumber", String.join(", ", game.getCorrectResult()));
         model.addAttribute("gameType", game.getGameType().toString());
         model.addAttribute("gameDifficulty", game.getGameDifficulty().toString());
-        System.out.println(game.getGameDifficulty());
+        System.out.println(game.getCorrectResult());
     }
 }
