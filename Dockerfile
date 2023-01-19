@@ -14,5 +14,7 @@ COPY --from=build /target/mastermind-webapp-0.0.1-SNAPSHOT.jar mastermind-webapp
 EXPOSE 8080
 ENTRYPOINT ["java", "-jar", "mastermind-webapp-docker.jar"]
 
-#LABEL maintainer="MostafaWahied"
-#ADD target/mastermind-webapp-0.0.1-SNAPSHOT.jar mastermind-webapp-docker.jar
+# to use the docker file, first we need to build the docker image
+# run in terminal 'docker build -t spring-boot-render .'
+# then we can run the docker image
+# run in terminal 'docker run -p 8080:8080 spring-boot-render'
