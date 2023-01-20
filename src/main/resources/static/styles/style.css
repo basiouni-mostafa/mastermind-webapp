@@ -34,24 +34,6 @@ body {
 }
 
 /* navbar */
-
-.navbar {
-    /*position: absolute !important;*/
-    /*width: 100%;*/
-}
-
-.navbar-brand {
-    /*display: block;*/
-    /*position: relative;*/
-    /*margin-left: 2rem;*/
-    /*background-color: inherit !important;*/
-    /*color: var(--main-font-color) !important;*/
-}
-
-.nav-item {
-    /*margin-top: -3rem;*/
-}
-
 .nav-link::before {
     content: "";
     position: absolute;
@@ -355,16 +337,17 @@ a.settings-icon span {
 
     .rules-icon-class {
         position: absolute;
+        right: 3.5rem;
     }
 
     .game-icon-class {
         position: relative;
-        right: -3rem;
+        /*right: -r2em;*/
     }
 
     .score-class {
         position: absolute;
-        left: -2rem;
+        left: -4.5rem;
     }
 
     .img-cloud {
