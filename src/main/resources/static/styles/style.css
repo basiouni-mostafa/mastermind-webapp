@@ -73,7 +73,6 @@ hr {
 }
 
 .error-text {
-    /*color: var(--main-font-color);*/
     text-align: center;
     font-size: 1.5rem;
     white-space: normal;
@@ -161,7 +160,7 @@ form {
 
 #remaining_seconds {
     width: 4.5rem;
-    font-size: 0.8rem;
+    font-size: 1.5rem;
     /*font-weight: bold;*/
 }
 
@@ -345,4 +344,80 @@ a.settings-icon span {
 #intro-text-2 {
     position: relative;
     margin-bottom: 4%;
+}
+
+
+/*small screens only*/
+@media only screen and (max-width: 480px), only screen and (max-width: 990px) {
+    .nav-link::before {
+        visibility: hidden;
+    }
+
+    .rules-icon-class {
+        position: absolute;
+    }
+
+    .game-icon-class {
+        position: relative;
+        right: -3rem;
+    }
+
+    .score-class {
+        position: absolute;
+        left: -2rem;
+    }
+
+    .img-cloud {
+        width: 300px;
+        top: -12.1rem;
+    }
+
+    .history_inputs input {
+        width: 1.8rem !important;
+        height: 1.3rem !important;
+        font-size: 0.8rem;
+    }
+
+    .four_inputs input {
+        width: 1.5rem !important;
+        height: 1.3rem;
+        font-size: 0.7rem;
+    }
+
+    #remaining_seconds {
+        width: 2rem !important;
+        font-size: 0.7rem;
+    }
+}
+
+@media only screen and (max-width: 480px), only screen and (max-width: 790px) {
+    .bottom-half {
+        position: relative;
+        top: -13rem;
+    }
+}
+
+@media only screen and (max-width: 1200px) {
+    .history_inputs input {
+        width: 3rem;
+        height: 2.3rem;
+        font-size: 1rem;
+    }
+
+    #remaining_seconds {
+        width: 2.5rem !important;
+        font-size: 1rem;
+    }
+
+    .history_labels {
+        position: relative;
+        left: -2rem;
+        font-size: 0.7rem;
+    }
+}
+
+@media only screen and (max-width: 480px) {
+    .history_labels {
+        font-size: 0.45rem;
+    }
 }
