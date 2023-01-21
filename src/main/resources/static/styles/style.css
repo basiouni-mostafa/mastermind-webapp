@@ -256,12 +256,6 @@ form {
     z-index: 1;
 }
 
-a.settings-icon span {
-    /*display: inline-block;*/
-    /*vertical-align: middle;*/
-    /*line-height: 1;*/
-}
-
 .close-button {
     top: 10%;
     right: 10%;
@@ -338,45 +332,84 @@ a.settings-icon span {
     .rules-icon-class {
         position: absolute;
         right: 3.5rem;
+        top: 1.8rem;
     }
 
     .game-icon-class {
-        position: relative;
-        /*right: -r2em;*/
+        position: absolute;
+        right: 1rem;
+        top: 1.8rem;
     }
 
     .score-class {
         position: absolute;
-        left: -4.5rem;
+        left: -0.0rem;
+        top: 4.2rem;
     }
 
-    .img-cloud {
-        width: 300px;
-        top: -12.1rem;
-    }
 
     .history_inputs input {
         width: 1.8rem !important;
-        height: 1.3rem !important;
+        height: 1.5rem !important;
         font-size: 0.8rem;
     }
 
     .four_inputs input {
-        width: 1.5rem !important;
-        height: 1.3rem;
-        font-size: 0.7rem;
+        width: 1.7rem !important;
+        height: 1.5rem;
+        font-size: 1rem;
+    }
+
+    .five_inputs input {
+        width: 1.7rem !important;
+        height: 1.5rem;
+        font-size: 1rem;
     }
 
     #remaining_seconds {
         width: 2rem !important;
         font-size: 0.7rem;
     }
-}
 
-@media only screen and (max-width: 480px), only screen and (max-width: 790px) {
+    .title-master {
+        font-size: 2rem;
+        top: 0.8rem;
+    }
+
+    .title-mind {
+        font-size: 3.2rem;
+        top: -2.1rem;
+    }
+
+    .secondary-text {
+        font-size: 0.98rem !important;
+        top: -4.95rem;
+
+    }
+
+    .hero-text {
+        position: absolute;
+        right: 12.5rem;
+        top: 7.5rem;
+    }
+
+    .img-cloud {
+        position: absolute;
+        width: 160px;
+        left: 12.5rem;
+        top: 6rem;
+    }
+
     .bottom-half {
         position: relative;
-        top: -13rem;
+        top: 10rem;
+    }
+
+    #logo {
+        position: relative;
+        width: 70px;
+        height: 70px;
+        top: 0.6rem;
     }
 }
 
