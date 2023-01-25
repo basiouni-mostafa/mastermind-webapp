@@ -11,11 +11,11 @@
     <groupId>com.mostafawahied</groupId>
     <artifactId>mastermind-webapp</artifactId>
     <version>0.0.1-SNAPSHOT</version>
-    <packaging>jar</packaging>
+    <packaging>war</packaging>
     <name>mastermind-webapp</name>
     <description>mastermind-webapp</description>
     <properties>
-        <java.version>8</java.version>
+        <java.version>17</java.version>
     </properties>
     <dependencies>
         <dependency>
