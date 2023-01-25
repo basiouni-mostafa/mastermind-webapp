@@ -52,8 +52,10 @@
 
     <build>
         <plugins>
-            <plugin>
-                <artifactId/>
+
+            <plugin> <!-- don't pack the war (for AWS)-->
+                <groupId>org.apache.maven.plugins</groupId>
+                <artifactId>maven-war-plugin</artifactId>
                 <executions>
                     <execution>
                         <id>default-war</id>
@@ -72,6 +74,7 @@
                     </execution>
                 </executions>
             </plugin>
+
             <plugin>
                 <groupId>org.springframework.boot</groupId>
                 <artifactId>spring-boot-maven-plugin</artifactId>
