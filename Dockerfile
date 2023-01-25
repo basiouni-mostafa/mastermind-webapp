@@ -3,7 +3,7 @@ FROM openjdk:18
 # ENV PORT=8080
 EXPOSE 8080
 ADD target/mastermind-webapp-0.0.1-SNAPSHOT.jar mastermind-webapp-0.0.1-SNAPSHOT.jar
-ENTRYPOINT ["java", "-jar", "mastermind-webapp-docker.jar"]
+ENTRYPOINT ["java", "-jar", "mastermind-webapp-0.0.1-SNAPSHOT.jar"]
 
 
 
