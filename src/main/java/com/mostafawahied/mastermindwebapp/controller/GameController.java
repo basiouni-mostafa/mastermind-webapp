@@ -15,22 +15,9 @@ import java.util.*;
 public class GameController {
     @Autowired
     private GameManager gameManager;
-//    @Autowired Players players;
 
     @GetMapping("/")
-    public String homePage(Model model
-//            , @RequestParam("playerName") String playerName
-    ) {
-//        List<Player> players = players.getPlayers();
-//        check if player exists in list of players
-//        if(players.contains(playerName)) {
-////            get the player object if it exists
-//        } else {
-////            create a new player and add it to the list of players
-//
-//        }
-
-//        player.getGames().add(game);
+    public String homePage(Model model) {
         Game game = null;
         try {
             game = gameManager.createGame(GameDifficulty.EASY, GameType.NUMBERS); // WILL take parameters. Handle exception by try catch, add attribute for error message
