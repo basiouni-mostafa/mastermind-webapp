@@ -11,7 +11,7 @@
     <groupId>com.mostafawahied</groupId>
     <artifactId>mastermind-webapp</artifactId>
     <version>0.0.1-SNAPSHOT</version>
-    <packaging>jar</packaging>
+    <packaging>war</packaging>
     <name>mastermind-webapp</name>
     <description>mastermind-webapp</description>
     <properties>
@@ -52,6 +52,26 @@
 
     <build>
         <plugins>
+            <plugin>
+                <artifactId/>
+                <executions>
+                    <execution>
+                        <id>default-war</id>
+                        <phase>none</phase>
+                    </execution>
+                    <execution>
+                        <id>war-exploded</id>
+                        <configuration>
+                            <webappDirectory>target/deploy</webappDirectory>
+                            <archiveClasses>true</archiveClasses>
+                        </configuration>
+                        <phase>prepare-package</phase>
+                        <goals>
+                            <goal>exploded</goal>
+                        </goals>
+                    </execution>
+                </executions>
+            </plugin>
             <plugin>
                 <groupId>org.springframework.boot</groupId>
                 <artifactId>spring-boot-maven-plugin</artifactId>

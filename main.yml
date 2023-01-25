@@ -6,14 +6,14 @@ phases:
     build:
       commands:
         - echo "Entered build phase"
-        - mvn clean install
+        - mvn clean prepare-package war:exploded
       post_build:
         commands:
           - echo "Entered the post-build phase"
-#          - mv target/deploy ./
+          - mv target/deploy ./
 artifacts:
   files:
-    - ./**/*
+    - deploy/**/*
 
 #name: CI/CD Pipeline
 #on:
