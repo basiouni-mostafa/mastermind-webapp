@@ -15,7 +15,7 @@
     <name>mastermind-webapp</name>
     <description>mastermind-webapp</description>
     <properties>
-        <java.version>17</java.version>
+        <java.version>1.8</java.version>
     </properties>
     <dependencies>
         <dependency>
@@ -53,9 +53,10 @@
     <build>
         <plugins>
 
-            <plugin> <!-- don't pack the war (for AWS)-->
+            <plugin>
                 <groupId>org.apache.maven.plugins</groupId>
                 <artifactId>maven-war-plugin</artifactId>
+                <version>3.3.2</version>
                 <executions>
                     <execution>
                         <id>default-war</id>
@@ -87,6 +88,7 @@
                     </excludes>
                 </configuration>
             </plugin>
+
         </plugins>
     </build>
 
