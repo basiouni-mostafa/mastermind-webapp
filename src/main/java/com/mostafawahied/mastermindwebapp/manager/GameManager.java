@@ -157,7 +157,6 @@ public class GameManager {
             index = random.nextInt(userGuessList.size());
             hint = userGuessList.get(index);
         }
-// correctResult.indexOf(hint)
         return hint;
     }
 

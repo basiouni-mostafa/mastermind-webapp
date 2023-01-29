@@ -16,7 +16,7 @@ public class GameController {
     @Autowired
     private GameManager gameManager;
 
-    @GetMapping({"", "/", "index"})
+    @GetMapping("/")
     public String homePage(Model model) {
         Game game = null;
         try {
@@ -32,7 +32,7 @@ public class GameController {
         return "index";
     }
 
-    @PostMapping("guess")
+    @PostMapping("/guess")
     public String guess(@RequestParam("userGuesses") List<String> guesses, Model model) {
         String validationProblem = gameManager.validateGuess(guesses);
         if (validationProblem != null) {
@@ -50,7 +50,7 @@ public class GameController {
         return "index";
     }
 
-    @GetMapping("new_game")
+    @GetMapping("/new_game")
     public String newGame(@RequestParam("difficulty") String userDifficulty,
                           @RequestParam("type") String userGameType,
                           Model model) {
