@@ -1,6 +1,6 @@
 ## Project Overview
 
-[Live Demo](https://mastermind-webapp-production.up.railway.app/)
+[Live website](https://mastermind-webapp-production.up.railway.app/)
 
 The Mastermind game web app that I created is an implementation of the classic game of Mastermind. It was built using the
 Spring Boot framework.
