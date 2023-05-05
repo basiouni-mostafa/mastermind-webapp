@@ -5,6 +5,7 @@ Spring Boot framework.
 
 **You can now view the live website Deployed on AWS through this [link](http://mastermindgame.us-east-2.elasticbeanstalk.com/)**
 
+
 ## Technology Used
 * Java | Spring Boot | Thymeleaf | Bootstrap | HTML | CSS | JavaScript
 
