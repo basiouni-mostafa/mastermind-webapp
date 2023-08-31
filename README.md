@@ -1,11 +1,9 @@
 ## Project Overview
 
-[Live website](https://mastermind-webapp-production.up.railway.app)
+You can check the live website [here](https://mastermind-webapp.onrender.com/)
 
-The Mastermind game web app that I created is an implementation of the classic game of Mastermind. It was built using the
-Spring Boot framework.
+The Mastermind game web app is a fun and engaging implementation of the classic game of Mastermind. The game is built using Java and Spring Boot, and the front-end is built using Thymeleaf, Bootstrap, and JavaScript. The game is played against the computer, and the user can choose the difficulty level. The game is designed to be responsive and mobile-friendly.
 
-**You can now view the live website Deployed on AWS through this [link](http://mastermindgame.us-east-2.elasticbeanstalk.com/)**
 
 ## Technology Used
 * Java | Spring Boot | Thymeleaf | Bootstrap | HTML | CSS | JavaScript
