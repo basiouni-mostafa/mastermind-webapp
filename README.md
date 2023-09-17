@@ -1,6 +1,6 @@
 ## Project Overview
 
-You can check the live website [here](https://mastermind-webapp.onrender.com/)
+You can check the live website [here](https://mastermind-webapp-kst2.onrender.com/)
 
 The Mastermind game web app is a fun and engaging implementation of the classic game of Mastermind. The game is built using Java and Spring Boot, and the front-end is built using Thymeleaf, Bootstrap, and JavaScript. The game is played against the computer, and the user can choose the difficulty level. The game is designed to be responsive and mobile-friendly.
 
