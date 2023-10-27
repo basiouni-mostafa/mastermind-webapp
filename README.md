@@ -6,11 +6,11 @@ The Mastermind game web app is a fun and engaging implementation of the classic 
 
 
 ## Technology Used
-* Java | Spring Boot | Thymeleaf | Bootstrap | HTML | CSS | JavaScript
+* Java | Spring Boot | Docker | Thymeleaf | Bootstrap | HTML | CSS | JavaScript
 
 ## Game Extensions
 
-* Deployed on AWS using Elastic Beanstalk
+* Deployed using Docker
 * Added hint support
 * Added a Colors game mode
 * Added difficulty level of (Easy, Medium, Hard) with the option to configure the combination length and guessing time.
