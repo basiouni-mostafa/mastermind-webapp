@@ -27,7 +27,7 @@ public class OAuth2LoginSuccessHandler extends SimpleUrlAuthenticationSuccessHan
 
     public OAuth2LoginSuccessHandler() {
         setAlwaysUseDefaultTargetUrl(true);
-        setDefaultTargetUrl("/dashboard");
+        setDefaultTargetUrl("/");
     }
 
     @Override
