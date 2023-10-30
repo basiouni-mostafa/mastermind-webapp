@@ -1,14 +1,12 @@
 package com.mostafawahied.mastermindwebapp.service;
 
 
-import com.mostafawahied.mastermindwebapp.UserRepository;
+import com.mostafawahied.mastermindwebapp.model.User;
+import com.mostafawahied.mastermindwebapp.repository.UserRepository;
 import com.mostafawahied.mastermindwebapp.dto.UserRegistrationDto;
 import com.mostafawahied.mastermindwebapp.exception.DuplicateEmailException;
-import com.mostafawahied.mastermindwebapp.exception.DuplicateUsernameException;
 import com.mostafawahied.mastermindwebapp.exception.UserNotFoundException;
 import com.mostafawahied.mastermindwebapp.model.AuthenticationProvider;
-import com.mostafawahied.mastermindwebapp.model.Role;
-import com.mostafawahied.mastermindwebapp.model.User;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
@@ -17,7 +15,9 @@ import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
 
+import javax.transaction.Transactional;
 import java.util.Collection;
+import java.util.Collections;
 import java.util.List;
 import java.util.Optional;
 import java.util.stream.Collectors;
@@ -30,26 +30,19 @@ public class UserServiceImpl implements UserService {
     @Autowired
     private UserRepository userRepository;
 
+    @Transactional
     public User save(UserRegistrationDto registrationDto) {
-        // Check if there is already a user with the same email
         User existingUser = userRepository.findUserByEmail(registrationDto.getEmail());
+
         if (existingUser != null) {
-            // Throw a custom exception if there is a duplicate email
             throw new DuplicateEmailException();
         }
-        // Check if there is already a user with the same username
-        existingUser = userRepository.findByUsername(registrationDto.getUsername());
-        if (existingUser != null) {
-            // Throw a custom exception if there is a duplicate username
-            throw new DuplicateUsernameException();
-        }
-        User user = new User(
-                registrationDto.getUsername(),
-                registrationDto.getEmail(),
-                passwordEncoder.encode(registrationDto.getPassword()),
-                List.of(new Role("ROLE_USER"))
-        );
+        User user = new User();
+        user.setEmail(registrationDto.getEmail());
+        user.setUsername(registrationDto.getUsername());
+        user.setPassword(passwordEncoder.encode(registrationDto.getPassword()));
         user.setAuthProvider(AuthenticationProvider.LOCAL);
+
         return userRepository.save(user);
     }
 
@@ -77,7 +70,6 @@ public class UserServiceImpl implements UserService {
         user.setEmail(email);
         user.setUsername(name);
         user.setAuthProvider(provider);
-        user.setRoles(List.of(new Role("ROLE_USER")));
         this.userRepository.save(user);
     }
 
@@ -94,11 +86,7 @@ public class UserServiceImpl implements UserService {
         if (user == null) {
             throw new UsernameNotFoundException("Invalid email or password");
         }
-        return new org.springframework.security.core.userdetails.User(user.getEmail(), user.getPassword(), mapRolesAuthorities(user.getRoles()));
-    }
-
-    private Collection<? extends GrantedAuthority> mapRolesAuthorities(Collection<Role> roles) {
-        return roles.stream().map(role -> new SimpleGrantedAuthority(role.getName())).collect(Collectors.toList());
+        return new org.springframework.security.core.userdetails.User(user.getEmail(), user.getPassword(), Collections.singletonList(new SimpleGrantedAuthority(user.getRole())));
     }
 
     // for forgot password

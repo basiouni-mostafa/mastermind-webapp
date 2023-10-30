@@ -34,16 +34,16 @@ body {
 }
 
 /* navbar */
-.nav-link::before {
-    content: "";
-    position: absolute;
-    width: 40%;
-    height: 1px;
-    bottom: 30%;
-    right: 2%;
-    background-color: gray;
-    visibility: visible;
-}
+/*.nav-link::before {*/
+/*    content: "";*/
+/*    position: absolute;*/
+/*    width: 40%;*/
+/*    height: 1px;*/
+/*    bottom: 30%;*/
+/*    right: 2%;*/
+/*    background-color: rgb(128, 128, 128);*/
+/*    visibility: visible;*/
+/*}*/
 
 .bg-light {
     --bs-bg-opacity: 0 !important;
@@ -229,6 +229,16 @@ form {
     background: linear-gradient(to bottom, #4f4f4f, #000102);
     color: transparent;
     border: none !important;
+}
+
+#login-icon {
+    font-variation-settings: 'FILL' 0, 'wght' 400, 'GRAD' 200, 'opsz' 24;
+    font-size: 2rem;
+    color: rgba(0, 0, 0, 0.55);
+}
+
+#login-icon:hover {
+    color: rgba(0, 0, 0, 0.85);
 }
 
 /*modal*/

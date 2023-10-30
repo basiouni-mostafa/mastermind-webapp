@@ -1,41 +1,39 @@
 package com.mostafawahied.mastermindwebapp.model;
 
-import lombok.*;
+import lombok.AllArgsConstructor;
+import lombok.Getter;
+import lombok.NoArgsConstructor;
+import lombok.Setter;
+
 import javax.persistence.*;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.List;
 
-@AllArgsConstructor
-@NoArgsConstructor
+@Entity
+@Table(name = "users", uniqueConstraints = {@UniqueConstraint(columnNames = "email")})
 @Getter
 @Setter
-@Entity
-@Table(name = "users", uniqueConstraints = {
-        @UniqueConstraint(columnNames = {"email"})
-})
+@NoArgsConstructor
+@AllArgsConstructor
 public class User {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
-    private String username;
+
+    @Column(unique = true)
     private String email;
+    private String username;
     private String password;
+    private String role = "ROLE_USER";
     @Enumerated(EnumType.STRING)
     @Column(name = "auth_provider")
     private AuthenticationProvider authProvider;
-    @ManyToMany(fetch = FetchType.EAGER, cascade = CascadeType.ALL)
-    @JoinTable(name = "users_roles",
-            joinColumns = @JoinColumn(
-                    name = "user_id", referencedColumnName = "id"),
-            inverseJoinColumns = @JoinColumn(
-                    name = "role_id", referencedColumnName = "id"))
-    private Collection<Role> roles;
     private String resetPasswordToken;
 
-    public User(String username, String email, String password, List<Role> roles) {
+    public User(String username, String email, String password) {
         this.username = username;
         this.email = email;
         this.password = password;
-        this.roles = roles;
-    }}
+    }
+}

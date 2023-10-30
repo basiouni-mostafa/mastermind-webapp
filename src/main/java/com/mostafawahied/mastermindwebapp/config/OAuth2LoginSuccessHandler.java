@@ -1,9 +1,9 @@
 package com.mostafawahied.mastermindwebapp.config;
 
 
+import com.mostafawahied.mastermindwebapp.model.User;
 import com.mostafawahied.mastermindwebapp.service.UserService;
 import com.mostafawahied.mastermindwebapp.model.AuthenticationProvider;
-import com.mostafawahied.mastermindwebapp.model.User;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
