@@ -332,6 +332,28 @@ form {
     margin-bottom: 4%;
 }
 
+.notification {
+    display: flex;
+    position: fixed;
+    bottom: 50%;
+    left: 50%;
+    transform: translateX(-50%);
+    /*max-width: 2vw;*/
+    padding: 15px 25px;
+    background-color: #28a745; /* Green background for positive messages */
+    color: white;
+    border-radius: 5px;
+    box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+    z-index: 1000;
+    opacity: 1; /* Fully visible initially */
+    transition: opacity 0.5s ease-in-out; /* This makes the opacity change over 0.5 seconds */
+}
+
+.notification.hidden {
+    opacity: 0; /* Fully transparent */
+}
+
+
 
 /*small screens only*/
 @media only screen and (max-width: 480px), only screen and (max-width: 990px) {

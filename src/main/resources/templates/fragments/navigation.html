@@ -21,10 +21,20 @@
             <div class="collapse navbar-collapse d-flex justify-content-end" id="navbarNav">
                 <ul class="navbar-nav">
                     <li class="nav-item score-class mx-5 px-5 px-5 py-2">
+                        <!--                        <a class="nav-link col" href="#" style="cursor: default"-->
+                        <!--                           th:if="${numOfWins != null && numOfLosses != null}">-->
+                        <!--                                    <span>Wins: <span th:text="${numOfWins}" style="font-weight: 500"></span><span> | Losses: <span-->
+                        <!--                                            th:text="${numOfLosses}" style="font-weight: 500"></span></span></span>-->
+                        <!--                        </a>-->
                         <a class="nav-link col" href="#" style="cursor: default"
-                           th:if="${numOfWins != null && numOfLosses != null}">
-                                    <span>Wins: <span th:text="${numOfWins}" style="font-weight: 500"></span><span> | Losses: <span
-                                            th:text="${numOfLosses}" style="font-weight: 500"></span></span></span>
+                           th:if="${loggedIn}">
+                            <span style="font-weight: bold">Score: <span th:text="${score}" style="font-weight: 500; color: rgb(13, 110, 253);"></span></span>
+                            <span> | </span>
+                            <span style="font-weight: bold">Consecutive Wins: <span th:text="${consecutiveWins}" style="font-weight: 500; color: rgb(13, 110, 253);"></span></span>
+                        </a>
+                        <a class="nav-link col" href="#" style="cursor: default"
+                           th:unless="${loggedIn}">
+                            <p>Please login to view your score!</p>
                         </a>
                     </li>
                     <li class="nav-item rules-icon-class">

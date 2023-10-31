@@ -174,3 +174,15 @@ function closeIntro() {
     sessionStorage.setItem("animationPlayed", "true");
 }
 // End of intro animation
+
+// consecutive wins notification
+document.addEventListener('DOMContentLoaded', function() {
+    const notification = document.getElementById('notification');
+    if(notification) {
+        setTimeout(() => {
+            notification.classList.add('hidden'); // Add the "hidden" class to make it fade
+        }, 3000);
+    }
+});
+
+// End of consecutive wins notification

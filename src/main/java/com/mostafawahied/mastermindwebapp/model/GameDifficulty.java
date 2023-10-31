@@ -4,18 +4,24 @@ import java.util.concurrent.TimeUnit;
 
 public enum GameDifficulty {
 
-    EASY(4, 10, TimeUnit.DAYS.toMillis(100)),
+    EASY(4, 10, TimeUnit.DAYS.toMillis(100), 100, 25),
 
-    MEDIUM(5, 20, TimeUnit.MINUTES.toMillis(20)),
+    MEDIUM(5, 20, TimeUnit.MINUTES.toMillis(20), 150, 40),
 
-    HARD(6, 40, TimeUnit.MINUTES.toMillis(30));
+    HARD(6, 40, TimeUnit.MINUTES.toMillis(30), 200, 50);
 
     public final int guessLength;
     public final int numOfGuesses;
     public final long gameDuration;
-    GameDifficulty(int guessLength, int numOfGuesses, long gameDuration) { // number of milliseconds in a game
+    public final int winPoints;
+    public final int losePoints;
+
+
+    GameDifficulty(int guessLength, int numOfGuesses, long gameDuration, int winPoints, int losePoints) { // number of milliseconds in a game
         this.guessLength = guessLength;
         this.numOfGuesses = numOfGuesses;
         this.gameDuration = gameDuration;
+        this.winPoints = winPoints;
+        this.losePoints = losePoints;
     }
 }

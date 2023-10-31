@@ -1,13 +1,18 @@
 package com.mostafawahied.mastermindwebapp.manager;
 
 import com.mostafawahied.mastermindwebapp.model.*;
+import com.mostafawahied.mastermindwebapp.service.UserService;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
+import org.springframework.ui.Model;
 import org.springframework.web.client.RestTemplate;
 
 import java.util.*;
 
 @Component
 public class GameManager {
+    @Autowired
+    private UserService userService;
 
     public GameManager() {
         currentGame = null;
@@ -21,6 +26,7 @@ public class GameManager {
 
     private Game currentGame;
     private final ScoreTracker tracker;
+    private User currentUser;
 
     private List<String> generateRandomGuess(int numberOfGuesses, GameType type) {
         List<String> responseRandomList = new ArrayList<>();
@@ -45,10 +51,11 @@ public class GameManager {
         return responseRandomList;
     }
 
-    public Game createGame(GameDifficulty difficulty, GameType type) {
+    public Game createGame(GameDifficulty difficulty, GameType type, User user) {
         List<String> randomString = generateRandomGuess(difficulty.guessLength, type);
         // Creating a default "easy" game
         currentGame = new Game(randomString, type, difficulty);
+        this.currentUser = user;
         return currentGame;
     }
 
@@ -87,26 +94,23 @@ public class GameManager {
         return null;
     }
 
-    public Game handleGuess(List<String> userGuessList) {
+    public Game handleGuess(List<String> userGuessList, Model model) {
 
         List<String> randomGuessList = currentGame.getCorrectResult();
 
         int correctNumbers = 0;
         int correctLocations = 0;
-
         // Count number of values guesses that are in the result
         final Set<String> resultDigits = new HashSet<>(randomGuessList);
         final Set<String> guessDigits = new HashSet<>(userGuessList);
         guessDigits.retainAll(resultDigits);
         correctNumbers = guessDigits.size();
-
         // Check correct locations
         for (int index = 0; index < userGuessList.size(); index++) {
             if (userGuessList.get(index).equals(randomGuessList.get(index))) {
                 correctLocations++;
             }
         }
-
         // Update the state, history, .... etc
         currentGame.setGameRemainingAttempts(currentGame.getGameRemainingAttempts() - 1);
 
@@ -121,10 +125,20 @@ public class GameManager {
         if (correctLocations == currentGame.getCorrectResultLength()) {
             currentGame.setGameState(GameState.WON);
             tracker.setNumWins(tracker.getNumWins() + 1);
+            if (currentUser != null) {
+                String bonusWon = currentUser.updateScore(currentGame).orElse("");
+                model.addAttribute("bonusWon", bonusWon);
+                userService.save(currentUser);
+            }
         } else if (currentGame.getGameRemainingAttempts() == 0 ||
                 System.currentTimeMillis() > currentGame.getGameEndTime()) {
             currentGame.setGameState(GameState.LOST);
             tracker.setNumLosses(tracker.getNumLosses() + 1);
+            if (currentUser != null) {
+                String bonusWon = currentUser.updateScore(currentGame).orElse("");
+                model.addAttribute("bonusWon", bonusWon);
+                userService.save(currentUser);
+            }
         }
         return currentGame;
     }

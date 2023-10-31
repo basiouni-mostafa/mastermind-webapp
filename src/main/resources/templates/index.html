@@ -275,11 +275,11 @@
                     <p>The correct number combination is (<span class="correct_result"
                                                                 th:text="${correctNumber}"></span>)</p>
                     <div class="lose-animation d-flex justify-content-center">
-                        <script src="https://unpkg.com/@lottiefiles/lottie-player@latest/dist/lottie-player.js"></script>
-                        <lottie-player id="lost-animation"
-                                       src="https://assets2.lottiefiles.com/packages/lf20_yAh844.json"
-                                       background="transparent" speed="1" style="width: 170px; height: 170px;"
-                                       direction="-1" autoplay></lottie-player>
+                        <script src="https://unpkg.com/@dotlottie/player-component@latest/dist/dotlottie-player.mjs"
+                                type="module"></script>
+                        <dotlottie-player src="https://lottie.host/f761d4fe-17dd-423d-b088-8a47d0f6e99e/JR37JxyKWW.json"
+                                          background="transparent" speed="1" style="width: 170px; height: 170px;"
+                                          autoplay></dotlottie-player>
                     </div>
                 </div>
                 <!-- End of GameState LOST-->
@@ -338,9 +338,12 @@
                     </div>
                     <button type="submit" class="btn btn-primary mb-3"><b>Play</b>
                     </button>
+                    <!-- consecutive win notification -->
+                    <div th:if="${bonusWon != ''}" th:text="${bonusWon}" id="notification" class="notification"></div>
                 </form>
                 <!-- end of new game form -->
             </div>
+
         </div>
     </main>
 </div>
