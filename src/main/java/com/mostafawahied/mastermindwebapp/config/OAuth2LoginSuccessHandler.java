@@ -45,6 +45,10 @@ public class OAuth2LoginSuccessHandler extends SimpleUrlAuthenticationSuccessHan
                 userService.createNewUserAfterOAuthLoginSuccess(email, name, AuthenticationProvider.GOOGLE);
             } else {
                 userService.updateUserAfterOAuthLoginSuccess(user, name, AuthenticationProvider.GOOGLE);
+                // save profile picture for user
+                String pictureUrl = oAuth2User.getAttributes().get("picture").toString();
+                user.setProfileImageSrc(pictureUrl);
+                userService.save(user);
             }
 
             logger.info("Logged in User Email: {}", email);

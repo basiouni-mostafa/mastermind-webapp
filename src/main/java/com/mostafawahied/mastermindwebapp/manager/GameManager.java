@@ -124,8 +124,10 @@ public class GameManager {
 
         if (correctLocations == currentGame.getCorrectResultLength()) {
             currentGame.setGameState(GameState.WON);
-            tracker.setNumWins(tracker.getNumWins() + 1);
+//            tracker.setNumWins(tracker.getNumWins() + 1);
             if (currentUser != null) {
+                currentUser.setGamesPlayed(currentUser.getGamesPlayed() + 1);
+                currentUser.setGamesWon(currentUser.getGamesWon() + 1);
                 String bonusWon = currentUser.updateScore(currentGame).orElse("");
                 model.addAttribute("bonusWon", bonusWon);
                 userService.save(currentUser);
@@ -133,8 +135,10 @@ public class GameManager {
         } else if (currentGame.getGameRemainingAttempts() == 0 ||
                 System.currentTimeMillis() > currentGame.getGameEndTime()) {
             currentGame.setGameState(GameState.LOST);
-            tracker.setNumLosses(tracker.getNumLosses() + 1);
+//            tracker.setNumLosses(tracker.getNumLosses() + 1);
             if (currentUser != null) {
+                currentUser.setGamesPlayed(currentUser.getGamesPlayed() + 1);
+                currentUser.setGamesLost(currentUser.getGamesLost() + 1);
                 String bonusWon = currentUser.updateScore(currentGame).orElse("");
                 model.addAttribute("bonusWon", bonusWon);
                 userService.save(currentUser);

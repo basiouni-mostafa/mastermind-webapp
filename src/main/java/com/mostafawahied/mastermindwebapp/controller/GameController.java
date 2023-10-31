@@ -2,6 +2,7 @@ package com.mostafawahied.mastermindwebapp.controller;
 
 import com.mostafawahied.mastermindwebapp.manager.GameManager;
 import com.mostafawahied.mastermindwebapp.model.*;
+import com.mostafawahied.mastermindwebapp.repository.UserRepository;
 import com.mostafawahied.mastermindwebapp.service.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.Authentication;
@@ -20,6 +21,8 @@ public class GameController {
     private GameManager gameManager;
     @Autowired
     private UserService userService;
+    @Autowired
+    private UserRepository userRepository;
 
     @GetMapping("/")
     public String homePage(Model model) {
@@ -105,7 +108,13 @@ public class GameController {
         if (!authentication.isAuthenticated() || authentication.getPrincipal().equals("anonymousUser") || authentication == null) {
             return null;
         }
-        String currentPrincipalName = authentication.getName();
-        return userService.findUserByUsername(currentPrincipalName);
+        // get the current user by username if logged in with oauth or by email if logged in with local
+        User currentUser;
+        if (authentication.getPrincipal() instanceof org.springframework.security.core.userdetails.User) {
+            currentUser = userService.findUserByEmail(authentication.getName());
+        } else {
+            currentUser = userService.findUserByUsername(authentication.getName());
+        }
+        return currentUser;
     }
 }

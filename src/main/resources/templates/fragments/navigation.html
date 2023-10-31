@@ -10,216 +10,228 @@
 <body>
 
 <!-- NavBar -->
-<!--<div class="  my-nav w-100 border" th:fragment="navigation">-->
 <div th:fragment="navigation">
     <nav class="navbar navbar-expand-lg navbar-light bg-light">
-        <div class="container" style="width: 100%;">
+        <div class="container-fluid">
             <a class="navbar-brand" href="/">
                 <img id="logo" th:src="@{image/logo.png}" src="" width="100" height="100" alt="logo">
             </a>
+            <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav"
+                    aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
+                <span class="navbar-toggler-icon"></span>
+            </button>
 
-            <div class="collapse navbar-collapse d-flex justify-content-end" id="navbarNav">
-                <ul class="navbar-nav">
-                    <li class="nav-item score-class mx-5 px-5 px-5 py-2">
-                        <!--                        <a class="nav-link col" href="#" style="cursor: default"-->
-                        <!--                           th:if="${numOfWins != null && numOfLosses != null}">-->
-                        <!--                                    <span>Wins: <span th:text="${numOfWins}" style="font-weight: 500"></span><span> | Losses: <span-->
-                        <!--                                            th:text="${numOfLosses}" style="font-weight: 500"></span></span></span>-->
-                        <!--                        </a>-->
-                        <a class="nav-link col" href="#" style="cursor: default"
-                           th:if="${loggedIn}">
-                            <span style="font-weight: bold">Score: <span th:text="${score}" style="font-weight: 500; color: rgb(13, 110, 253);"></span></span>
-                            <span> | </span>
-                            <span style="font-weight: bold">Consecutive Wins: <span th:text="${consecutiveWins}" style="font-weight: 500; color: rgb(13, 110, 253);"></span></span>
-                        </a>
-                        <a class="nav-link col" href="#" style="cursor: default"
-                           th:unless="${loggedIn}">
-                            <p>Please login to view your score!</p>
-                        </a>
+            <div class="collapse navbar-collapse" id="navbarNav">
+                <ul class="navbar-nav me-auto mb-2 mb-lg-0">
+                    <li class="nav-item">
+                        <a class="nav-link btn" th:href="@{/leaderboard}">Leaderboard</a>
                     </li>
-                    <li class="nav-item rules-icon-class">
-                        <a class="nav-link" href="#">
-                            <span id="rules-icon" class="material-symbols-outlined settings-icon">info</span>
-                        </a>
-                    </li>
-                    <div id="game-rules" class="game_modal">
-                        <h5>Game Rules</h5>
-                        <ul class="fs-6">
-                            <li>Guess the number or color combination set by the computer</li>
-                            <li>The computer will give you feedback on correct guesses and their positions
-                            </li>
-                            <li>"Correct guesses" are digits or colors that exist in your guess but are in the
-                                wrong
-                                position
-                            </li>
-                            <li>"Correct locations" are digits or colors that exist in your guess and are in the
-                                correct position
-                            </li>
-                            <li>If you don't guess any correct guesses, the computer will show '0 correct
-                                guess(es) - 0 correct location(s)'
-                            </li>
-                        </ul>
-                        <div class=" mt-4">
-                            <h5>Game Modes</h5>
-                            <p>Game Type: <span style="font-weight: 500"
-                                                th:text="${#strings.capitalize(#strings.toLowerCase(gameType))}"></span>
-                                |
-                                Remaining Attempts: <span th:text="${remainingAttempts}"
-                                                          style="font-weight: 500"></span></p>
-
-                            <p>
-                                Game Difficulty: <span style="font-weight: 500">Easy</span><br>
-                                <span><span style="font-weight: 500">4</span> Digits combination</span> |
-                                <span><span style="font-weight: 500">10</span> User guesses allowed</span> |
-                                <span style="font-weight: 500">No time limit</span>
-                            </p>
-                            <p>
-                                Game Difficulty: <span style="font-weight: 500">Medium</span><br>
-                                <span><span style="font-weight: 500">5</span> digits combination</span> |
-                                <span><span style="font-weight: 500">20</span> user guesses allowed</span> |
-                                <span><span style="font-weight: 500">20</span> minutes game duration</span>
-                            </p>
-                            <p>
-                                Game Difficulty: <span style="font-weight: 500">Hard</span><br>
-                                <span><span style="font-weight: 500">6</span> digits combination</span> |
-                                <span><span style="font-weight: 500">40</span> user guesses allowed</span> |
-                                <span><span style="font-weight: 500">30</span> minutes game duration</span>
-                            </p>
-                        </div>
-                        <div class="text-center d-flex justify-content-center">
-                            <a id="close-rules" class="close-button"><span
-                                    class="material-symbols-outlined mt-5">close</span></a>
-                        </div>
-                    </div>
-
-                    <li class="nav-item game-icon-class">
-                        <a class="nav-link" href="#">
-                                    <span id="settings-icon"
-                                          class="material-symbols-outlined settings-icon">settings</span></a>
-                        <div id="game-settings" class="game_modal text-center">
-                            <h1>Game Settings</h1>
-                            <!-- New game form -->
-                            <form action="#" th:action="@{/new_game}" method="get">
-                                <div class="justify-content-center">
-                                    <div>
-                                        <label class="h4 mt-4" for="gameDifficulty">Game Difficulty</label>
-                                        <div class="d-flex justify-content-evenly transparent-bg p-3 m-2"
-                                             aria-label="Game Difficulty">
-                                            <div class="custom-control custom-radio">
-                                                <label><input type="radio" name="difficulty"
-                                                              value="EASY"
-                                                              class="custom-control-input" checked></label>
-                                                <label class="custom-control-label"
-                                                       for="difficulty-easy">Easy</label>
-                                            </div>
-                                            <div class="custom-control custom-radio">
-                                                <label><input type="radio" name="difficulty"
-                                                              value="MEDIUM"
-                                                              class="custom-control-input"></label>
-                                                <label class="custom-control-label"
-                                                       for="difficulty-medium">Medium</label>
-                                            </div>
-                                            <div class="custom-control custom-radio">
-                                                <label><input type="radio" name="difficulty"
-                                                              value="HARD"
-                                                              class="custom-control-input"></label>
-                                                <label class="custom-control-label"
-                                                       for="difficulty-hard">Hard</label>
-                                            </div>
-                                        </div>
-                                    </div>
-                                    <div>
-                                        <label class="h4 mt-3" for="gameType">Game Type</label>
-                                        <div class="d-flex justify-content-evenly transparent-bg p-3 m-2"
-                                             aria-label="Game Type">
-                                            <div class="custom-control custom-radio">
-                                                <label><input type="radio" name="type"
-                                                              value="NUMBERS"
-                                                              class="custom-control-input" checked></label>
-                                                <label class="custom-control-label"
-                                                       for="type-numbers">Numbers</label>
-                                            </div>
-                                            <div class="custom-control custom-radio">
-                                                <label><input type="radio" name="type" value="COLORS"
-                                                              class="custom-control-input"></label>
-                                                <label class="custom-control-label"
-                                                       for="type-colors">Colors</label>
-                                            </div>
-                                        </div>
-                                    </div>
-                                </div>
-                                <button type="submit" class="btn btn-primary mb-3"><b>New Game</b>
-                                </button>
-                            </form>
-                            <!-- end of new game form -->
-                            <div class="text-center d-flex justify-content-center">
-                                <a id="close-settings" class="close-button"><span
-                                        class="material-symbols-outlined mt-5">close</span></a>
-                            </div>
-                        </div>
-                    </li>
-
-                    <li sec:authorize="!isAuthenticated()" class="nav-item login-link">
-                        <a class="btn" href="" th:href="@{/login}">
-                            <span id="login-icon" class="material-symbols-rounded">login</span>
-                        </a>
-                    </li>
-
-                    <li sec:authorize="isAuthenticated()" class="nav-item dropdown">
-                        <a class="nav-link dropdown-toggle"
-                           href="#" role="button" data-bs-toggle="dropdown"
-                           aria-expanded="false">
-                            <img th:if="${pictureUrl}" th:src="${pictureUrl}" width="30" alt="Profile Picture"
-                                 class="d-inline-block align-middle mr-2 rounded-circle">
-                            <img th:unless="${pictureUrl}" th:src="@{/image/user.png}" width="30" alt=""
-                                 class="d-inline-block align-middle mr-2 rounded-circle">
-                            <!--                        <span class="d-inline-block align-middle mr-2 color-2" th:text="${name}"></span>-->
-                        </a>
-                        <ul class="dropdown-menu w-auto" style="">
-                            <li class="nav-item">
-                                <div class="d-flex px-2 gap-1">
-                                    <div class="col-2 ms-2">
-                                        <img th:if="${pictureUrl}" th:src="${pictureUrl}" width="35"
-                                             alt="Profile Picture"
-                                             class="d-inline-block align-middle mr-2 rounded-circle" src="">
-                                        <img th:unless="${pictureUrl}" th:src="@{/image/user.png}" width="35"
-                                             alt=""
-                                             class="d-inline-block align-middle mr-2 rounded-circle" src="">
-                                    </div>
-                                    <div class="col-10 ms-2">
-                                        <p class="fw-semibold my-0" th:text="${name}"
-                                           style="font-size: 0.75rem"></p>
-                                        <p class="text-muted my-0" th:text="${email}"
-                                           style="font-size: 0.7rem"></p>
-                                    </div>
-                                </div>
-                            </li>
-                            <div class="dropdown-divider"></div>
-                            <li sec:authorize="!isAuthenticated()" class="nav-item login-link mt-1">
-                                <a class="btn btn-primary rounded-pill text-light" href="" th:href="@{/login}">Sign
-                                    In</a>
-                            </li>
-                            <li sec:authorize="isAuthenticated()" class="nav-item nav-link d-flex">
-                                <a style="text-decoration: none;" href="" th:href="@{/logout}"
-                                   class="logout-button d-flex">
-                                    <div class="col-2 ms-2">
-                                    <span class="material-symbols-outlined logout-google-icon"
-                                          style="font-size: 1.3rem">logout</span>
-                                    </div>
-                                    <div class="col-10 ms-3">
-                                        Logout
-                                    </div>
-                                </a>
-                            </li>
-                        </ul>
-                    </li>
-
                 </ul>
 
+                <div class="d-flex">
+                    <!-- Score display -->
+                    <div th:if="${loggedIn}" class="me-3 mt-1">
+                        <span class="fw-bold">Score: </span><span th:text="${score}" class="text-primary"></span>
+                        <span> | </span>
+                        <span class="fw-bold">Consecutive Wins: </span><span th:text="${consecutiveWins}"
+                                                                             class="text-primary"></span>
+                    </div>
+
+                    <a href="#" class="nav-link me-3" data-bs-toggle="modal" data-bs-target="#rulesModal">
+                        <span id="rules-icon" class="material-symbols-outlined settings-icon">info</span>
+                    </a>
+
+                    <a href="#" class="nav-link me-3" data-bs-toggle="modal" data-bs-target="#settingsModal">
+                    <span id="settings-icon"
+                          class="material-symbols-outlined settings-icon">settings</span></a>
+
+                    <div sec:authorize="!isAuthenticated()">
+                        <a class="nav-link me-3" href="" th:href="@{/login}">
+                            <span id="login-icon" class="material-symbols-rounded">login</span>
+                        </a>
+                    </div>
+
+                    <!-- User Dropdown -->
+                    <div sec:authorize="isAuthenticated()" class="dropdown">
+                        <a class="nav-link dropdown-toggle" href="#" role="button" id="userDropdown"
+                           data-bs-toggle="dropdown" aria-expanded="false">
+                            <img th:if="${pictureUrl}" th:src="${pictureUrl}" width="30" alt="Profile Picture"
+                                 class="rounded-circle">
+                            <img th:unless="${pictureUrl}" th:src="@{/image/user.png}" width="30" alt=""
+                                 class="rounded-circle">
+                        </a>
+
+                        <ul class="dropdown-menu dropdown-menu-end" aria-labelledby="userDropdown">
+                            <li class="d-flex px-2 gap-1">
+                                <div class="col-2 ms-2">
+                                    <img th:if="${pictureUrl}" th:src="${pictureUrl}" width="35" alt="Profile Picture"
+                                         class="rounded-circle">
+                                    <img th:unless="${pictureUrl}" th:src="@{/image/user.png}" width="35" alt=""
+                                         class="rounded-circle">
+                                </div>
+                                <div class="col-10 ms-2">
+                                    <p class="fw-semibold my-0" th:text="${name}" style="font-size: 0.75rem"></p>
+                                    <p class="text-muted my-0" th:text="${email}" style="font-size: 0.7rem"></p>
+                                </div>
+                            </li>
+
+                            <li>
+                                <hr class="dropdown-divider">
+                            </li>
+
+                            <li sec:authorize="isAuthenticated()" th:href="@{/logout}"
+                                class="d-flex gap-2 dropdown-item" style="cursor: pointer">
+                                <div class="col-2">
+                                    <span class="material-symbols-outlined logout-google-icon"
+                                          style="font-size: 1.3rem">logout</span>
+                                </div>
+                                <div class="col-10">
+                                    <span>Logout</span>
+                                </div>
+                            </li>
+                        </ul>
+                    </div>
+
+                </div>
             </div>
         </div>
     </nav>
-    <!--    end of navbar-->
+
+    <!-- Game Rules Modal -->
+    <div class="modal fade" id="rulesModal" tabindex="-1" aria-labelledby="rulesModalLabel" aria-hidden="true">
+        <div class="modal-dialog modal-dialog-centered modal-lg">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="rulesModalLabel">Game Rules</h5>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                </div>
+                <div class="modal-body">
+                    <!-- Place your game rules content here -->
+                    <h5>Game Rules</h5>
+                    <ul class="fs-6">
+                        <li>Guess the number or color combination set by the computer</li>
+                        <li>The computer will give you feedback on correct guesses and their positions
+                        </li>
+                        <li>"Correct guesses" are digits or colors that exist in your guess but are in the
+                            wrong
+                            position
+                        </li>
+                        <li>"Correct locations" are digits or colors that exist in your guess and are in the
+                            correct position
+                        </li>
+                        <li>If you don't guess any correct guesses, the computer will show '0 correct
+                            guess(es) - 0 correct location(s)'
+                        </li>
+                    </ul>
+                    <div class=" mt-4">
+                        <h5>Game Modes</h5>
+                        <p>Game Type: <span style="font-weight: 500"
+                                            th:text="${#strings.capitalize(#strings.toLowerCase(gameType))}"></span>
+                            |
+                            Remaining Attempts: <span th:text="${remainingAttempts}"
+                                                      style="font-weight: 500"></span></p>
+
+                        <p>
+                            Game Difficulty: <span style="font-weight: 500">Easy</span><br>
+                            <span><span style="font-weight: 500">4</span> Digits combination</span> |
+                            <span><span style="font-weight: 500">10</span> User guesses allowed</span> |
+                            <span style="font-weight: 500">No time limit</span>
+                        </p>
+                        <p>
+                            Game Difficulty: <span style="font-weight: 500">Medium</span><br>
+                            <span><span style="font-weight: 500">5</span> digits combination</span> |
+                            <span><span style="font-weight: 500">20</span> user guesses allowed</span> |
+                            <span><span style="font-weight: 500">20</span> minutes game duration</span>
+                        </p>
+                        <p>
+                            Game Difficulty: <span style="font-weight: 500">Hard</span><br>
+                            <span><span style="font-weight: 500">6</span> digits combination</span> |
+                            <span><span style="font-weight: 500">40</span> user guesses allowed</span> |
+                            <span><span style="font-weight: 500">30</span> minutes game duration</span>
+                        </p>
+                    </div>
+                    <div class="text-center d-flex justify-content-center">
+                        <a id="close-rules" class="close-button"><span
+                                class="material-symbols-outlined mt-5">close</span></a>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Game Settings Modal -->
+    <div class="modal fade" id="settingsModal" tabindex="-1" aria-labelledby="settingsModalLabel" aria-hidden="true">
+        <div class="modal-dialog modal-dialog-centered">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="settingsModalLabel">Game Settings</h5>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                </div>
+                <div class="modal-body">
+                    <!-- Place your game settings content here -->
+                    <form action="#" th:action="@{/new_game}" method="get">
+                        <div class="justify-content-center">
+                            <div class="text-center">
+                                <label class="h4 mt-4" for="gameDifficulty">Game Difficulty</label>
+                                <div class="d-flex justify-content-evenly transparent-bg p-3 m-2"
+                                     aria-label="Game Difficulty">
+                                    <div class="custom-control custom-radio">
+                                        <label><input type="radio" name="difficulty"
+                                                      value="EASY"
+                                                      class="custom-control-input" checked></label>
+                                        <label class="custom-control-label"
+                                               for="difficulty-easy">Easy</label>
+                                    </div>
+                                    <div class="custom-control custom-radio">
+                                        <label><input type="radio" name="difficulty"
+                                                      value="MEDIUM"
+                                                      class="custom-control-input"></label>
+                                        <label class="custom-control-label"
+                                               for="difficulty-medium">Medium</label>
+                                    </div>
+                                    <div class="custom-control custom-radio">
+                                        <label><input type="radio" name="difficulty"
+                                                      value="HARD"
+                                                      class="custom-control-input"></label>
+                                        <label class="custom-control-label"
+                                               for="difficulty-hard">Hard</label>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="text-center">
+                                <label class="h4 mt-3" for="gameType">Game Type</label>
+                                <div class="d-flex justify-content-evenly transparent-bg p-3 m-2"
+                                     aria-label="Game Type">
+                                    <div class="custom-control custom-radio">
+                                        <label><input type="radio" name="type"
+                                                      value="NUMBERS"
+                                                      class="custom-control-input" checked></label>
+                                        <label class="custom-control-label"
+                                               for="type-numbers">Numbers</label>
+                                    </div>
+                                    <div class="custom-control custom-radio">
+                                        <label><input type="radio" name="type" value="COLORS"
+                                                      class="custom-control-input"></label>
+                                        <label class="custom-control-label"
+                                               for="type-colors">Colors</label>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="text-center">
+
+                            <button type="submit" class="btn btn-primary mb-3"><b>New Game</b>
+                            </button>
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+
 </div>
+
+<!-- Bootstrap and JS dependencies -->
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/js/bootstrap.bundle.min.js"></script>
 </body>
 </html>

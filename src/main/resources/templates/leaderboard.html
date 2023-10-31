@@ -1,0 +1,79 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <!--animate.css cdn-->
+    <link rel="stylesheet"
+          href="https://cdnjs.cloudflare.com/ajax/libs/animate.css/4.1.1/animate.min.css"/>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@300;500&family=Roboto&display=swap"
+          rel="stylesheet">
+    <!-- fa icons -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.1/css/all.min.css">
+    <!--    google icons-->
+    <link rel="stylesheet"
+          href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:opsz,wght,FILL,GRAD@20..48,100..700,0..1,-50..200"/>
+    <link rel="stylesheet"
+          href="https://fonts.googleapis.com/css2?family=Material+Symbols+Rounded:opsz,wght,FILL,GRAD@20..48,100..700,0..1,-50..200"/>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" th:href="@{/styles/style.css}">
+    <!--    <link rel="stylesheet" href="../static/styles/style.css">-->
+    <!-- Bootstrap CSS only -->
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet"
+          integrity="sha384-T3c6CoIi6uLrA9TneNEoa7RxnatzjcDSCmG1MXxSR1GAsXEV/Dwwykc2MPK8M2HN" crossorigin="anonymous">
+    <title>Leaderboard</title>
+</head>
+<body>
+<!-- NavBar -->
+<div class="container">
+    <div th:replace="~{fragments/navigation :: navigation}"></div>
+    <div class="flex-grow-1 border-bottom"></div>
+    <br>
+
+</div>
+<!-- End of Navbar -->
+<!-- create a card in the center of the screen for the login pills -->
+<div class="container mt-md-5 ">
+    <section class="row d-flex justify-content-center align-items-center m-2 p-2 pt-3 mx-md-4 px-md-5">
+        <!-- Hero -->
+        <div class="container mt-md-5 ">
+            <section class="row d-flex justify-content-center align-items-center m-2 p-2 pt-3 mx-md-4 px-md-5">
+
+                <div class="container mt-5">
+                    <h1 class="mb-4 text-center">Leaderboard</h1>
+                    <table class="table table-hover">
+                        <thead>
+                        <tr>
+                            <th scope="col">#</th>
+                            <th scope="col"></th>
+                            <th scope="col">Username</th>
+                            <th scope="col">Score</th>
+                        </tr>
+                        </thead>
+                        <tbody>
+                        <tr th:each="user, iterStat : ${topUsers}">
+                            <th scope="row" th:text="${iterStat.count}">1</th>
+                            <td><img th:src="${user.profileImageSrc}" width="30" height="30" alt="profile picture"></td>
+                            <td th:text="${user.username}">Username</td>
+                            <td th:text="${user.score}">Score</td>
+                        </tr>
+                        </tbody>
+                    </table>
+                </div>
+                <!-- End of Hero -->
+            </section>
+        </div>
+    </section>
+</div>
+
+<!--<script th:src="@{/js/script.js}" src=""></script>-->
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js"
+        integrity="sha384-C6RzsynM9kWDrMNeT87bh95OGNyZPhcTNXj1NW7RuBCsyN/o0jlpcV8Qyq46cDfL"
+        crossorigin="anonymous"></script>
+<script src="https://code.jquery.com/jquery-3.7.1.slim.min.js"
+        integrity="sha256-kmHvs0B+OpCW5GVHUNjv9rOmY0IvSIRcf7zGUDTDQM8=" crossorigin="anonymous"></script>
+
+</body>
+</html>

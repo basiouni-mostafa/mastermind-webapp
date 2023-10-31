@@ -8,11 +8,14 @@ import org.springframework.security.core.userdetails.UserDetailsService;
 
 public interface UserService extends UserDetailsService {
     User save(UserRegistrationDto registrationDto);
-User save(User user);
+
+    User save(User user);
+
     User findUserById(long id);
 
 
     User findUserByEmail(String email);
+
     User findUserByUsername(String username);
 
     void createNewUserAfterOAuthLoginSuccess(String email, String name, AuthenticationProvider provider);

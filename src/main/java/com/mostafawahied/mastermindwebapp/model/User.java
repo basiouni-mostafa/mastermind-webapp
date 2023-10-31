@@ -32,6 +32,10 @@ public class User {
     private String resetPasswordToken;
     private int score = 0;
     private int consecutiveWins = 0;
+    private int gamesPlayed = 0;
+    private int gamesWon = 0;
+    private int gamesLost = 0;
+    private String profileImageSrc = "/image/user.png";
 
     public User(String username, String email, String password) {
         this.username = username;
@@ -53,13 +57,13 @@ public class User {
         this.consecutiveWins++;
         if (this.consecutiveWins == 3) {
             this.addScore(50);
-            return Optional.of("3 Consecutive Wins! +50 points!");
+            return Optional.of("3 Consecutive Wins! +50 extra points!");
         } else if (this.consecutiveWins == 5) {
             this.addScore(100);
-            return Optional.of("5 Consecutive Wins! +100 points!");
+            return Optional.of("5 Consecutive Wins! +100 extra points!");
         } else if (this.consecutiveWins == 10) {
             this.addScore(200);
-            return Optional.of("10 Consecutive Wins! +200 points!");
+            return Optional.of("10 Consecutive Wins! +200 extra points!");
         }
         return Optional.empty();
     }

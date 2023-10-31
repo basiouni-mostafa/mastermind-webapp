@@ -37,6 +37,7 @@ public class MyControllerAdvice {
     // adding the user's name to all pages
     @ModelAttribute
     public void addNameAttribute(Model model, HttpSession session) {
+        User user;
         Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
         if (authentication != null && !(authentication instanceof AnonymousAuthenticationToken) && authentication.isAuthenticated()) {
             Object principal = authentication.getPrincipal();
@@ -44,14 +45,21 @@ public class MyControllerAdvice {
             String email = "";
             if (principal instanceof CustomOAuth2User customOAuth2User) {
                 // handle Google login
+                user = userRepository.findUserByEmail(customOAuth2User.getEmail());
                 name = customOAuth2User.getName();
                 email = customOAuth2User.getEmail();
+                model.addAttribute("score", user.getScore());
+                model.addAttribute("consecutiveWins", user.getConsecutiveWins());
+                model.addAttribute("loggedIn", true);
             } else if (principal instanceof UserDetails) {
                 // handle local login
 //                User user = userRepository.findUserByEmail(((UserDetails) principal).getUsername());
-                User user = userRepository.findUserByEmail(((UserDetails) principal).getUsername());
+                user = userRepository.findUserByEmail(((UserDetails) principal).getUsername());
                 name = user.getUsername();
                 email = user.getEmail();
+                model.addAttribute("score", user.getScore());
+                model.addAttribute("consecutiveWins", user.getConsecutiveWins());
+                model.addAttribute("loggedIn", true);
             }
             model.addAttribute("name", name);
             model.addAttribute("email", email);
