@@ -36,6 +36,10 @@
                         <span class="fw-bold">Consecutive Wins: </span><span th:text="${consecutiveWins}"
                                                                              class="text-primary"></span>
                     </div>
+                    <div  class="me-3 mt-1" style="cursor: default"
+                       th:unless="${loggedIn}">
+                        <p>Please login to view your score!</p>
+                    </div>
 
                     <a href="#" class="nav-link me-3" data-bs-toggle="modal" data-bs-target="#rulesModal">
                         <span id="rules-icon" class="material-symbols-outlined settings-icon">info</span>
@@ -79,7 +83,7 @@
                                 <hr class="dropdown-divider">
                             </li>
 
-                            <li sec:authorize="isAuthenticated()" th:href="@{/logout}"
+                            <a sec:authorize="isAuthenticated()" th:href="@{/logout}"
                                 class="d-flex gap-2 dropdown-item" style="cursor: pointer">
                                 <div class="col-2">
                                     <span class="material-symbols-outlined logout-google-icon"
@@ -88,7 +92,7 @@
                                 <div class="col-10">
                                     <span>Logout</span>
                                 </div>
-                            </li>
+                            </a>
                         </ul>
                     </div>
 
