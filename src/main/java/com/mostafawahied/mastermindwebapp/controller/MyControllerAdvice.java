@@ -14,6 +14,7 @@ import org.springframework.web.bind.annotation.ControllerAdvice;
 import org.springframework.web.bind.annotation.ModelAttribute;
 
 import javax.servlet.http.HttpSession;
+import java.util.Map;
 
 @ControllerAdvice
 public class MyControllerAdvice {
@@ -46,6 +47,8 @@ public class MyControllerAdvice {
             if (principal instanceof CustomOAuth2User customOAuth2User) {
                 // handle Google login
                 user = userRepository.findUserByEmail(customOAuth2User.getEmail());
+                user.setProfileImageSrc(customOAuth2User.getAttributes().get("picture").toString());
+                userRepository.save(user);
                 name = customOAuth2User.getName();
                 email = customOAuth2User.getEmail();
                 model.addAttribute("score", user.getScore());
