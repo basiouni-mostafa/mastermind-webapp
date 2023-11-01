@@ -94,7 +94,7 @@ public class GameManager {
         return null;
     }
 
-    public Game handleGuess(List<String> userGuessList, Model model) {
+    public Game processUserGuess(List<String> userGuessList, Model model) {
 
         List<String> randomGuessList = currentGame.getCorrectResult();
 
@@ -126,9 +126,7 @@ public class GameManager {
             currentGame.setGameState(GameState.WON);
 //            tracker.setNumWins(tracker.getNumWins() + 1);
             if (currentUser != null) {
-                currentUser.setGamesPlayed(currentUser.getGamesPlayed() + 1);
-                currentUser.setGamesWon(currentUser.getGamesWon() + 1);
-                String bonusWon = currentUser.updateScore(currentGame).orElse("");
+                String bonusWon = currentUser.recordWin(currentGame).orElse("");
                 model.addAttribute("bonusWon", bonusWon);
                 userService.save(currentUser);
             }
@@ -137,9 +135,7 @@ public class GameManager {
             currentGame.setGameState(GameState.LOST);
 //            tracker.setNumLosses(tracker.getNumLosses() + 1);
             if (currentUser != null) {
-                currentUser.setGamesPlayed(currentUser.getGamesPlayed() + 1);
-                currentUser.setGamesLost(currentUser.getGamesLost() + 1);
-                String bonusWon = currentUser.updateScore(currentGame).orElse("");
+                String bonusWon = currentUser.recordLoss(currentGame).orElse("");
                 model.addAttribute("bonusWon", bonusWon);
                 userService.save(currentUser);
             }

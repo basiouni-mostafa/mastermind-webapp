@@ -23,13 +23,13 @@ class GameManagerTest {
     @Test
     public void test(Model model) {
         List<String> firstGuess = Arrays.asList("1","5","3","7");
-        Game game = gameManager.handleGuess(firstGuess, model);
+        Game game = gameManager.processUserGuess(firstGuess, model);
         GameHistory firstHistory = game.getGameHistory().get(0);
         assertEquals(firstHistory.getCorrectNumbers(), 2);
         assertEquals(firstHistory.getCorrectLocations(), 1);
 
         List<String> secondGuess = Arrays.asList("1","2","2","3");
-        game = gameManager.handleGuess(secondGuess, model);
+        game = gameManager.processUserGuess(secondGuess, model);
         GameHistory secondHistory = game.getGameHistory().get(1);
         assertEquals(secondHistory.getCorrectNumbers(), 3);
         assertEquals(secondHistory.getCorrectLocations(), 4);

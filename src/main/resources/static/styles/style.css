@@ -38,6 +38,11 @@ body {
     color: rgba(0, 0, 0, 0.85);
 }
 
+.userDropdown {
+    text-decoration: none;
+    color: rgba(0, 0, 0, 0.55);
+}
+
 /* navbar */
 /*.nav-link::before {*/
 /*    content: "";*/
@@ -55,9 +60,9 @@ body {
 }
 
 /* end of navbar */
-hr {
-    width: 20%;
-}
+/*hr {*/
+/*    width: 20%;*/
+/*}*/
 
 .error-text {
     text-align: center;

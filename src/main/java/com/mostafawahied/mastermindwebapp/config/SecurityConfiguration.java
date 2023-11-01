@@ -56,15 +56,16 @@ public class SecurityConfiguration extends WebSecurityConfigurerAdapter {
     protected void configure(HttpSecurity http) throws Exception {
         http.authorizeRequests()
                 .antMatchers(
-                        "/**",
+//                        "/**",
                         "/register**",
                         "/oauth/**",
                         "/forgot_password",
                         "/reset_password",
                         "/",
                         "/about",
-                        "/privacy-policy",
-                        "/sitemap.xml",
+                        "/leaderboard",
+//                        "/privacy-policy",
+//                        "/sitemap.xml",
                         "/js/**",
                         "/styles/**",
                         "/image/**").permitAll()

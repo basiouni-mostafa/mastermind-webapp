@@ -49,7 +49,7 @@ public class GameController {
             return "index";
         }
         User currentUser = getCurrentUser();
-        Game game = gameManager.handleGuess(guesses, model);
+        Game game = gameManager.processUserGuess(guesses, model);
         ScoreTracker tracker = gameManager.getTracker();
         addAttributes(game, model, currentUser);
         addAttributes(tracker, model);
