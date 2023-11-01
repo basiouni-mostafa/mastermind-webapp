@@ -23,7 +23,7 @@
     <!-- Bootstrap CSS only -->
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet"
           integrity="sha384-T3c6CoIi6uLrA9TneNEoa7RxnatzjcDSCmG1MXxSR1GAsXEV/Dwwykc2MPK8M2HN" crossorigin="anonymous">
-    <title>Login</title>
+    <title th:text="${username} + ' Profile'"></title>
 </head>
 <body>
 <!-- NavBar -->
@@ -36,17 +36,17 @@
 <!-- End of Navbar -->
 <!-- create a card in the center of the screen for the login pills -->
 <div class="container mt-md-5 ">
-    <section class="row d-flex justify-content-center align-items-center m-2 p-2 pt-3 mx-md-4 px-md-5">
+    <section class="row d-flex justify-content-center align-items-center m-2 p-2 pt-3">
         <div class="card text-black rounded-4">
-            <div class="card-body p-md-5">
+            <div class="card-body p-md-3">
                 <div class="row justify-content-center">
                     <!-- Hero section -->
                     <section class="rounded-4" style="background-color: #eee;">
-                        <div class="container py-5">
-                            <!-- profile pic -->
-                            <div class="row">
-                                <div class="col-lg-4">
-                                    <div class="card mb-4">
+                        <div class="container py-4">
+                            <div class="row flex-fill">
+                                <!-- profile pic -->
+                                <div class="col-lg-6 d-flex">
+                                    <div class="card mb-4 rounded-4 flex-fill">
                                         <div class="card-body text-center">
                                             <img th:src="${profileImageSrc}"
                                                  alt="avatar"
@@ -56,9 +56,15 @@
                                     </div>
                                 </div>
                                 <!-- player info -->
-                                <div class="col-lg-8">
-                                    <div class="card mb-4">
+                                <div class="col-lg-6 d-flex">
+                                    <div class="card mb-4 rounded-4 flex-fill">
                                         <div class="card-body">
+                                            <div class="row">
+                                                <div class="col-12">
+                                                    <h3 class="text-center">Player Info</h3>
+                                                </div>
+                                            </div>
+                                            <hr>
                                             <div class="row">
                                                 <div class="col-sm-5">
                                                     <p class="mb-0">Username</p>
@@ -78,95 +84,122 @@
                                             </div>
                                         </div>
                                     </div>
-                                    <!-- stats -->
-                                    <div class="row">
-                                        <div class="col-md-6">
-                                            <div class="card mb-4 mb-md-0">
-                                                <div class="card-body">
-                                                    <p class="mb-4"><span class="text-primary font-italic me-1">assigment</span>
-                                                        Project Status
-                                                    </p>
-                                                    <p class="mb-1" style="font-size: .77rem;">Web Design</p>
-                                                    <div class="progress rounded" style="height: 5px;">
-                                                        <div class="progress-bar" role="progressbar"
-                                                             style="width: 80%" aria-valuenow="80"
-                                                             aria-valuemin="0" aria-valuemax="100"></div>
+                                </div>
+                            </div>
+                            <div class="row flex-fill">
+                                <!-- stats -->
+                                <div class="col-md-6 d-flex">
+                                    <div class="card mb-4 mb-md-0 rounded-4 flex-fill">
+                                        <section class="py-5" id="stats">
+                                            <div class="container px-5">
+                                                <h2 class="fw-bolder fs-5 mb-4 text-center">Stats</h2>
+                                                <div class="row gx-3">
+                                                    <div class="col-sm-6">
+                                                        <!-- score -->
+                                                        <div class="d-flex align-items-center justify-content-between mb-2">
+                                                            <h6 class="mb-0">Total Score</h6>
+                                                            <span class="badge rounded-pill text-bg-secondary"
+                                                                  th:text="${score}"></span>
+                                                        </div>
+                                                        <!-- Win percentage -->
+                                                        <div class="d-flex align-items-center justify-content-between mb-2">
+                                                            <h6 class="mb-0">Win Percentage</h6>
+                                                            <span class="badge rounded-pill text-bg-secondary"
+                                                                  th:text="${winPercentage} + '%'"></span>
+                                                        </div>
+                                                        <!-- Average score -->
+                                                        <div class="d-flex align-items-center justify-content-between mb-2">
+                                                            <h6 class="mb-0">Average Score</h6>
+                                                            <span class="badge rounded-pill text-bg-secondary"
+                                                                  th:text="${averageScore}"></span>
+                                                        </div>
+                                                        <!-- Current Streak -->
+                                                        <div class="d-flex align-items-center justify-content-between mb-2">
+                                                            <h6 class="mb-0">Current Winning Streak</h6>
+                                                            <span class="badge rounded-pill text-bg-secondary"
+                                                                  th:text="${consecutiveWins}"></span>
+                                                        </div>
+                                                        <!-- Most Streak -->
+                                                        <div class="d-flex align-items-center justify-content-between mb-2">
+                                                            <h6 class="mb-0">Most Winning Streak</h6>
+                                                            <span class="badge rounded-pill text-bg-secondary"
+                                                                  th:text="${mostConsecutiveWins}"></span>
+                                                        </div>
+                                                        <!-- 3 Streak Count-->
+                                                        <div class="d-flex align-items-center justify-content-between mb-2">
+                                                            <h6 class="mb-0">3 Winning Streaks</h6>
+                                                            <span class="badge rounded-pill text-bg-secondary"
+                                                                  th:text="${threeConsecutiveWinsCount}"></span>
+                                                        </div>
+                                                        <!-- 5 Streak Count-->
+                                                        <div class="d-flex align-items-center justify-content-between mb-2">
+                                                            <h6 class="mb-0">5 Winning Streaks</h6>
+                                                            <span class="badge rounded-pill text-bg-secondary"
+                                                                  th:text="${fiveConsecutiveWinsCount}"></span>
+                                                        </div>
+                                                        <!-- 10 Streak Count-->
+                                                        <div class="d-flex align-items-center justify-content-between mb-2">
+                                                            <h6 class="mb-0">10 Winning Streaks</h6>
+                                                            <span class="badge rounded-pill text-bg-secondary"
+                                                                  th:text="${tenConsecutiveWinsCount}"></span>
+                                                        </div>
                                                     </div>
-                                                    <p class="mt-4 mb-1" style="font-size: .77rem;">Website
-                                                        Markup</p>
-                                                    <div class="progress rounded" style="height: 5px;">
-                                                        <div class="progress-bar" role="progressbar"
-                                                             style="width: 72%" aria-valuenow="72"
-                                                             aria-valuemin="0" aria-valuemax="100"></div>
-                                                    </div>
-                                                    <p class="mt-4 mb-1" style="font-size: .77rem;">One Page</p>
-                                                    <div class="progress rounded" style="height: 5px;">
-                                                        <div class="progress-bar" role="progressbar"
-                                                             style="width: 89%" aria-valuenow="89"
-                                                             aria-valuemin="0" aria-valuemax="100"></div>
-                                                    </div>
-                                                    <p class="mt-4 mb-1" style="font-size: .77rem;">Mobile
-                                                        Template</p>
-                                                    <div class="progress rounded" style="height: 5px;">
-                                                        <div class="progress-bar" role="progressbar"
-                                                             style="width: 55%" aria-valuenow="55"
-                                                             aria-valuemin="0" aria-valuemax="100"></div>
-                                                    </div>
-                                                    <p class="mt-4 mb-1" style="font-size: .77rem;">Backend
-                                                        API</p>
-                                                    <div class="progress rounded mb-2" style="height: 5px;">
-                                                        <div class="progress-bar" role="progressbar"
-                                                             style="width: 66%" aria-valuenow="66"
-                                                             aria-valuemin="0" aria-valuemax="100"></div>
-                                                    </div>
-                                                </div>
-                                            </div>
-                                        </div>
-                                        <!-- achievements -->
-                                        <div class="col-md-6">
-                                            <div class="card mb-4 mb-md-0">
-                                                <div class="card-body">
-                                                    <p class="mb-4"><span class="text-primary font-italic me-1">assigment</span>
-                                                        Project Status
-                                                    </p>
-                                                    <p class="mb-1" style="font-size: .77rem;">Web Design</p>
-                                                    <div class="progress rounded" style="height: 5px;">
-                                                        <div class="progress-bar" role="progressbar"
-                                                             style="width: 80%" aria-valuenow="80"
-                                                             aria-valuemin="0" aria-valuemax="100"></div>
-                                                    </div>
-                                                    <p class="mt-4 mb-1" style="font-size: .77rem;">Website
-                                                        Markup</p>
-                                                    <div class="progress rounded" style="height: 5px;">
-                                                        <div class="progress-bar" role="progressbar"
-                                                             style="width: 72%" aria-valuenow="72"
-                                                             aria-valuemin="0" aria-valuemax="100"></div>
-                                                    </div>
-                                                    <p class="mt-4 mb-1" style="font-size: .77rem;">One Page</p>
-                                                    <div class="progress rounded" style="height: 5px;">
-                                                        <div class="progress-bar" role="progressbar"
-                                                             style="width: 89%" aria-valuenow="89"
-                                                             aria-valuemin="0" aria-valuemax="100"></div>
-                                                    </div>
-                                                    <p class="mt-4 mb-1" style="font-size: .77rem;">Mobile
-                                                        Template</p>
-                                                    <div class="progress rounded" style="height: 5px;">
-                                                        <div class="progress-bar" role="progressbar"
-                                                             style="width: 55%" aria-valuenow="55"
-                                                             aria-valuemin="0" aria-valuemax="100"></div>
-                                                    </div>
-                                                    <p class="mt-4 mb-1" style="font-size: .77rem;">Backend
-                                                        API</p>
-                                                    <div class="progress rounded mb-2" style="height: 5px;">
-                                                        <div class="progress-bar" role="progressbar"
-                                                             style="width: 66%" aria-valuenow="66"
-                                                             aria-valuemin="0" aria-valuemax="100"></div>
+                                                    <div class="col-sm-6">
+                                                        <!-- Games played -->
+                                                        <div class="d-flex align-items-center justify-content-between mb-2">
+                                                            <h6 class="mb-0">Games Played</h6>
+                                                            <span class="badge bg-primary rounded-pill"
+                                                                  th:text="${gamesPlayed}"></span>
+                                                        </div>
+                                                        <!-- Games won -->
+                                                        <div class="d-flex align-items-center justify-content-between mb-2">
+                                                            <h6 class="mb-0">Games Won</h6>
+                                                            <span class="badge bg-success rounded-pill"
+                                                                  th:text="${gamesWon}"></span>
+                                                        </div>
+                                                        <!-- Games lost -->
+                                                        <div class="d-flex align-items-center justify-content-between mb-2">
+                                                            <h6 class="mb-0">Games Lost</h6>
+                                                            <span class="badge bg-danger rounded-pill"
+                                                                  th:text="${gamesLost}"></span>
+                                                        </div>
                                                     </div>
                                                 </div>
                                             </div>
-                                        </div>
+                                        </section>
                                     </div>
                                 </div>
+                                <!-- end of stats -->
+                                <!-- achievements -->
+                                <div class="col-md-6 d-flex">
+                                    <div class="card mb-4 mb-md-0 rounded-4 flex-fill">
+                                        <section class="py-5" id="achievements">
+                                            <div class="container px-5">
+                                                <h2 class="fw-bolder fs-5 mb-4 text-center">Achievements</h2>
+                                                <div class="row">
+                                                    <!-- Streak Champion -->
+                                                    <div class="d-flex align-items-center justify-content-center mb-2">
+                                                            <span class="badge rounded-pill text-bg-warning"
+                                                                  th:text="${streakChampionAchievement ? 'STREAK CHAMPION' : ''}"></span>
+                                                    </div>
+
+                                                    <!-- Veteran -->
+                                                    <div class="d-flex align-items-center justify-content-center mb-2">
+                                                            <span class="badge rounded-pill text-bg-warning"
+                                                                  th:text="${veteranAchievement ? 'VETERAN' : ''}"></span>
+                                                    </div>
+
+                                                    <!-- Mastermind -->
+                                                    <div class="d-flex align-items-center justify-content-center mb-2">
+                                                            <span class="badge rounded-pill text-bg-warning"
+                                                                  th:text="${mastermindAchievement ? 'MASTERMIND' : ''}"></span>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </section>
+                                    </div>
+                                </div>
+                                <!-- end of achievements -->
                             </div>
                         </div>
                     </section>
@@ -174,9 +207,7 @@
                 </div>
             </div>
         </div>
-</div>
-</div>
-</section>
+    </section>
 </div>
 
 <!--<script th:src="@{/js/script.js}" src=""></script>-->

@@ -22,18 +22,19 @@
             </button>
 
             <div class="collapse navbar-collapse" id="navbarNav">
-                <ul class="navbar-nav me-auto mb-2 mb-lg-0">
+                <ul class="navbar-nav me-auto me-3 mb-2 mb-lg-0">
                     <li class="nav-item">
-                        <a class="nav-link btn" th:href="@{/leaderboard}">Leaderboard</a>
+                        <a class="nav-link btn fw-bolder" th:href="@{/leaderboard}">Leaderboard</a>
+<!--                        <a class=" btn btn-secondary" th:href="@{/leaderboard}">Leaderboard</a>-->
                     </li>
                 </ul>
 
                 <div class="d-flex">
                     <!-- Score display -->
                     <div th:if="${loggedIn}" class="me-3 mt-1">
-                        <span class="fw-bold">Score: </span><span th:text="${score}" class="text-primary"></span>
+                        <span class="nav-text fw-bolder">Score: </span><span th:text="${score}" class="text-primary"></span>
                         <span> | </span>
-                        <span class="fw-bold">Consecutive Wins: </span><span th:text="${consecutiveWins}"
+                        <span class="nav-text fw-bolder">Winning Streak: </span><span th:text="${consecutiveWins}"
                                                                              class="text-primary"></span>
                     </div>
                     <div  class="me-3 mt-1" style="cursor: default"

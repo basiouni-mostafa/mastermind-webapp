@@ -128,14 +128,14 @@ public class User {
         if (this.gamesPlayed == 0) {
             return 0;
         }
-        return (double) this.gamesWon / this.gamesPlayed;
+        return Math.round((double) this.gamesWon / this.gamesPlayed);
     }
 
     public double getAverageScore() {
         if (this.gamesPlayed == 0) {
             return 0;
         }
-        return (double) this.score / this.gamesPlayed;
+        return Math.round((double) this.score / this.gamesPlayed * 100.0) / 100.0;
     }
 
 }
