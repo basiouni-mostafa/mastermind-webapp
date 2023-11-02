@@ -11,21 +11,18 @@ import java.util.*;
 
 @Component
 public class GameManager {
-    @Autowired
     private UserService userService;
-
-    public GameManager() {
+    @Autowired
+    public GameManager(UserService userService) {
+        this.userService = userService;
         currentGame = null;
-        tracker = new ScoreTracker(0, 0);
     }
 
     GameManager(Game game) {
         currentGame = game;
-        tracker = new ScoreTracker(0, 0);
     }
 
     private Game currentGame;
-    private final ScoreTracker tracker;
     private User currentUser;
 
     private List<String> generateRandomGuess(int numberOfGuesses, GameType type) {
@@ -60,10 +57,7 @@ public class GameManager {
     }
 
     public String validateGuess(List<String> userGuessList) {
-        // guess only if state is valid
-//        if (!currentGame.getGameState().equals(GameState.IN_PROGRESS)) {
-//            return "Game is already finished";
-//        }
+
         // if game type is numbers
         if (currentGame.getGameType().equals(GameType.NUMBERS)) {
             for (String guess : userGuessList) {
@@ -124,7 +118,6 @@ public class GameManager {
 
         if (correctLocations == currentGame.getCorrectResultLength()) {
             currentGame.setGameState(GameState.WON);
-//            tracker.setNumWins(tracker.getNumWins() + 1);
             if (currentUser != null) {
                 String bonusWon = currentUser.recordWin(currentGame).orElse("");
                 model.addAttribute("bonusWon", bonusWon);
@@ -133,7 +126,6 @@ public class GameManager {
         } else if (currentGame.getGameRemainingAttempts() == 0 ||
                 System.currentTimeMillis() > currentGame.getGameEndTime()) {
             currentGame.setGameState(GameState.LOST);
-//            tracker.setNumLosses(tracker.getNumLosses() + 1);
             if (currentUser != null) {
                 String bonusWon = currentUser.recordLoss(currentGame).orElse("");
                 model.addAttribute("bonusWon", bonusWon);
@@ -146,10 +138,6 @@ public class GameManager {
     // to render page at hint method
     public Game getGame() {
         return currentGame;
-    }
-
-    public ScoreTracker getTracker() {
-        return tracker;
     }
 
     public String getHint(List<String> userGuessList) {

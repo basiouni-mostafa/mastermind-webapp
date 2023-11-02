@@ -64,8 +64,8 @@ public class SecurityConfiguration extends WebSecurityConfigurerAdapter {
                         "/",
                         "/about",
                         "/leaderboard",
-//                        "/privacy-policy",
-//                        "/sitemap.xml",
+                        "/guess",
+                        "/new_game",
                         "/js/**",
                         "/styles/**",
                         "/image/**").permitAll()

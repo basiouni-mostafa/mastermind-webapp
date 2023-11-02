@@ -37,176 +37,184 @@
 <!-- create a card in the center of the screen for the login pills -->
 <div class="container mt-md-5 ">
     <section class="row d-flex justify-content-center align-items-center m-2 p-2 pt-3">
-        <div class="card text-black rounded-4">
-            <div class="card-body p-md-3">
-                <div class="row justify-content-center">
-                    <!-- Hero section -->
-                    <section class="rounded-4" style="background-color: #eee;">
-                        <div class="container py-4">
-                            <div class="row flex-fill">
-                                <!-- profile pic -->
-                                <div class="col-lg-6 d-flex">
-                                    <div class="card mb-4 rounded-4 flex-fill">
-                                        <div class="card-body text-center">
-                                            <img th:src="${profileImageSrc}"
-                                                 alt="avatar"
-                                                 class="rounded-circle img-fluid" style="width: 150px;">
-                                            <h5 class="my-3" th:text="${username}"></h5>
-                                        </div>
-                                    </div>
-                                </div>
-                                <!-- player info -->
-                                <div class="col-lg-6 d-flex">
-                                    <div class="card mb-4 rounded-4 flex-fill">
-                                        <div class="card-body">
-                                            <div class="row">
-                                                <div class="col-12">
-                                                    <h3 class="text-center">Player Info</h3>
-                                                </div>
-                                            </div>
-                                            <hr>
-                                            <div class="row">
-                                                <div class="col-sm-5">
-                                                    <p class="mb-0">Username</p>
-                                                </div>
-                                                <div class="col-sm-7">
-                                                    <p class="text-muted mb-0" th:text="${username}"></p>
-                                                </div>
-                                            </div>
-                                            <hr>
-                                            <div class="row">
-                                                <div class="col-sm-4">
-                                                    <p class="mb-0">Email</p>
-                                                </div>
-                                                <div class="col-sm-8">
-                                                    <p class="text-muted mb-0" th:text="${email}"></p>
-                                                </div>
-                                            </div>
-                                        </div>
+        <!--        <div class="card text-black rounded-4">-->
+        <div class="card-body p-md-3">
+            <div class="row justify-content-center">
+                <!-- Hero section -->
+                <section class="rounded-4" style="background-color: #eee;">
+                    <div class="container py-4">
+                        <div class="row flex-fill">
+                            <!-- profile pic -->
+                            <div class="col-lg-6 d-flex">
+                                <div class="card mb-4 rounded-4 flex-fill">
+                                    <div class="card-body text-center">
+                                        <img th:src="${profileImageSrc}"
+                                             alt="avatar"
+                                             class="rounded-circle img-fluid" style="width: 150px;">
+                                        <h5 class="my-3" th:text="${username}"></h5>
                                     </div>
                                 </div>
                             </div>
-                            <div class="row flex-fill">
-                                <!-- stats -->
-                                <div class="col-md-6 d-flex">
-                                    <div class="card mb-4 mb-md-0 rounded-4 flex-fill">
-                                        <section class="py-5" id="stats">
-                                            <div class="container px-5">
-                                                <h2 class="fw-bolder fs-5 mb-4 text-center">Stats</h2>
-                                                <div class="row gx-3">
-                                                    <div class="col-sm-6">
-                                                        <!-- score -->
-                                                        <div class="d-flex align-items-center justify-content-between mb-2">
-                                                            <h6 class="mb-0">Total Score</h6>
-                                                            <span class="badge rounded-pill text-bg-secondary"
-                                                                  th:text="${score}"></span>
-                                                        </div>
-                                                        <!-- Win percentage -->
-                                                        <div class="d-flex align-items-center justify-content-between mb-2">
-                                                            <h6 class="mb-0">Win Percentage</h6>
-                                                            <span class="badge rounded-pill text-bg-secondary"
-                                                                  th:text="${winPercentage} + '%'"></span>
-                                                        </div>
-                                                        <!-- Average score -->
-                                                        <div class="d-flex align-items-center justify-content-between mb-2">
-                                                            <h6 class="mb-0">Average Score</h6>
-                                                            <span class="badge rounded-pill text-bg-secondary"
-                                                                  th:text="${averageScore}"></span>
-                                                        </div>
-                                                        <!-- Current Streak -->
-                                                        <div class="d-flex align-items-center justify-content-between mb-2">
-                                                            <h6 class="mb-0">Current Winning Streak</h6>
-                                                            <span class="badge rounded-pill text-bg-secondary"
-                                                                  th:text="${consecutiveWins}"></span>
-                                                        </div>
-                                                        <!-- Most Streak -->
-                                                        <div class="d-flex align-items-center justify-content-between mb-2">
-                                                            <h6 class="mb-0">Most Winning Streak</h6>
-                                                            <span class="badge rounded-pill text-bg-secondary"
-                                                                  th:text="${mostConsecutiveWins}"></span>
-                                                        </div>
-                                                        <!-- 3 Streak Count-->
-                                                        <div class="d-flex align-items-center justify-content-between mb-2">
-                                                            <h6 class="mb-0">3 Winning Streaks</h6>
-                                                            <span class="badge rounded-pill text-bg-secondary"
-                                                                  th:text="${threeConsecutiveWinsCount}"></span>
-                                                        </div>
-                                                        <!-- 5 Streak Count-->
-                                                        <div class="d-flex align-items-center justify-content-between mb-2">
-                                                            <h6 class="mb-0">5 Winning Streaks</h6>
-                                                            <span class="badge rounded-pill text-bg-secondary"
-                                                                  th:text="${fiveConsecutiveWinsCount}"></span>
-                                                        </div>
-                                                        <!-- 10 Streak Count-->
-                                                        <div class="d-flex align-items-center justify-content-between mb-2">
-                                                            <h6 class="mb-0">10 Winning Streaks</h6>
-                                                            <span class="badge rounded-pill text-bg-secondary"
-                                                                  th:text="${tenConsecutiveWinsCount}"></span>
-                                                        </div>
-                                                    </div>
-                                                    <div class="col-sm-6">
-                                                        <!-- Games played -->
-                                                        <div class="d-flex align-items-center justify-content-between mb-2">
-                                                            <h6 class="mb-0">Games Played</h6>
-                                                            <span class="badge bg-primary rounded-pill"
-                                                                  th:text="${gamesPlayed}"></span>
-                                                        </div>
-                                                        <!-- Games won -->
-                                                        <div class="d-flex align-items-center justify-content-between mb-2">
-                                                            <h6 class="mb-0">Games Won</h6>
-                                                            <span class="badge bg-success rounded-pill"
-                                                                  th:text="${gamesWon}"></span>
-                                                        </div>
-                                                        <!-- Games lost -->
-                                                        <div class="d-flex align-items-center justify-content-between mb-2">
-                                                            <h6 class="mb-0">Games Lost</h6>
-                                                            <span class="badge bg-danger rounded-pill"
-                                                                  th:text="${gamesLost}"></span>
-                                                        </div>
-                                                    </div>
-                                                </div>
+                            <!-- player info -->
+                            <div class="col-lg-6 d-flex">
+                                <div class="card mb-4 rounded-4 flex-fill">
+                                    <div class="card-body">
+                                        <div class="row">
+                                            <div class="col-12">
+                                                <h3 class="text-center">Player Info</h3>
                                             </div>
-                                        </section>
+                                        </div>
+                                        <hr>
+                                        <div class="row">
+                                            <div class="col-sm-5">
+                                                <p class="mb-0">Username</p>
+                                            </div>
+                                            <div class="col-sm-7">
+                                                <p class="text-muted mb-0" th:text="${username}"></p>
+                                            </div>
+                                        </div>
+                                        <hr>
+                                        <div class="row">
+                                            <div class="col-sm-4">
+                                                <p class="mb-0">Email</p>
+                                            </div>
+                                            <div class="col-sm-8">
+                                                <p class="text-muted mb-0" th:text="${email}"></p>
+                                            </div>
+                                        </div>
+                                        <hr>
+                                        <div class="row">
+                                            <div class="col-sm-6">
+                                                <p class="mb-0">Score</p>
+                                            </div>
+                                            <div class="col-sm-6">
+                                                <p class="text-primary mb-0" th:text="${score}"></p>
+                                            </div>
+                                        </div>
                                     </div>
                                 </div>
-                                <!-- end of stats -->
-                                <!-- achievements -->
-                                <div class="col-md-6 d-flex">
-                                    <div class="card mb-4 mb-md-0 rounded-4 flex-fill">
-                                        <section class="py-5" id="achievements">
-                                            <div class="container px-5">
-                                                <h2 class="fw-bolder fs-5 mb-4 text-center">Achievements</h2>
-                                                <div class="row">
-                                                    <!-- Streak Champion -->
-                                                    <div class="d-flex align-items-center justify-content-center mb-2">
-                                                            <span class="badge rounded-pill text-bg-warning"
-                                                                  th:text="${streakChampionAchievement ? 'STREAK CHAMPION' : ''}"></span>
-                                                    </div>
-
-                                                    <!-- Veteran -->
-                                                    <div class="d-flex align-items-center justify-content-center mb-2">
-                                                            <span class="badge rounded-pill text-bg-warning"
-                                                                  th:text="${veteranAchievement ? 'VETERAN' : ''}"></span>
-                                                    </div>
-
-                                                    <!-- Mastermind -->
-                                                    <div class="d-flex align-items-center justify-content-center mb-2">
-                                                            <span class="badge rounded-pill text-bg-warning"
-                                                                  th:text="${mastermindAchievement ? 'MASTERMIND' : ''}"></span>
-                                                    </div>
-                                                </div>
-                                            </div>
-                                        </section>
-                                    </div>
-                                </div>
-                                <!-- end of achievements -->
                             </div>
                         </div>
-                    </section>
-                    <!-- end of Hero section -->
-                </div>
+                        <div class="row flex-fill">
+                            <!-- stats -->
+                            <div class="col-md-6 d-flex">
+                                <div class="card mb-4 mb-md-0 rounded-4 flex-fill">
+                                    <section class="py-5" id="stats">
+                                        <div class="container px-5">
+                                            <h2 class="fw-bolder fs-5 mb-4 text-center">Stats</h2>
+                                            <div class="row gx-3">
+                                                <div class="col-sm-6">
+                                                    <!-- Current Streak -->
+                                                    <div class="d-flex align-items-center justify-content-between mb-2">
+                                                        <h6 class="mb-0">Current Streak</h6>
+                                                        <span class="badge rounded-pill text-bg-secondary"
+                                                              th:text="${consecutiveWins}"></span>
+                                                    </div>
+                                                    <!-- Most Streak -->
+                                                    <div class="d-flex align-items-center justify-content-between mb-2">
+                                                        <h6 class="mb-0">Longest Streak</h6>
+                                                        <span class="badge rounded-pill text-bg-secondary"
+                                                              th:text="${mostConsecutiveWins}"></span>
+                                                    </div>
+                                                    <!-- 3 Streak Count-->
+                                                    <div class="d-flex align-items-center justify-content-between mb-2">
+                                                        <h6 class="mb-0">3 Game Streaks</h6>
+                                                        <span class="badge rounded-pill text-bg-secondary"
+                                                              th:text="${threeConsecutiveWinsCount}"></span>
+                                                    </div>
+                                                    <!-- 5 Streak Count-->
+                                                    <div class="d-flex align-items-center justify-content-between mb-2">
+                                                        <h6 class="mb-0">5 Game Streaks</h6>
+                                                        <span class="badge rounded-pill text-bg-secondary"
+                                                              th:text="${fiveConsecutiveWinsCount}"></span>
+                                                    </div>
+                                                    <!-- 10 Streak Count-->
+                                                    <div class="d-flex align-items-center justify-content-between mb-2">
+                                                        <h6 class="mb-0">10 Game Streaks</h6>
+                                                        <span class="badge rounded-pill text-bg-secondary"
+                                                              th:text="${tenConsecutiveWinsCount}"></span>
+                                                    </div>
+                                                </div>
+                                                <div class="col-sm-6">
+                                                    <!-- score -->
+                                                    <div class="d-flex align-items-center justify-content-between mb-2">
+                                                        <h6 class="mb-0">Total Score</h6>
+                                                        <span class="badge rounded-pill text-bg-secondary"
+                                                              th:text="${score}"></span>
+                                                    </div>
+                                                    <!-- Games played -->
+                                                    <div class="d-flex align-items-center justify-content-between mb-2">
+                                                        <h6 class="mb-0">Games Played</h6>
+                                                        <span class="badge bg-primary rounded-pill"
+                                                              th:text="${gamesPlayed}"></span>
+                                                    </div>
+                                                    <!-- Games won -->
+                                                    <div class="d-flex align-items-center justify-content-between mb-2">
+                                                        <h6 class="mb-0">Games Won</h6>
+                                                        <span class="badge bg-success rounded-pill"
+                                                              th:text="${gamesWon}"></span>
+                                                    </div>
+                                                    <!-- Games lost -->
+                                                    <div class="d-flex align-items-center justify-content-between mb-2">
+                                                        <h6 class="mb-0">Games Lost</h6>
+                                                        <span class="badge bg-danger rounded-pill"
+                                                              th:text="${gamesLost}"></span>
+                                                    </div>
+                                                    <!-- Win percentage -->
+                                                    <div class="d-flex align-items-center justify-content-between mb-2">
+                                                        <h6 class="mb-0">Win Percentage</h6>
+                                                        <span class="badge rounded-pill text-bg-secondary"
+                                                              th:text="${winPercentage} + '%'"></span>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </section>
+                                </div>
+                            </div>
+                            <!-- end of stats -->
+                            <!-- achievements -->
+                            <div class="col-md-6 d-flex">
+                                <div class="card mb-4 mb-md-0 rounded-4 flex-fill">
+                                    <section class="py-5" id="achievements">
+                                        <div class="container px-5">
+                                            <h2 class="fw-bolder fs-5 mb-4 text-center">Achievements</h2>
+                                            <div class="row">
+                                                <!-- Streak Champion -->
+                                                <div class="d-flex align-items-center justify-content-center mb-3">
+                                                            <span class="badge rounded-pill text-bg-warning p-2 px-3"
+                                                                  th:text="${streakChampionAchievement ? 'STREAK CHAMPION' : ''}"></span>
+                                                </div>
+
+                                                <!-- Veteran -->
+                                                <div class="d-flex align-items-center justify-content-center mb-3">
+                                                            <span class="badge rounded-pill text-bg-warning p-2 px-3"
+                                                                  th:text="${veteranAchievement ? 'VETERAN' : ''}"></span>
+                                                </div>
+
+                                                <!-- Mastermind -->
+                                                <div class="d-flex align-items-center justify-content-center mb-3">
+                                                            <span class="badge rounded-pill text-bg-warning p-2 px-3"
+                                                                  th:text="${mastermindAchievement ? 'MASTERMIND' : ''}"></span>
+                                                </div>
+                                                <!-- If no achievements -->
+                                                <div class="d-flex align-items-center justify-content-center mb-3">
+                                                            <span class="text-muted p-2 px-3"
+                                                                  th:text="${!streakChampionAchievement && !veteranAchievement && !mastermindAchievement ? 'No Achievements yet' : ''}"></span>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </section>
+                                </div>
+                            </div>
+                            <!-- end of achievements -->
+                        </div>
+                    </div>
+                </section>
+                <!-- end of Hero section -->
             </div>
         </div>
+        <!--        </div>-->
     </section>
 </div>
 

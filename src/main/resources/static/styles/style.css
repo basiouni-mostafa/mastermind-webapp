@@ -197,6 +197,10 @@ form {
     box-shadow: 0 4px 6px rgba(0, 0, 0, 0.2);
 }
 
+.badge {
+    font-size: 2rem;
+}
+
 .colors button[onclick*="red"], .red {
     background: linear-gradient(to bottom, red, darkred);
     color: transparent;
@@ -439,16 +443,17 @@ form {
         top: 7.5rem;
     }
 
-    .img-cloud {
-        position: absolute;
-        width: 160px;
-        left: 12.5rem;
-        top: 6rem;
-    }
+    /*.img-cloud {*/
+    /*    display: none;*/
+    /*    position: relative;*/
+    /*    width: 160px;*/
+    /*    left: 12.5rem;*/
+    /*    top: 6rem;*/
+    /*}*/
 
     .bottom-half {
         position: relative;
-        top: 10rem;
+        /*top: 10rem;*/
     }
 
     #logo {

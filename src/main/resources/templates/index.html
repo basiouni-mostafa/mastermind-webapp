@@ -37,7 +37,7 @@
 
     </div>
 
-
+    <!-- intro animation-->
     <div class="intro d-flex justify-content-center align-items-center" id="intro-window" style="display: none;">
         <div id="intro-window-left" class="intro-window-left animate__animated " style="display: none;"></div>
         <div id="intro-window-right" class="intro-window-right animate__animated " style="display: none;"></div>
@@ -57,19 +57,32 @@
     <!-- Main -->
     <main class="container" style="width: 100%">
         <div class="row">
-
+            <!-- hero logo -->
             <div class="col-md-6 col-sm-12">
-                <div class="hero-text text-center">
-                    <p class="title title-master">MASTER</p>
-                    <p class="title title-mind">MIND</p>
-                    <p class="secondary-text">CODE BREAKER GAME!</p>
-                </div>
-                <div class="img-cloud-class d-flex justify-content-center">
-                    <img class="img-cloud" th:src="@{image/cloud.png}" src="" alt="cloud">
+                <div class="d-flex flex-column align-items-center mb-0">
+                    <div class="text-block col-md-6 col-sm-12 mt-auto text-center mb-0">
+                        <p class="title title-master">MASTER</p>
+                        <p class="title title-mind">MIND</p>
+                        <p class="secondary-text">CODE BREAKER GAME!</p>
+                    </div>
+                    <div class="image-block col-md-6 d-none d-md-flex img-cloud-class justify-content-center">
+                        <img class="img-cloud mt-auto" th:src="@{image/cloud.png}" alt="cloud">
+                    </div>
                 </div>
             </div>
 
             <div class="bottom-half col-md-6 col-sm-12 text-center">
+                <!-- Score display -->
+                <div th:if="${loggedIn}" class="me-3 mt-1 mb-3">
+                    <span class="nav-text fw-bolder">Score: </span><span th:text="${score}" class="text-primary"></span>
+                    <span> | </span>
+                    <span class="nav-text fw-bolder">Winning Streak: </span><span th:text="${consecutiveWins}"
+                                                                                  class="text-primary"></span>
+                </div>
+                <div class="me-3 mt-1" style="cursor: default"
+                     th:unless="${loggedIn}">
+                    <p>Please login to view your score!</p>
+                </div>
                 <!--Current game form -->
                 <form id="guess-form" th:action="@{/guess}" method="post" th:if="${gameState == 'IN_PROGRESS'}">
                     <!-- handling gameHistory fields-->
@@ -339,7 +352,8 @@
                     <button type="submit" class="btn btn-primary mb-3"><b>Play</b>
                     </button>
                     <!-- consecutive win notification -->
-                    <div th:if="${bonusWon != '' && bonusWon != null}" th:text="${bonusWon}" id="notification" class="notification"></div>
+                    <div th:if="${bonusWon != '' && bonusWon != null}" th:text="${bonusWon}" id="notification"
+                         class="notification"></div>
                     <p th:text="${bonusWon}"></p>
                     <!-- end of consecutive win notification -->
                 </form>

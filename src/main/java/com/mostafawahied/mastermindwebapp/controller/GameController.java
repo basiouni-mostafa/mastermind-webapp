@@ -34,10 +34,7 @@ public class GameController {
             model.addAttribute("errorMessage", "Failed to create game. Try again.");
         }
         assert game != null;
-        ScoreTracker tracker = gameManager.getTracker();
-        addAttributes(tracker, model);
         addAttributes(game, model, currentUser);
-
         return "index";
     }
 
@@ -50,13 +47,10 @@ public class GameController {
         }
         User currentUser = getCurrentUser();
         Game game = gameManager.processUserGuess(guesses, model);
-        ScoreTracker tracker = gameManager.getTracker();
         addAttributes(game, model, currentUser);
-        addAttributes(tracker, model);
         // adding hint to the template by using the getHint method
         String hintString = gameManager.getHint(guesses);
         model.addAttribute("hint", hintString);
-
         return "index";
     }
 
@@ -74,16 +68,8 @@ public class GameController {
             model.addAttribute("errorMessage", "Failed to create game. Try again later.");
             return "index";
         }
-        ScoreTracker tracker = gameManager.getTracker();
-        addAttributes(tracker, model);
         addAttributes(game, model, currentUser);
-
         return "index";
-    }
-
-    public void addAttributes(ScoreTracker tracker, Model model) {
-        model.addAttribute("numOfWins", tracker.getNumWins());
-        model.addAttribute("numOfLosses", tracker.getNumLosses());
     }
 
     private void addAttributes(Game game, Model model, User currentUser) {

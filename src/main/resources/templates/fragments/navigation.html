@@ -22,42 +22,32 @@
             </button>
 
             <div class="collapse navbar-collapse" id="navbarNav">
-                <ul class="navbar-nav me-auto me-3 mb-2 mb-lg-0">
+                <ul class="navbar-nav ms-auto me-3 mb-2 mb-lg-0">
                     <li class="nav-item">
-                        <a class="nav-link btn fw-bolder" th:href="@{/leaderboard}">Leaderboard</a>
-<!--                        <a class=" btn btn-secondary" th:href="@{/leaderboard}">Leaderboard</a>-->
+<!--                        <a class="nav-link btn fw-bolder" th:href="@{/leaderboard}">Leaderboard</a>-->
+                        <a class=" btn btn-secondary" th:href="@{/leaderboard}">Leaderboard</a>
                     </li>
                 </ul>
 
                 <div class="d-flex">
-                    <!-- Score display -->
-                    <div th:if="${loggedIn}" class="me-3 mt-1">
-                        <span class="nav-text fw-bolder">Score: </span><span th:text="${score}" class="text-primary"></span>
-                        <span> | </span>
-                        <span class="nav-text fw-bolder">Winning Streak: </span><span th:text="${consecutiveWins}"
-                                                                             class="text-primary"></span>
-                    </div>
-                    <div  class="me-3 mt-1" style="cursor: default"
-                       th:unless="${loggedIn}">
-                        <p>Please login to view your score!</p>
-                    </div>
 
-                    <a href="#" class="nav-link me-3" data-bs-toggle="modal" data-bs-target="#rulesModal">
+
+                    <a href="#" class="nav-link me-3 mt-1" data-bs-toggle="modal" data-bs-target="#rulesModal">
                         <span id="rules-icon" class="material-symbols-outlined settings-icon">info</span>
                     </a>
 
-                    <a href="#" class="nav-link me-3" data-bs-toggle="modal" data-bs-target="#settingsModal">
+                    <a href="#" class="nav-link me-3 mt-1" data-bs-toggle="modal" data-bs-target="#settingsModal">
                     <span id="settings-icon"
                           class="material-symbols-outlined settings-icon">settings</span></a>
 
                     <div sec:authorize="!isAuthenticated()">
-                        <a class="nav-link me-3" href="" th:href="@{/login}">
+                        <a class="nav-link me-3 mt-1" href="" th:href="@{/login}">
                             <span id="login-icon" class="material-symbols-rounded">login</span>
                         </a>
                     </div>
 
                     <!-- User Dropdown -->
-                    <div sec:authorize="isAuthenticated()" class="dropdown">
+                    <div sec:authorize="isAuthenticated()" class="dropdown mt-1">
                         <a class="nav-link dropdown-toggle" href="#" role="button" id="userDropdown"
                            data-bs-toggle="dropdown" aria-expanded="false">
                             <img th:if="${pictureUrl}" th:src="${pictureUrl}" width="30" alt="Profile Picture"
