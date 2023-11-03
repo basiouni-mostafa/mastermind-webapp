@@ -17,6 +17,7 @@ public class Game {
     private GameState gameState;
     private long gameStartTime;
     private long gameEndTime;
+    private String bonus;
 
     public Game(List<String> correctResult, GameType type, GameDifficulty gameDifficulty) { // 10
         this.correctResult = correctResult;
@@ -29,5 +30,9 @@ public class Game {
         this.gameDifficulty = gameDifficulty;
         this.gameStartTime = System.currentTimeMillis();
         this.gameEndTime = this.gameStartTime + gameDifficulty.gameDuration;
+    }
+
+    public boolean isTimeUp() {
+        return System.currentTimeMillis() > this.gameEndTime;
     }
 }

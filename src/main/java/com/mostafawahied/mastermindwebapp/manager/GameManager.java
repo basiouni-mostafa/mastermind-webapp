@@ -1,17 +1,22 @@
 package com.mostafawahied.mastermindwebapp.manager;
 
+import com.mostafawahied.mastermindwebapp.exception.GameException;
 import com.mostafawahied.mastermindwebapp.model.*;
 import com.mostafawahied.mastermindwebapp.service.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 import org.springframework.ui.Model;
+import org.springframework.web.client.RestClientException;
 import org.springframework.web.client.RestTemplate;
 
 import java.util.*;
 
 @Component
 public class GameManager {
+    private Game currentGame;
+    private User currentUser;
     private UserService userService;
+
     @Autowired
     public GameManager(UserService userService) {
         this.userService = userService;
@@ -22,117 +27,153 @@ public class GameManager {
         currentGame = game;
     }
 
-    private Game currentGame;
-    private User currentUser;
+    private static final int MIN_NUMBER = 0;
+    private static final int MAX_NUMBER = 7;
+    private static final String RANDOM_API_URL = "https://www.random.org/integers/?num=%s&min=" + MIN_NUMBER + "&max=" + MAX_NUMBER + "&col=1&base=10&format=plain&rnd=new";
+    private static final String COLOR_REGEX = "^[a-zA-Z]+$";
 
-    private List<String> generateRandomGuess(int numberOfGuesses, GameType type) {
-        List<String> responseRandomList = new ArrayList<>();
-        if (type.equals(GameType.NUMBERS)) {
-            RestTemplate restTemplate = new RestTemplate();
-            String responseString =
-                    restTemplate.getForObject(
-                            String.format("https://www.random.org/integers/?num=%s&min=0&max=7&col=1&base=10&format=plain&rnd=new", numberOfGuesses),
-                            String.class);
-            // Split the response string on the newline characters
-            assert responseString != null;
-            responseRandomList = List.of(responseString.split("\n"));
-        } else if (type.equals(GameType.COLORS)) {
-            final List<String> COLOR_NAMES = List.of("red", "yellow", "green", "brown", "blue", "purple", "orange", "black");
-            Random random = new Random();
-            for (int i = 0; i < numberOfGuesses; i++) {
-                int index = random.nextInt(COLOR_NAMES.size());
-                String colorName = COLOR_NAMES.get(index);
-                responseRandomList.add(colorName);
-            }
+    private List<String> generateRandomGameElements(int numberOfGuesses, GameType type) {
+        List<String> randomGuessList = new ArrayList<>();
+        if (type == (GameType.NUMBERS)) {
+            randomGuessList = generateRandomNumberList(numberOfGuesses);
+        } else if (type == (GameType.COLORS)) {
+            randomGuessList = generateRandomColorList(numberOfGuesses);
         }
-        return responseRandomList;
+        return randomGuessList;
+    }
+
+    private List<String> generateRandomNumberList(int numberOfGuesses) {
+        RestTemplate restTemplate = new RestTemplate();
+        String numberGuessString;
+        try {
+            numberGuessString = restTemplate.getForObject(String.format(RANDOM_API_URL, numberOfGuesses), String.class);
+            if (numberGuessString == null) {
+                throw new GameException("Error generating random numbers");
+            }
+        } catch (RestClientException e) {
+            throw new GameException("Error reaching random.org");
+        }
+        return List.of(numberGuessString.split("\n"));
+//        return Stream.of(1, 1, 3, 5).map(String::valueOf).toList();
+    }
+
+    private List<String> generateRandomColorList(int numberOfGuesses) {
+        List<String> randomColorList = new ArrayList<>();
+        final List<String> COLOR_NAMES = List.of("red", "yellow", "green", "brown", "blue", "purple", "orange", "black");
+        Random random = new Random();
+        for (int i = 0; i < numberOfGuesses; i++) {
+            int index = random.nextInt(COLOR_NAMES.size());
+            String randomColor = COLOR_NAMES.get(index);
+            randomColorList.add(randomColor);
+        }
+        return randomColorList;
     }
 
     public Game createGame(GameDifficulty difficulty, GameType type, User user) {
-        List<String> randomString = generateRandomGuess(difficulty.guessLength, type);
+        List<String> randomString = generateRandomGameElements(difficulty.guessLength, type);
         // Creating a default "easy" game
         currentGame = new Game(randomString, type, difficulty);
         this.currentUser = user;
         return currentGame;
     }
 
-    public String validateGuess(List<String> userGuessList) {
-
-        // if game type is numbers
-        if (currentGame.getGameType().equals(GameType.NUMBERS)) {
-            for (String guess : userGuessList) {
-                int intGuess;
-                try {
-                    intGuess = Integer.parseInt(guess);
-                } catch (NumberFormatException e) {
-                    return String.format("Guess %s is not a number", guess);
-                }
-                if (intGuess > 7 || intGuess < 0) {
-                    return String.format("Guess %s is out of bounds", guess);
-                }
-            }
-            return null;
-        } else if (currentGame.getGameType().equals(GameType.COLORS)) {
-            for (String guess : userGuessList) {
-                try {
-                    if (!guess.matches("[a-zA-Z]+")) {
-                        throw new IllegalArgumentException();
-                    }
-                } catch (IllegalArgumentException e) {
-//                    return String.format("Guess %s must contain only letters", String.join("",userGuessList));
-                    return String.format("Guess %s must only be a letter", guess);
-                }
-            }
-            return null;
+    public void validateGuess(List<String> userGuessList) throws GameException {
+        List<String> validationErrors = new ArrayList<>();
+        switch (currentGame.getGameType()) {
+            case NUMBERS:
+                validateNumberGuess(userGuessList, validationErrors);
+                break;
+            case COLORS:
+                validateColorGuess(userGuessList, validationErrors);
+                break;
+            default:
+                throw new GameException("Invalid game type");
         }
-        return null;
+
+        if (!validationErrors.isEmpty()) {
+            throw new GameException(String.join("\n", validationErrors));
+        }
+    }
+
+
+    private void validateNumberGuess(List<String> userGuessList, List<String> validationErrors) {
+        for (String guess : userGuessList) {
+            try {
+                int intGuess = Integer.parseInt(guess);
+                if (intGuess > MAX_NUMBER || intGuess < MIN_NUMBER) {
+                    validationErrors.add(String.format("Guess %s is out of bounds", guess));
+                }
+            } catch (NumberFormatException e) {
+                validationErrors.add(String.format("Guess %s is not a number", guess));
+            }
+        }
+    }
+
+    private void validateColorGuess(List<String> userGuessList, List<String> validationErrors) {
+        for (String guess : userGuessList) {
+            if (!guess.matches(COLOR_REGEX)) {
+                validationErrors.add(String.format("Guess %s is invalid", guess));
+            }
+        }
     }
 
     public Game processUserGuess(List<String> userGuessList, Model model) {
+        GameResult gameResult = calculateGameResult(userGuessList);
+        updateGameHistory(gameResult, userGuessList);
+        updateGameState(gameResult, gameResult.getCorrectLocations());
+        return currentGame;
+    }
 
-        List<String> randomGuessList = currentGame.getCorrectResult();
-
-        int correctNumbers = 0;
-        int correctLocations = 0;
-        // Count number of values guesses that are in the result
-        final Set<String> resultDigits = new HashSet<>(randomGuessList);
-        final Set<String> guessDigits = new HashSet<>(userGuessList);
-        guessDigits.retainAll(resultDigits);
-        correctNumbers = guessDigits.size();
-        // Check correct locations
-        for (int index = 0; index < userGuessList.size(); index++) {
-            if (userGuessList.get(index).equals(randomGuessList.get(index))) {
-                correctLocations++;
+    private void updateGameState(GameResult gameResult, int correctLocations) {
+        if (correctLocations == currentGame.getCorrectResultLength()) {
+            currentGame.setGameState(GameState.WON);
+            if (currentUser != null) {
+                currentGame.setBonus(currentUser.recordWin(currentGame).orElse(""));
+                userService.save(currentUser);
+            }
+        } else if (currentGame.getGameRemainingAttempts() == 0 || currentGame.isTimeUp()) {
+            currentGame.setGameState(GameState.LOST);
+            if (currentUser != null) {
+                currentGame.setBonus(currentUser.recordLoss(currentGame).orElse(""));
+                userService.save(currentUser);
             }
         }
-        // Update the state, history, .... etc
+    }
+
+    //    create a method to update the game history
+    private void updateGameHistory(GameResult gameResult, List<String> userGuessList) {
+        int correctNumbers = gameResult.getCorrectNumbers();
+        int correctLocations = gameResult.getCorrectLocations();
+
         currentGame.setGameRemainingAttempts(currentGame.getGameRemainingAttempts() - 1);
 
         long remainingSeconds = (currentGame.getGameEndTime() - System.currentTimeMillis()) / 1000;
         long remainingMinutes = remainingSeconds / 60;
 
-        currentGame.getGameHistory().add(new GameHistory(userGuessList,
-                correctNumbers,
-                correctLocations,
-                remainingMinutes));
+        currentGame.getGameHistory().add(new GameHistory(userGuessList, correctNumbers, correctLocations, remainingMinutes));
+    }
 
-        if (correctLocations == currentGame.getCorrectResultLength()) {
-            currentGame.setGameState(GameState.WON);
-            if (currentUser != null) {
-                String bonusWon = currentUser.recordWin(currentGame).orElse("");
-                model.addAttribute("bonusWon", bonusWon);
-                userService.save(currentUser);
+    //    create a method to calculate the result of the game that returns the number of correct numbers and correct locations
+    private GameResult calculateGameResult(List<String> userGuessList) {
+        int correctNumbers = 0;
+        int correctLocations = 0;
+        List<String> correctResultList = currentGame.getCorrectResult();
+        Map<String, Long> correctResultFrequency = new HashMap<>();
+        for (String result : correctResultList) {
+            correctResultFrequency.put(result, correctResultFrequency.getOrDefault(result, 0L) + 1);
+        }
+
+        for (int index = 0; index < userGuessList.size(); index++) {
+            String guess = userGuessList.get(index);
+            if (correctResultFrequency.containsKey(guess) && correctResultFrequency.get(guess) > 0) {
+                correctNumbers++;
+                correctResultFrequency.put(guess, correctResultFrequency.get(guess) - 1);
             }
-        } else if (currentGame.getGameRemainingAttempts() == 0 ||
-                System.currentTimeMillis() > currentGame.getGameEndTime()) {
-            currentGame.setGameState(GameState.LOST);
-            if (currentUser != null) {
-                String bonusWon = currentUser.recordLoss(currentGame).orElse("");
-                model.addAttribute("bonusWon", bonusWon);
-                userService.save(currentUser);
+            if (guess.equals(correctResultList.get(index))) {
+                correctLocations++;
             }
         }
-        return currentGame;
+        return new GameResult(correctNumbers, correctLocations);
     }
 
     // to render page at hint method
@@ -142,24 +183,13 @@ public class GameManager {
 
     public String getHint(List<String> userGuessList) {
         List<String> correctResult = currentGame.getCorrectResult();
-        List<String> correctResultList = new ArrayList<>();
-        for (String element : correctResult) {
-            if (!userGuessList.contains(element)) {
-                correctResultList.add(element);
-            }
+        List<String> hints = new ArrayList<>(correctResult);
+        hints.removeAll(userGuessList);
+        if (hints.isEmpty()) {
+            return "No hints available.";
         }
-        // pick a random index to get a random number from the list
         Random random = new Random();
-        int index = 0;
-        String hint = "";
-        try {
-            index = random.nextInt(correctResultList.size());
-            hint = correctResultList.get(index);
-        } catch (IllegalArgumentException e) {
-            index = random.nextInt(userGuessList.size());
-            hint = userGuessList.get(index);
-        }
-        return hint;
+        return hints.get(random.nextInt(hints.size()));
     }
 
 }

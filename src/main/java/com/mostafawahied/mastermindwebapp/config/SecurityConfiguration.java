@@ -57,6 +57,7 @@ public class SecurityConfiguration extends WebSecurityConfigurerAdapter {
         http.authorizeRequests()
                 .antMatchers(
 //                        "/**",
+                        "/error",
                         "/register**",
                         "/oauth/**",
                         "/forgot_password",
