@@ -27,4 +27,6 @@ public interface UserService extends UserDetailsService {
     User getByResetPasswordToken(String token);
 
     void updatePassword(User user, String newPassword);
+
+    User getCurrentUser();
 }

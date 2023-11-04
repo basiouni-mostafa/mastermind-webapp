@@ -1,38 +1,78 @@
 package com.mostafawahied.mastermindwebapp.manager;
 
+import com.google.common.collect.ImmutableList;
+import com.mostafawahied.mastermindwebapp.manager.solutiongenerator.SolutionGenerator;
+import com.mostafawahied.mastermindwebapp.manager.solutiongenerator.SolutionGeneratorRetriever;
 import com.mostafawahied.mastermindwebapp.model.*;
+import com.mostafawahied.mastermindwebapp.service.UserService;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
-import org.springframework.ui.Model;
+import org.mockito.InjectMocks;
+import org.mockito.Mock;
+import org.mockito.MockitoAnnotations;
 
 import java.util.Arrays;
 import java.util.List;
 
 import static org.junit.jupiter.api.Assertions.*;
+import static org.mockito.Mockito.*;
 
 class GameManagerTest {
+    private final GameDifficulty DIFFICULTY  = GameDifficulty.EASY;
+    private final GameType TYPE = GameType.NUMBERS;
 
-    List<String> correctResult = Arrays.asList("1","2","2","3");
-    private final Game game = new Game(correctResult, GameType.NUMBERS, GameDifficulty.EASY);
+    private final List<String> SOLUTIONS_LIST = ImmutableList.of("1", "2", "3", "4");
+
+    @Mock
+    private UserService userService;
+
+    @Mock
+    private SolutionGeneratorRetriever generatorRetriever;
+
+    @Mock
+    private SolutionGenerator solutionGenerator;
+
+    @InjectMocks
     private GameManager gameManager;
+
     @BeforeEach
     void setUp() {
-        gameManager = new GameManager(game);
+        MockitoAnnotations.openMocks(this);
     }
 
     @Test
-    public void test(Model model) {
-        List<String> firstGuess = Arrays.asList("1","5","3","7");
-        Game game = gameManager.processUserGuess(firstGuess, model);
-        GameHistory firstHistory = game.getGameHistory().get(0);
-        assertEquals(firstHistory.getCorrectNumbers(), 2);
-        assertEquals(firstHistory.getCorrectLocations(), 1);
+    void createGame_createsCorrectGameForNumbers() {
+        when(generatorRetriever.retrieveSolutionGenerator(TYPE)).thenReturn(solutionGenerator);
+        when(solutionGenerator.generateSolution(DIFFICULTY.guessLength)).thenReturn(SOLUTIONS_LIST);
 
-        List<String> secondGuess = Arrays.asList("1","2","2","3");
-        game = gameManager.processUserGuess(secondGuess, model);
-        GameHistory secondHistory = game.getGameHistory().get(1);
-        assertEquals(secondHistory.getCorrectNumbers(), 3);
-        assertEquals(secondHistory.getCorrectLocations(), 4);
-        assertEquals(game.getGameState(), GameState.WON);
+        // Act
+        Game game = gameManager.createGame(DIFFICULTY, TYPE);
+
+        // Assert
+        assertNotNull(game);
+        assertEquals(DIFFICULTY, game.getGameDifficulty());
+        assertEquals(TYPE, game.getGameType());
+        assertEquals(DIFFICULTY.guessLength, game.getCorrectResult().size());
+        // Iterate with a loop
+        assertEquals(game.getCorrectResult().get(0), SOLUTIONS_LIST.get(0));
     }
+
+    @Test
+    void createGame() {
+        Game game = gameManager.createGame(GameDifficulty.EASY, GameType.NUMBERS);
+        assertNotNull(game);
+        assertEquals(GameDifficulty.EASY, game.getGameDifficulty());
+        assertEquals(GameType.NUMBERS, game.getGameType());
+        assertEquals(GameState.IN_PROGRESS, game.getGameState());
+        assertEquals(4, game.getCorrectResult().size());
+        assertEquals(10, game.getGameRemainingAttempts());
+    }
+
+    @Test
+    void validateGuess() {
+        Game game = gameManager.createGame(GameDifficulty.EASY, GameType.NUMBERS);
+        List<String> guesses = Arrays.asList("1", "2", "3", "4");
+        gameManager.validateGuess(game, guesses);
+    }
+
 }

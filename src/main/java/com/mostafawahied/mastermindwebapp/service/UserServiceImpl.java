@@ -8,8 +8,10 @@ import com.mostafawahied.mastermindwebapp.exception.DuplicateEmailException;
 import com.mostafawahied.mastermindwebapp.exception.UserNotFoundException;
 import com.mostafawahied.mastermindwebapp.model.AuthenticationProvider;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.core.Authentication;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
@@ -122,7 +124,21 @@ public class UserServiceImpl implements UserService {
         user.setResetPasswordToken(null);
         userRepository.save(user);
     }
-    // end of forgot password
 
+    @Override
+    public User getCurrentUser() {
+            Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
+            if (!authentication.isAuthenticated() || authentication.getPrincipal().equals("anonymousUser")) {
+                return null;
+            }
+            // get the current user by username if logged in with oauth or by email if logged in with local
+            User currentUser;
+            if (authentication.getPrincipal() instanceof org.springframework.security.core.userdetails.User) {
+                currentUser = findUserByEmail(authentication.getName());
+            } else {
+                currentUser = findUserByUsername(authentication.getName());
+            }
+            return currentUser;
+        }
+    }
 
-}
