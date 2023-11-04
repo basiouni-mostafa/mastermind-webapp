@@ -10,26 +10,39 @@ The Mastermind game web app is a fun and engaging implementation of the classic 
 
 ## Game Extensions
 
-* Deployed using Docker
-* Added hint support
-* Added a Colors game mode
+* Added login and registration functionality
+* Added login in using Google
+* Added a user profile page
+* Added a leaderboard page
+* Added a new game type (Colors) in addition to the classic game type (Numbers)
 * Added difficulty level of (Easy, Medium, Hard) with the option to configure the combination length and guessing time.
-* Added an intro and animations to enhance user experience
-* Added score tracking for number of wins and number of losses
+* Added score tracking using a points system based on each difficulty level
 * Added a timer for each game that changes based on the difficulty level
+* Added hint support
+* Added an intro and animations to enhance user experience
+* Deployed using Docker
 
 ## Installation and Running the Game
+
+### Live Website
+
+You can visit the live website [here](https://mastermind-webapp-kst2.onrender.com/)
+
+### Running the Game Locally
 
 1. Make sure you have the following installed on your system:
 
 * Java 8 or higher
 * Maven
+* MySQL Workbench
 
-2. Clone or download the repository 'https://github.com/Mostafa-Wahied/mastermind-webapp'
-3. Navigate to the project directory in your terminal
-4. Run the command 'mvn clean install' to build and install the project
-5. Start the application by running the command 'mvn spring-boot:run'
-6. The game should now be running on 'http://localhost:8080' in your browser
+2. Clone the repository
+3. Open the project in your IDE
+4. Create a new database in MySQL Workbench
+5. Update the database connection details in the application.properties file
+6. Run the project
+7. Open your browser and go to http://localhost:8080/
+8. Enjoy the game!
 
 ## Game Play
 
