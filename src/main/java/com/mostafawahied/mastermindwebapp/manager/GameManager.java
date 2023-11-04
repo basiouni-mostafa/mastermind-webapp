@@ -1,16 +1,13 @@
 package com.mostafawahied.mastermindwebapp.manager;
 
 import com.mostafawahied.mastermindwebapp.exception.GameException;
-import com.mostafawahied.mastermindwebapp.manager.solutiongenerator.NumbersRandomSolutionGenerator;
+import com.mostafawahied.mastermindwebapp.manager.guessValidator.GuessValidator;
+import com.mostafawahied.mastermindwebapp.manager.guessValidator.GuessValidatorRetriever;
 import com.mostafawahied.mastermindwebapp.manager.solutiongenerator.SolutionGenerator;
 import com.mostafawahied.mastermindwebapp.manager.solutiongenerator.SolutionGeneratorRetriever;
 import com.mostafawahied.mastermindwebapp.model.*;
 import com.mostafawahied.mastermindwebapp.service.UserService;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
-import org.springframework.ui.Model;
-import org.springframework.web.client.RestClientException;
-import org.springframework.web.client.RestTemplate;
 
 import java.util.*;
 import java.util.concurrent.ThreadLocalRandom;
@@ -19,15 +16,13 @@ import java.util.concurrent.ThreadLocalRandom;
 public class GameManager {
     private final UserService userService;
     private final SolutionGeneratorRetriever solutionGeneratorRetriever;
+    private final GuessValidatorRetriever guessValidationRetriever;
 
-    public GameManager(UserService userService, SolutionGeneratorRetriever solutionGeneratorRetriever) {
+    public GameManager(UserService userService, SolutionGeneratorRetriever solutionGeneratorRetriever, GuessValidatorRetriever guessValidationRetriever) {
         this.userService = userService;
         this.solutionGeneratorRetriever = solutionGeneratorRetriever;
+        this.guessValidationRetriever = guessValidationRetriever;
     }
-
-    private static final String COLOR_REGEX = "^[a-zA-Z]+$";
-
-
 
     public Game createGame(GameDifficulty difficulty, GameType type) {
         SolutionGenerator solutionGenerator = solutionGeneratorRetriever.retrieveSolutionGenerator(type);
@@ -35,44 +30,15 @@ public class GameManager {
         return new Game(solutionString, type, difficulty);
     }
 
-
     public void validateGuess(Game game, List<String> userGuessList) throws GameException {
-        List<String> validationErrors = new ArrayList<>();
-        switch (game.getGameType()) {
-            case NUMBERS:
-                validateNumberGuess(userGuessList, validationErrors);
-                break;
-            case COLORS:
-                validateColorGuess(userGuessList, validationErrors);
-                break;
-            default:
-                throw new GameException("Invalid game type");
+        if (game == null) {
+            throw new GameException("The game is currently unavailable. Please try again later.");
         }
-
+        List<String> validationErrors = new ArrayList<>();
+        GuessValidator guessValidator = guessValidationRetriever.retrieveGuessValidator(game.getGameType());
+        guessValidator.validateGuess(game, userGuessList, validationErrors);
         if (!validationErrors.isEmpty()) {
             throw new GameException("Validation failed: " + String.join(", ", validationErrors));
-        }
-    }
-
-
-    private void validateNumberGuess(List<String> userGuessList, List<String> validationErrors) {
-        for (String guess : userGuessList) {
-            try {
-                int intGuess = Integer.parseInt(guess);
-                if (intGuess > 7 || intGuess < 0) {
-                    validationErrors.add(String.format("Guess %s is out of bounds", guess));
-                }
-            } catch (NumberFormatException e) {
-                validationErrors.add(String.format("Guess %s is not a number", guess));
-            }
-        }
-    }
-
-    private void validateColorGuess(List<String> userGuessList, List<String> validationErrors) {
-        for (String guess : userGuessList) {
-            if (!guess.matches(COLOR_REGEX)) {
-                validationErrors.add(String.format("Guess %s is invalid", guess));
-            }
         }
     }
 
@@ -99,7 +65,6 @@ public class GameManager {
         }
     }
 
-    //    create a method to update the game history
     private void updateGameHistory(Game game, GameResult gameResult, List<String> userGuessList) {
         int correctNumbers = gameResult.getCorrectNumbers();
         int correctLocations = gameResult.getCorrectLocations();
@@ -112,12 +77,12 @@ public class GameManager {
         game.getGameHistory().add(new GameHistory(userGuessList, correctNumbers, correctLocations, remainingMinutes));
     }
 
-    //    create a method to calculate the result of the game that returns the number of correct numbers and correct locations
     private GameResult calculateGameResult(Game game, List<String> userGuessList) {
         int correctNumbers = 0;
         int correctLocations = 0;
         List<String> correctResultList = game.getCorrectResult();
         Map<String, Long> correctResultFrequency = new HashMap<>();
+
         for (String result : correctResultList) {
             correctResultFrequency.put(result, correctResultFrequency.getOrDefault(result, 0L) + 1);
         }
@@ -140,7 +105,7 @@ public class GameManager {
         List<String> hints = new ArrayList<>(correctResult);
         hints.removeAll(userGuessList);
         if (hints.isEmpty()) {
-            return "No hints available.";
+            return "No hints available. Try a different combination.";
         }
         ThreadLocalRandom random = ThreadLocalRandom.current();
         return hints.get(random.nextInt(hints.size()));

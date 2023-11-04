@@ -215,6 +215,9 @@
                             <button type="button" th:text="7" onclick="addDigit(7)"></button>
                         </div>
                     </div>
+                    <a id="delete-button" class="btn">
+                        <span class="material-symbols-outlined delete-btn-class">backspace</span>
+                    </a>
                     <!-- Show color buttons if gameType is "colors" -->
                     <div class="colors" th:if="${gameType == 'COLORS'}">
                         <div class="first_color_row mb-2">

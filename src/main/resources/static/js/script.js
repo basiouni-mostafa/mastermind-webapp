@@ -184,5 +184,25 @@ document.addEventListener('DOMContentLoaded', function() {
         }, 3000);
     }
 });
-
 // End of consecutive wins notification
+
+// handle delete button
+function deleteLastInput() {
+    const inputs = document.querySelectorAll("input[name='userGuesses']");
+    // Start from the end of the inputs list and find the last one with a value
+    for (let i = inputs.length - 1; i >= 0; i--) {
+        if (inputs[i].value !== "") {
+            inputs[i].value = ""; // Clear the value
+            inputs[i].classList.remove(...inputs[i].classList); // Remove all classes (including color)
+            inputs[i].style.color = ''; // Reset the text color
+            break; // Exit the loop after clearing the last filled input
+        }
+    }
+}
+// End of handle delete button
+
+// add event listener to delete button
+document.addEventListener("DOMContentLoaded", () => {
+    const deleteBtn = document.getElementById('delete-button');
+    deleteBtn.addEventListener('click', deleteLastInput);
+});

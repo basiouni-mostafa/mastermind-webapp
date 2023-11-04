@@ -31,9 +31,6 @@ public class MyControllerAdvice {
 
     @ModelAttribute
     public void addAttributes(Model model, Authentication authentication) {
-//        // adding the user's name
-//        String name = userService.getLoggedInUserName(authentication);
-//        model.addAttribute("name", name);
         // adding the user's profile picture
         if (authentication instanceof OAuth2AuthenticationToken oauth2Authentication) {
             // Get the user's profile picture URL from the OAuth2 authentication
@@ -45,7 +42,7 @@ public class MyControllerAdvice {
 
     // adding the user's name to all pages
     @ModelAttribute
-    public void addNameAttribute(Model model, HttpSession session) {
+    public void addNameAttribute(Model model) {
         User user;
         Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
         if (authentication != null && !(authentication instanceof AnonymousAuthenticationToken) && authentication.isAuthenticated()) {
@@ -64,7 +61,6 @@ public class MyControllerAdvice {
                 model.addAttribute("loggedIn", true);
             } else if (principal instanceof UserDetails) {
                 // handle local login
-//                User user = userRepository.findUserByEmail(((UserDetails) principal).getUsername());
                 user = userRepository.findUserByEmail(((UserDetails) principal).getUsername());
                 name = user.getUsername();
                 email = user.getEmail();

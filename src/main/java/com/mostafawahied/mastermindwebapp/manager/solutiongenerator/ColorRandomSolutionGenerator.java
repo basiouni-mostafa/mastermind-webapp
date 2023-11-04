@@ -8,7 +8,7 @@ import java.util.concurrent.ThreadLocalRandom;
 
 @Component
 public class ColorRandomSolutionGenerator implements SolutionGenerator {
-    protected static final List<String> COLOR_NAMES = List.of("red", "orange", "yellow", "green", "blue", "purple", "pink", "brown");
+    protected static final List<String> COLOR_NAMES = List.of("red", "yellow", "green", "brown", "blue", "purple", "orange", "black");
 
     @Override
     public List<String> generateSolution(int numberOfGuesses) {

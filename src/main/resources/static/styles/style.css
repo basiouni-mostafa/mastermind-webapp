@@ -197,6 +197,20 @@ form {
     box-shadow: 0 4px 6px rgba(0, 0, 0, 0.2);
 }
 
+.delete-btn-class {
+    border: none;
+    /*border-radius: 5px;*/
+    text-align: center;
+    font-size: 2rem;
+    cursor: pointer;
+    transition: box-shadow 0.5s;
+}
+
+.delete-btn-class:hover {
+    scale: 1.05;
+    color: rgba(0, 0, 0, 0.60);
+}
+
 .badge {
     font-size: 2rem;
 }
