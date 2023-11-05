@@ -15,7 +15,6 @@ import java.util.Optional;
 @Getter
 @Setter
 @NoArgsConstructor
-@AllArgsConstructor
 public class User {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)

@@ -1,11 +1,16 @@
 package com.mostafawahied.mastermindwebapp.model;
 
+
 import lombok.AllArgsConstructor;
-import lombok.Data;
+import lombok.Getter;
+import lombok.NoArgsConstructor;
+import lombok.Setter;
 
 import java.util.List;
 
-@Data
+@Getter
+@Setter
+@NoArgsConstructor
 @AllArgsConstructor
 public class GameHistory {
     private List<String> userGuessList;

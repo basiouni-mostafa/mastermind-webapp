@@ -1,11 +1,16 @@
 package com.mostafawahied.mastermindwebapp.model;
 
-import lombok.Data;
+
+import lombok.Getter;
+import lombok.NoArgsConstructor;
+import lombok.Setter;
 
 import java.util.ArrayList;
 import java.util.List;
 
-@Data
+@Setter
+@Getter
+@NoArgsConstructor
 public class Game {
     private List<String> solution;
     private int solutionLength;
@@ -22,8 +27,8 @@ public class Game {
     public Game(List<String> solution, GameType type, GameDifficulty gameDifficulty) { // 10
         this.solution = solution;
         this.solutionLength = solution.size();
-        this.gameRemainingAttempts = gameDifficulty.numOfGuesses; // 10 --> 9, 8, 7
-        this.originalGuessCount = gameDifficulty.numOfGuesses; // 10 --> 10, 10
+        this.gameRemainingAttempts = gameDifficulty.numOfGuesses;
+        this.originalGuessCount = gameDifficulty.numOfGuesses;
         this.gameHistory = new ArrayList<>();
         this.gameState = GameState.IN_PROGRESS;
         this.gameType = type;
