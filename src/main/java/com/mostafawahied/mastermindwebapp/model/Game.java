@@ -23,7 +23,7 @@ public class Game {
         this.solution = solution;
         this.solutionLength = solution.size();
         this.gameRemainingAttempts = gameDifficulty.numOfGuesses; // 10 --> 9, 8, 7
-        this.originalGuessCount = gameDifficulty.guessLength; // 10 --> 10, 10
+        this.originalGuessCount = gameDifficulty.numOfGuesses; // 10 --> 10, 10
         this.gameHistory = new ArrayList<>();
         this.gameState = GameState.IN_PROGRESS;
         this.gameType = type;
