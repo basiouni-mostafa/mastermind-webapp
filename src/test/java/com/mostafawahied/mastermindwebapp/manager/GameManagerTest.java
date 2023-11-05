@@ -52,9 +52,9 @@ class GameManagerTest {
         assertNotNull(game);
         assertEquals(DIFFICULTY, game.getGameDifficulty());
         assertEquals(TYPE, game.getGameType());
-        assertEquals(DIFFICULTY.guessLength, game.getCorrectResult().size());
+        assertEquals(DIFFICULTY.guessLength, game.getSolution().size());
         // Iterate with a loop
-        assertEquals(game.getCorrectResult().get(0), SOLUTIONS_LIST.get(0));
+        assertEquals(game.getSolution().get(0), SOLUTIONS_LIST.get(0));
     }
 
     @Test
@@ -64,7 +64,7 @@ class GameManagerTest {
         assertEquals(GameDifficulty.EASY, game.getGameDifficulty());
         assertEquals(GameType.NUMBERS, game.getGameType());
         assertEquals(GameState.IN_PROGRESS, game.getGameState());
-        assertEquals(4, game.getCorrectResult().size());
+        assertEquals(4, game.getSolution().size());
         assertEquals(10, game.getGameRemainingAttempts());
     }
 

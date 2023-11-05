@@ -50,7 +50,7 @@ public class GameManager {
     }
 
     private void updateGameState(Game game, int correctLocations, User currentUser) {
-        if (correctLocations == game.getCorrectResultLength()) {
+        if (correctLocations == game.getSolutionLength()) {
             game.setGameState(GameState.WON);
             if (currentUser != null) {
                 game.setBonus(currentUser.recordWin(game).orElse(""));
@@ -80,7 +80,7 @@ public class GameManager {
     private GameResult calculateGameResult(Game game, List<String> userGuessList) {
         int correctNumbers = 0;
         int correctLocations = 0;
-        List<String> correctResultList = game.getCorrectResult();
+        List<String> correctResultList = game.getSolution();
         Map<String, Long> correctResultFrequency = new HashMap<>();
 
         for (String result : correctResultList) {
@@ -101,7 +101,7 @@ public class GameManager {
     }
 
     public String getHint(Game game, List<String> userGuessList) {
-        List<String> correctResult = game.getCorrectResult();
+        List<String> correctResult = game.getSolution();
         List<String> hints = new ArrayList<>(correctResult);
         hints.removeAll(userGuessList);
         if (hints.isEmpty()) {

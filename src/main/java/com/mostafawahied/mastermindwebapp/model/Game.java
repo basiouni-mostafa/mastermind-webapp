@@ -7,8 +7,8 @@ import java.util.List;
 
 @Data
 public class Game {
-    private List<String> correctResult;
-    private int correctResultLength;
+    private List<String> solution;
+    private int solutionLength;
     private int gameRemainingAttempts;
     private int originalGuessCount;
     private List<GameHistory> gameHistory;
@@ -19,9 +19,9 @@ public class Game {
     private long gameEndTime;
     private String bonus;
 
-    public Game(List<String> correctResult, GameType type, GameDifficulty gameDifficulty) { // 10
-        this.correctResult = correctResult;
-        this.correctResultLength = correctResult.size();
+    public Game(List<String> solution, GameType type, GameDifficulty gameDifficulty) { // 10
+        this.solution = solution;
+        this.solutionLength = solution.size();
         this.gameRemainingAttempts = gameDifficulty.numOfGuesses; // 10 --> 9, 8, 7
         this.originalGuessCount = gameDifficulty.guessLength; // 10 --> 10, 10
         this.gameHistory = new ArrayList<>();

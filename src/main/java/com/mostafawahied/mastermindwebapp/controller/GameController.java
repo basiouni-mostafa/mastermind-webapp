@@ -66,7 +66,7 @@ public class GameController {
         model.addAttribute("gameState", game.getGameState().toString());
         model.addAttribute("gameHistory", game.getGameHistory());
         model.addAttribute("originalGuessCount", game.getOriginalGuessCount());
-        model.addAttribute("correctNumber", String.join(", ", game.getCorrectResult()));
+        model.addAttribute("correctNumber", String.join(", ", game.getSolution()));
         model.addAttribute("gameType", game.getGameType().toString());
         model.addAttribute("gameDifficulty", game.getGameDifficulty().toString());
         if (currentUser != null) {
@@ -77,6 +77,6 @@ public class GameController {
             model.addAttribute("loggedIn", false);
         }
         model.addAttribute("bonusWon", game.getBonus());
-        System.out.println(game.getCorrectResult());
+        System.out.println(game.getSolution());
     }
 }
