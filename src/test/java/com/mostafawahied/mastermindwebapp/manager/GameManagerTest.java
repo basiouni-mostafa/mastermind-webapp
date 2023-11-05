@@ -1,34 +1,38 @@
 package com.mostafawahied.mastermindwebapp.manager;
 
 import com.google.common.collect.ImmutableList;
+import com.mostafawahied.mastermindwebapp.manager.guessValidator.ColorGuessValidator;
+import com.mostafawahied.mastermindwebapp.manager.guessValidator.GuessValidator;
+import com.mostafawahied.mastermindwebapp.manager.guessValidator.GuessValidatorRetriever;
+import com.mostafawahied.mastermindwebapp.manager.guessValidator.NumberGuessValidator;
 import com.mostafawahied.mastermindwebapp.manager.solutiongenerator.SolutionGenerator;
 import com.mostafawahied.mastermindwebapp.manager.solutiongenerator.SolutionGeneratorRetriever;
 import com.mostafawahied.mastermindwebapp.model.*;
-import com.mostafawahied.mastermindwebapp.service.UserService;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.MockitoAnnotations;
 
-import java.util.Arrays;
+import java.util.ArrayList;
 import java.util.List;
 
 import static org.junit.jupiter.api.Assertions.*;
 import static org.mockito.Mockito.*;
 
 class GameManagerTest {
-    private final GameDifficulty DIFFICULTY  = GameDifficulty.EASY;
-    private final GameType TYPE = GameType.NUMBERS;
-
-    private final List<String> SOLUTIONS_LIST = ImmutableList.of("1", "2", "3", "4");
-
-    @Mock
-    private UserService userService;
+    private final GameDifficulty DIFFICULTY_EASY = GameDifficulty.EASY;
+    private final GameType NUMBER_TYPE = GameType.NUMBERS;
+    private final GameType COLOR_TYPE = GameType.COLORS;
+    private final List<String> SOLUTION_NUMBER_LIST = ImmutableList.of("1", "2", "3", "4");
+    private final List<String> SOLUTION_COLOR_LIST = ImmutableList.of("RED", "BLUE", "GREEN", "YELLOW");
+    private final List<String> CORRECT_GUESS_NUMBER_LIST = ImmutableList.of("1", "2", "3", "4");
+    private final List<String> CORRECT_GUESS_COLOR_LIST = ImmutableList.of("RED", "BLUE", "GREEN", "YELLOW");
+    private final List<String> INCORRECT_GUESS_NUMBER_LIST = ImmutableList.of("8", "-1", "3", "a");
+    private final List<String> INCORRECT_GUESS_COLOR_LIST = ImmutableList.of("RED", "BLUE", "GREEN", "1");
 
     @Mock
     private SolutionGeneratorRetriever generatorRetriever;
-
     @Mock
     private SolutionGenerator solutionGenerator;
 
@@ -42,37 +46,93 @@ class GameManagerTest {
 
     @Test
     void createGame_createsCorrectGameForNumbers() {
-        when(generatorRetriever.retrieveSolutionGenerator(TYPE)).thenReturn(solutionGenerator);
-        when(solutionGenerator.generateSolution(DIFFICULTY.guessLength)).thenReturn(SOLUTIONS_LIST);
+        // Arrange
+        when(generatorRetriever.retrieveSolutionGenerator(NUMBER_TYPE)).thenReturn(solutionGenerator);
+        when(solutionGenerator.generateSolution(DIFFICULTY_EASY.guessLength)).thenReturn(SOLUTION_NUMBER_LIST);
+// Act
+        Game game = gameManager.createGame(DIFFICULTY_EASY, NUMBER_TYPE);
+// Assert
+        assertNotNull(game);
+        assertEquals(DIFFICULTY_EASY, game.getGameDifficulty());
+        assertEquals(NUMBER_TYPE, game.getGameType());
+        assertEquals(DIFFICULTY_EASY.guessLength, game.getSolution().size());
+        assertEquals(game.getSolution().get(0), SOLUTION_NUMBER_LIST.get(0));
+    }
 
+    @Test
+    void createGame_createsCorrectGameForColors() {
+        // Arrange
+        when(generatorRetriever.retrieveSolutionGenerator(COLOR_TYPE)).thenReturn(solutionGenerator);
+        when(solutionGenerator.generateSolution(DIFFICULTY_EASY.guessLength)).thenReturn(SOLUTION_COLOR_LIST);
         // Act
-        Game game = gameManager.createGame(DIFFICULTY, TYPE);
-
+        Game game = gameManager.createGame(DIFFICULTY_EASY, COLOR_TYPE);
         // Assert
         assertNotNull(game);
-        assertEquals(DIFFICULTY, game.getGameDifficulty());
-        assertEquals(TYPE, game.getGameType());
-        assertEquals(DIFFICULTY.guessLength, game.getSolution().size());
-        // Iterate with a loop
-        assertEquals(game.getSolution().get(0), SOLUTIONS_LIST.get(0));
+        assertEquals(DIFFICULTY_EASY, game.getGameDifficulty());
+        assertEquals(COLOR_TYPE, game.getGameType());
+        assertEquals(DIFFICULTY_EASY.guessLength, game.getSolution().size());
+        assertEquals(game.getSolution().get(0), SOLUTION_COLOR_LIST.get(0));
     }
 
     @Test
-    void createGame() {
-        Game game = gameManager.createGame(GameDifficulty.EASY, GameType.NUMBERS);
-        assertNotNull(game);
-        assertEquals(GameDifficulty.EASY, game.getGameDifficulty());
-        assertEquals(GameType.NUMBERS, game.getGameType());
-        assertEquals(GameState.IN_PROGRESS, game.getGameState());
-        assertEquals(4, game.getSolution().size());
-        assertEquals(10, game.getGameRemainingAttempts());
+    void validateGuess_addsErrorForOutOfBoundsNumbers() {
+        // Arrange
+        Game mockGame = mock(Game.class);
+        NumberGuessValidator numberGuessValidator = new NumberGuessValidator(); // Use the actual validator
+        List<String> validationErrors = new ArrayList<>();
+
+        // Act
+        numberGuessValidator.validateGuess(mockGame, INCORRECT_GUESS_NUMBER_LIST, validationErrors);
+
+        // Assert
+        assertEquals(3, validationErrors.size());
+        assertTrue(validationErrors.contains("Guess 8 is out of bounds"));
+        assertTrue(validationErrors.contains("Guess -1 is out of bounds"));
+        assertTrue(validationErrors.contains("Guess a is not a number"));
     }
 
     @Test
-    void validateGuess() {
-        Game game = gameManager.createGame(GameDifficulty.EASY, GameType.NUMBERS);
-        List<String> guesses = Arrays.asList("1", "2", "3", "4");
-        gameManager.validateGuess(game, guesses);
+    void validateGuess_addsErrorForInvalidColors() {
+        // Arrange
+        Game mockGame = mock(Game.class);
+        GuessValidator colorGuessValidator = new ColorGuessValidator();
+        List<String> validationErrors = new ArrayList<>();
+
+        // Act
+        colorGuessValidator.validateGuess(mockGame, INCORRECT_GUESS_COLOR_LIST, validationErrors);
+
+        // Assert
+        assertEquals(1, validationErrors.size());
+        assertTrue(validationErrors.contains("Guess 1 is invalid"));
+    }
+
+    @Test
+    void validateGuess_doesNotAddErrorForCorrectNumbers() {
+        // Arrange
+        Game mockGame = mock(Game.class);
+        NumberGuessValidator numberGuessValidator = new NumberGuessValidator();
+        List<String> validationErrors = new ArrayList<>();
+
+        // Act
+        numberGuessValidator.validateGuess(mockGame, CORRECT_GUESS_NUMBER_LIST, validationErrors);
+
+        // Assert
+        assertTrue(validationErrors.isEmpty(), "No validation errors should be present for correct number guesses");
+    }
+
+    @Test
+    void validateGuess_doesNotAddErrorForCorrectColors() {
+        // Arrange
+        Game mockGame = mock(Game.class);
+        ColorGuessValidator colorGuessValidator = new ColorGuessValidator();
+        List<String> validationErrors = new ArrayList<>();
+
+        // Act
+        colorGuessValidator.validateGuess(mockGame, CORRECT_GUESS_COLOR_LIST, validationErrors);
+
+        // Assert
+        assertTrue(validationErrors.isEmpty(), "No validation errors should be present for correct color guesses");
     }
 
 }
+
