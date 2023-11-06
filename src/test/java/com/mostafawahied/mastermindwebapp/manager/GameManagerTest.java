@@ -3,16 +3,15 @@ package com.mostafawahied.mastermindwebapp.manager;
 import com.google.common.collect.ImmutableList;
 import com.mostafawahied.mastermindwebapp.manager.guessValidator.ColorGuessValidator;
 import com.mostafawahied.mastermindwebapp.manager.guessValidator.GuessValidator;
-import com.mostafawahied.mastermindwebapp.manager.guessValidator.GuessValidatorRetriever;
 import com.mostafawahied.mastermindwebapp.manager.guessValidator.NumberGuessValidator;
 import com.mostafawahied.mastermindwebapp.manager.solutiongenerator.SolutionGenerator;
 import com.mostafawahied.mastermindwebapp.manager.solutiongenerator.SolutionGeneratorRetriever;
 import com.mostafawahied.mastermindwebapp.model.*;
-import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
-import org.mockito.MockitoAnnotations;
+import org.mockito.junit.jupiter.MockitoExtension;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -20,6 +19,7 @@ import java.util.List;
 import static org.junit.jupiter.api.Assertions.*;
 import static org.mockito.Mockito.*;
 
+@ExtendWith(MockitoExtension.class)
 class GameManagerTest {
     private final GameDifficulty DIFFICULTY_EASY = GameDifficulty.EASY;
     private final GameType NUMBER_TYPE = GameType.NUMBERS;
@@ -39,19 +39,14 @@ class GameManagerTest {
     @InjectMocks
     private GameManager gameManager;
 
-    @BeforeEach
-    void setUp() {
-        MockitoAnnotations.openMocks(this);
-    }
-
     @Test
     void createGame_createsCorrectGameForNumbers() {
         // Arrange
         when(generatorRetriever.retrieveSolutionGenerator(NUMBER_TYPE)).thenReturn(solutionGenerator);
         when(solutionGenerator.generateSolution(DIFFICULTY_EASY.guessLength)).thenReturn(SOLUTION_NUMBER_LIST);
-// Act
+        // Act
         Game game = gameManager.createGame(DIFFICULTY_EASY, NUMBER_TYPE);
-// Assert
+        // Assert
         assertNotNull(game);
         assertEquals(DIFFICULTY_EASY, game.getGameDifficulty());
         assertEquals(NUMBER_TYPE, game.getGameType());
