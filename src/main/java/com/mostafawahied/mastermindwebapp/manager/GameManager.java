@@ -7,6 +7,7 @@ import com.mostafawahied.mastermindwebapp.manager.solutiongenerator.SolutionGene
 import com.mostafawahied.mastermindwebapp.manager.solutiongenerator.SolutionGeneratorRetriever;
 import com.mostafawahied.mastermindwebapp.model.*;
 import com.mostafawahied.mastermindwebapp.service.UserService;
+import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Component;
 
 import java.util.*;
@@ -17,6 +18,7 @@ public class GameManager {
     private final UserService userService;
     private final SolutionGeneratorRetriever solutionGeneratorRetriever;
     private final GuessValidatorRetriever guessValidationRetriever;
+    private static final org.slf4j.Logger logger = LoggerFactory.getLogger(GameManager.class);
 
     public GameManager(UserService userService, SolutionGeneratorRetriever solutionGeneratorRetriever, GuessValidatorRetriever guessValidationRetriever) {
         this.userService = userService;
@@ -52,15 +54,20 @@ public class GameManager {
     private void updateGameState(Game game, int correctLocations, User currentUser) {
         if (correctLocations == game.getSolutionLength()) {
             game.setGameState(GameState.WON);
+            logger.info("User won the game");
             if (currentUser != null) {
-                game.setBonus(currentUser.recordWin(game).orElse(""));
-                userService.save(currentUser);
+                game.setNotification(currentUser.recordWin(game).orElse(""));
+                userService.updateUser(currentUser);
             }
         } else if (game.getGameRemainingAttempts() == 0 || game.isTimeUp()) {
             game.setGameState(GameState.LOST);
+            logger.info("User lost the game");
+            if (game.isTimeUp()) {
+                game.setNotification("Time's up!");
+            }
             if (currentUser != null) {
-                game.setBonus(currentUser.recordLoss(game).orElse(""));
-                userService.save(currentUser);
+                game.setNotification(currentUser.recordLoss(game).orElse(""));
+                userService.updateUser(currentUser);
             }
         }
     }

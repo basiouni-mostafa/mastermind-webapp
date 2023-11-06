@@ -3,6 +3,7 @@ package com.mostafawahied.mastermindwebapp.controller;
 import com.mostafawahied.mastermindwebapp.manager.GameManager;
 import com.mostafawahied.mastermindwebapp.model.*;
 import com.mostafawahied.mastermindwebapp.service.UserService;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -16,6 +17,7 @@ import java.util.*;
 public class GameController {
     private final GameManager gameManager;
     private final UserService userService;
+    private static final org.slf4j.Logger logger = LoggerFactory.getLogger(GameController.class);
 
     @Autowired
     public GameController(GameManager gameManager, UserService userService) {
@@ -66,9 +68,12 @@ public class GameController {
         model.addAttribute("gameState", game.getGameState().toString());
         model.addAttribute("gameHistory", game.getGameHistory());
         model.addAttribute("originalGuessCount", game.getOriginalGuessCount());
-        model.addAttribute("correctNumber", String.join(", ", game.getSolution()));
+        if (game.getGameState() == GameState.WON || game.getGameState() == GameState.LOST) {
+            model.addAttribute("solution", String.join(", ", game.getSolution()));
+        }
         model.addAttribute("gameType", game.getGameType().toString());
         model.addAttribute("gameDifficulty", game.getGameDifficulty().toString());
+        model.addAttribute("hint", "Hint available after first guess");
         if (currentUser != null) {
             model.addAttribute("score", currentUser.getScore());
             model.addAttribute("consecutiveWins", currentUser.getConsecutiveWins());
@@ -76,7 +81,7 @@ public class GameController {
         } else {
             model.addAttribute("loggedIn", false);
         }
-        model.addAttribute("bonusWon", game.getBonus());
-        System.out.println(game.getSolution());
+        model.addAttribute("notification", game.getNotification());
+        logger.info("Current game solution: " + game.getSolution());
     }
 }

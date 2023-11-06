@@ -66,6 +66,33 @@
                                         <div class="alert alert-info text-center">You have been logged out</div>
                                     </div>
                                     <!--                            end of logout message-->
+
+                                    <!--            success message-->
+                                    <div th:if="${param.success}">
+                                        <div class="alert alert-info text-center">You've successfully registered
+                                            your
+                                            account. Please log in to continue.
+                                        </div>
+                                        <div class="text-center"><a class="btn link-btn btn-general" href="/"
+                                                                    th:href="@{/login}">Sign in</a></div>
+                                    </div>
+                                    <!--                            end of success message-->
+
+                                    <!--            uncaught error message-->
+                                    <div th:if="${param.RegisterError}">
+                                        <div class="alert alert-info text-center">Registration error</div>
+                                    </div>
+                                    <!--                            end of error message-->
+
+                                    <!-- error message -->
+                                    <div th:if="${param.emailError}">
+                                        <div class="alert alert-info text-center">Email already exists</div>
+                                    </div>
+                                    <div th:if="${param.usernameError}">
+                                        <div class="alert alert-info text-center">Username already exists</div>
+                                    </div>
+                                    <!-- end of error message -->
+
                                     <form th:action="@{/login}" method="post">
                                         <div class="text-center mb-3">
                                             <p>Sign in with:</p>
@@ -111,31 +138,31 @@
                                 </div>
                                 <div class="tab-pane fade" id="pills-register" role="tabpanel"
                                      aria-labelledby="tab-register">
-                                    <!--            success message-->
-                                    <div th:if="${param.success}">
-                                        <div class="alert alert-info text-center">You've successfully registered
-                                            your
-                                            account. Please log in to continue.
-                                        </div>
-                                        <div class="text-center"><a class="btn link-btn btn-general" href="/"
-                                                                    th:href="@{/login}">Sign in</a></div>
-                                    </div>
-                                    <!--                            end of success message-->
+<!--                                    &lt;!&ndash;            success message&ndash;&gt;-->
+<!--                                    <div th:if="${param.success}">-->
+<!--                                        <div class="alert alert-info text-center">You've successfully registered-->
+<!--                                            your-->
+<!--                                            account. Please log in to continue.-->
+<!--                                        </div>-->
+<!--                                        <div class="text-center"><a class="btn link-btn btn-general" href="/"-->
+<!--                                                                    th:href="@{/login}">Sign in</a></div>-->
+<!--                                    </div>-->
+<!--                                    &lt;!&ndash;                            end of success message&ndash;&gt;-->
 
-                                    <!--            uncaught error message-->
-                                    <div th:if="${param.RegisterError}">
-                                        <div class="alert alert-info text-center">Registration error</div>
-                                    </div>
-                                    <!--                            end of error message-->
+<!--                                    &lt;!&ndash;            uncaught error message&ndash;&gt;-->
+<!--                                    <div th:if="${param.RegisterError}">-->
+<!--                                        <div class="alert alert-info text-center">Registration error</div>-->
+<!--                                    </div>-->
+<!--                                    &lt;!&ndash;                            end of error message&ndash;&gt;-->
 
-                                    <!-- error message -->
-                                    <div th:if="${param.emailError}">
-                                        <div class="alert alert-info text-center">Email already exists</div>
-                                    </div>
-                                    <div th:if="${param.usernameError}">
-                                        <div class="alert alert-info text-center">Username already exists</div>
-                                    </div>
-                                    <!-- end of error message -->
+<!--                                    &lt;!&ndash; error message &ndash;&gt;-->
+<!--                                    <div th:if="${param.emailError}">-->
+<!--                                        <div class="alert alert-info text-center">Email already exists</div>-->
+<!--                                    </div>-->
+<!--                                    <div th:if="${param.usernameError}">-->
+<!--                                        <div class="alert alert-info text-center">Username already exists</div>-->
+<!--                                    </div>-->
+<!--                                    &lt;!&ndash; end of error message &ndash;&gt;-->
 
                                     <form th:action="@{/register}" method="post"
                                           th:object="${user}">

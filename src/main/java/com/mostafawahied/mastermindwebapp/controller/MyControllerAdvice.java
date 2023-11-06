@@ -3,7 +3,7 @@ package com.mostafawahied.mastermindwebapp.controller;
 import com.mostafawahied.mastermindwebapp.config.CustomOAuth2User;
 import com.mostafawahied.mastermindwebapp.exception.GameException;
 import com.mostafawahied.mastermindwebapp.model.User;
-import com.mostafawahied.mastermindwebapp.repository.UserRepository;
+import com.mostafawahied.mastermindwebapp.service.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.authentication.AnonymousAuthenticationToken;
 import org.springframework.security.core.Authentication;
@@ -15,29 +15,19 @@ import org.springframework.web.bind.annotation.ControllerAdvice;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.ModelAttribute;
 
-import javax.servlet.http.HttpSession;
-import java.util.Map;
-
 @ControllerAdvice
 public class MyControllerAdvice {
+    private final UserService userService;
+
     @Autowired
-    private UserRepository userRepository;
+    public MyControllerAdvice(UserService userService) {
+        this.userService = userService;
+    }
 
     @ExceptionHandler(GameException.class)
     public String handleGameException(GameException e, Model model) {
         model.addAttribute("errorMessage", e.getMessage());
         return "errorPage";
-    }
-
-    @ModelAttribute
-    public void addAttributes(Model model, Authentication authentication) {
-        // adding the user's profile picture
-        if (authentication instanceof OAuth2AuthenticationToken oauth2Authentication) {
-            // Get the user's profile picture URL from the OAuth2 authentication
-            String pictureUrl = oauth2Authentication.getPrincipal().getAttributes().get("picture").toString();
-            model.addAttribute("pictureUrl", pictureUrl);
-
-        }
     }
 
     // adding the user's name to all pages
@@ -49,19 +39,22 @@ public class MyControllerAdvice {
             Object principal = authentication.getPrincipal();
             String name = "";
             String email = "";
+            String pictureUrl;
             if (principal instanceof CustomOAuth2User customOAuth2User) {
                 // handle Google login
-                user = userRepository.findUserByEmail(customOAuth2User.getEmail());
+                user = userService.findUserByEmail(customOAuth2User.getEmail());
                 user.setProfileImageSrc(customOAuth2User.getAttributes().get("picture").toString());
-                userRepository.save(user);
+                userService.updateUser(user);
                 name = customOAuth2User.getName();
                 email = customOAuth2User.getEmail();
+                pictureUrl = customOAuth2User.getAttributes().get("picture").toString();
                 model.addAttribute("score", user.getScore());
                 model.addAttribute("consecutiveWins", user.getConsecutiveWins());
                 model.addAttribute("loggedIn", true);
+                model.addAttribute("pictureUrl", pictureUrl);
             } else if (principal instanceof UserDetails) {
                 // handle local login
-                user = userRepository.findUserByEmail(((UserDetails) principal).getUsername());
+                user = userService.findUserByEmail(((UserDetails) principal).getUsername());
                 name = user.getUsername();
                 email = user.getEmail();
                 model.addAttribute("score", user.getScore());

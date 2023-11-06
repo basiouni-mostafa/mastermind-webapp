@@ -22,7 +22,7 @@ public class Game {
     private GameState gameState;
     private long gameStartTime;
     private long gameEndTime;
-    private String bonus;
+    private String notification;
 
     public Game(List<String> solution, GameType type, GameDifficulty gameDifficulty) { // 10
         this.solution = solution;

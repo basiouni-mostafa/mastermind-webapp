@@ -4,6 +4,9 @@ import com.mostafawahied.mastermindwebapp.config.CustomOAuth2User;
 import com.mostafawahied.mastermindwebapp.dto.UserRegistrationDto;
 import com.mostafawahied.mastermindwebapp.model.User;
 import com.mostafawahied.mastermindwebapp.repository.UserRepository;
+import com.mostafawahied.mastermindwebapp.service.LeaderboardService;
+import com.mostafawahied.mastermindwebapp.service.UserService;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.stereotype.Controller;
@@ -13,11 +16,13 @@ import org.springframework.web.bind.annotation.PostMapping;
 
 @Controller
 public class MainController {
+    private final LeaderboardService leaderboardService;
+    private final UserService userService;
 
-    private final UserRepository userRepository;
-
-    public MainController(UserRepository userRepository) {
-        this.userRepository = userRepository;
+    @Autowired
+    public MainController(LeaderboardService leaderboardService, UserService userService) {
+        this.leaderboardService = leaderboardService;
+        this.userService = userService;
     }
 
     @GetMapping("/login")
@@ -29,27 +34,19 @@ public class MainController {
 
     @GetMapping("/leaderboard")
     public String leaderboard(Model model) {
-        userRepository.findByOrderByScoreDesc();
-        model.addAttribute("topUsers", userRepository.findByOrderByScoreDesc());
+        model.addAttribute("topUsers", leaderboardService.getTopTenUsers());
         return "leaderboard";
     }
 
     @GetMapping("/profile")
-    public String profile(Model model, Authentication authentication) {
-        addAttributes(model, authentication);
+    public String profile(Model model) {
+        addAttributes(model);
         return "profile";
     }
 
-    private void addAttributes(Model model, Authentication authentication) {
-        if (authentication != null) {
-            Object principal = authentication.getPrincipal();
-            User user = null;
-            if (principal instanceof CustomOAuth2User) {
-                user = userRepository.findUserByEmail(((CustomOAuth2User) authentication.getPrincipal()).getEmail());
-            } else if (principal instanceof UserDetails) {
-                user = userRepository.findUserByEmail(((org.springframework.security.core.userdetails.UserDetails) principal).getUsername());
-            }
-            assert user != null;
+    private void addAttributes(Model model) {
+        User user = userService.getCurrentUser();
+        if (user != null) {
             model.addAttribute("username", user.getUsername());
             model.addAttribute("email", user.getEmail());
             model.addAttribute("profileImageSrc", user.getProfileImageSrc());
@@ -69,4 +66,5 @@ public class MainController {
             model.addAttribute("averageScore", user.getAverageScore());
         }
     }
+
 }

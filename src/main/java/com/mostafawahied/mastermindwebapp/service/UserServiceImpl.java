@@ -1,6 +1,7 @@
 package com.mostafawahied.mastermindwebapp.service;
 
 
+import com.mostafawahied.mastermindwebapp.exception.DuplicateUsernameException;
 import com.mostafawahied.mastermindwebapp.model.User;
 import com.mostafawahied.mastermindwebapp.repository.UserRepository;
 import com.mostafawahied.mastermindwebapp.dto.UserRegistrationDto;
@@ -8,8 +9,8 @@ import com.mostafawahied.mastermindwebapp.exception.DuplicateEmailException;
 import com.mostafawahied.mastermindwebapp.exception.UserNotFoundException;
 import com.mostafawahied.mastermindwebapp.model.AuthenticationProvider;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.context.annotation.Lazy;
 import org.springframework.security.core.Authentication;
-import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.core.userdetails.UserDetails;
@@ -18,52 +19,53 @@ import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
 
 import javax.transaction.Transactional;
-import java.util.Collection;
 import java.util.Collections;
-import java.util.List;
-import java.util.Optional;
-import java.util.stream.Collectors;
 
 @Service
 public class UserServiceImpl implements UserService {
 
+    private final BCryptPasswordEncoder passwordEncoder;
+    private final UserRepository userRepository;
+
     @Autowired
-    private BCryptPasswordEncoder passwordEncoder;
-    @Autowired
-    private UserRepository userRepository;
+    public UserServiceImpl(@Lazy BCryptPasswordEncoder passwordEncoder, UserRepository userRepository) {
+        this.passwordEncoder = passwordEncoder;
+        this.userRepository = userRepository;
+    }
 
     @Transactional
-    public User save(UserRegistrationDto registrationDto) {
+    public void saveUser(UserRegistrationDto registrationDto) {
         User existingUser = userRepository.findUserByEmail(registrationDto.getEmail());
 
         if (existingUser != null) {
             throw new DuplicateEmailException();
         }
+
+        existingUser = userRepository.findUserByUsername(registrationDto.getUsername());
+
+        if (existingUser != null) {
+            throw new DuplicateUsernameException();
+        }
+
         User user = new User();
         user.setEmail(registrationDto.getEmail());
         user.setUsername(registrationDto.getUsername());
         user.setPassword(passwordEncoder.encode(registrationDto.getPassword()));
         user.setAuthProvider(AuthenticationProvider.LOCAL);
 
-        return userRepository.save(user);
+        userRepository.save(user);
     }
 
     @Override
-    public User save(User user) {
-        return userRepository.save(user);
+    public void updateUser(User user) {
+        userRepository.save(user);
     }
 
     @Override
     public User findUserById(long id) {
-        Optional<User> optional = userRepository.findById(id);
+        return userRepository.findById(id)
+                .orElseThrow(() -> new UserNotFoundException("User not found for id: " + id));
 
-        User user = null;
-        if (optional.isPresent()) {
-            user = optional.get();
-        } else {
-            throw new RuntimeException(("User not found for id: " + id));
-        }
-        return user;
     }
 
     @Override
@@ -96,9 +98,12 @@ public class UserServiceImpl implements UserService {
     public UserDetails loadUserByUsername(String email) throws UsernameNotFoundException {
         User user = userRepository.findUserByEmail(email);
         if (user == null) {
-            throw new UsernameNotFoundException("Invalid email or password");
+            throw new UsernameNotFoundException("Email " + email + " not found");
         }
-        return new org.springframework.security.core.userdetails.User(user.getEmail(), user.getPassword(), Collections.singletonList(new SimpleGrantedAuthority(user.getRole())));
+        return new org.springframework.security.core.userdetails.User(
+                user.getEmail(),
+                user.getPassword(),
+                Collections.singletonList(new SimpleGrantedAuthority(user.getRole())));
     }
 
     // for forgot password
@@ -109,7 +114,7 @@ public class UserServiceImpl implements UserService {
             user.setResetPasswordToken(token);
             userRepository.save(user);
         } else {
-            throw new UserNotFoundException("Could not find any user with the email " + email);
+            throw new UserNotFoundException("Email " + email + " not found");
         }
     }
 
@@ -127,18 +132,18 @@ public class UserServiceImpl implements UserService {
 
     @Override
     public User getCurrentUser() {
-            Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
-            if (!authentication.isAuthenticated() || authentication.getPrincipal().equals("anonymousUser")) {
-                return null;
-            }
-            // get the current user by username if logged in with oauth or by email if logged in with local
-            User currentUser;
-            if (authentication.getPrincipal() instanceof org.springframework.security.core.userdetails.User) {
-                currentUser = findUserByEmail(authentication.getName());
-            } else {
-                currentUser = findUserByUsername(authentication.getName());
-            }
-            return currentUser;
+        Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
+        if (!authentication.isAuthenticated() || authentication.getPrincipal().equals("anonymousUser")) {
+            return null;
         }
+        // get the current user by username if logged in with oauth or by email if logged in with local
+        User currentUser;
+        if (authentication.getPrincipal() instanceof UserDetails) {
+            currentUser = findUserByEmail(authentication.getName());
+        } else {
+            currentUser = findUserByUsername(authentication.getName());
+        }
+        return currentUser;
     }
+}
 

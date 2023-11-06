@@ -59,6 +59,7 @@ public class SecurityConfiguration extends WebSecurityConfigurerAdapter {
 //                        "/**",
                         "/error",
                         "/register**",
+                        "/login**",
                         "/oauth/**",
                         "/forgot_password",
                         "/reset_password",

@@ -7,9 +7,9 @@ import com.mostafawahied.mastermindwebapp.model.User;
 import org.springframework.security.core.userdetails.UserDetailsService;
 
 public interface UserService extends UserDetailsService {
-    User save(UserRegistrationDto registrationDto);
+    void saveUser(UserRegistrationDto registrationDto);
 
-    User save(User user);
+    void updateUser(User user);
 
     User findUserById(long id);
 

@@ -277,6 +277,8 @@
                     <p class="fs-3">Congratulations! You are the Mastermind!</p>
                     <p>You guessed the correct number combination in <span
                             th:text="${originalGuessCount - remainingAttempts}"></span> attempts</p>
+                    <p>The correct number combination was (<span class="correct_result"
+                                                                th:text="${solution}"></span>)</p>
                     <div class="win-animation d-flex justify-content-center">
                         <script src="https://unpkg.com/@lottiefiles/lottie-player@latest/dist/lottie-player.js"></script>
                         <lottie-player src="https://assets2.lottiefiles.com/packages/lf20_yAh844.json"
@@ -289,7 +291,7 @@
                 <div th:if="${gameState == 'LOST'}">
                     <p class="fs-3">Game Over! You lost</p>
                     <p>The correct number combination is (<span class="correct_result"
-                                                                th:text="${correctNumber}"></span>)</p>
+                                                                th:text="${solution}"></span>)</p>
                     <div class="lose-animation d-flex justify-content-center">
                         <script src="https://unpkg.com/@dotlottie/player-component@latest/dist/dotlottie-player.mjs"
                                 type="module"></script>
@@ -355,9 +357,9 @@
                     <button type="submit" class="btn btn-primary mb-3"><b>Play</b>
                     </button>
                     <!-- consecutive win notification -->
-                    <div th:if="${bonusWon != '' && bonusWon != null}" th:text="${bonusWon}" id="notification"
+                    <div th:if="${notification != '' && notification != null}" th:text="${notification}" id="notification"
                          class="notification"></div>
-                    <p th:text="${bonusWon}"></p>
+                    <p th:text="${notification}"></p>
                     <!-- end of consecutive win notification -->
                 </form>
                 <!-- end of new game form -->
