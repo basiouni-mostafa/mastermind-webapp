@@ -261,9 +261,7 @@ document.addEventListener('DOMContentLoaded', (event) => {
     function copyTextToClipboard(text) {
         console.log("copyTextToClipboard function called");
         const textArea = document.createElement('textarea');
-        console.log("textArea = " + textArea);
         textArea.value = text;
-        console.log("textArea.value = " + textArea.value);
         document.body.appendChild(textArea);
         textArea.select();
         document.execCommand('copy');

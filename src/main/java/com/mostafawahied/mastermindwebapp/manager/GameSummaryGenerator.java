@@ -28,17 +28,14 @@ public class GameSummaryGenerator {
                 currentUser.getUsername(), game.getGameDifficulty(), game.getGameType()));
         // Badge, Score and points
         summary.append(String.format("%s 💰 Score: %d | 🎖️ %s\n",
-                !Objects.equals(badge, "") ? "🏆 " + badge+ " | " : "", currentUser.getScore(), game.getGameState() == GameState.WON ? "+" + points : "-" + points));
+                !Objects.equals(badge, "") ? "🏆 " + badge + " | " : "", currentUser.getScore(), game.getGameState() == GameState.WON ? "+" + points : "-" + points));
         // Game attempts and results
         switch (game.getGameDifficulty()) {
             case EASY:
                 summary.append(generateAttemptsForEasy(game)).append("\n");
                 break;
-            case MEDIUM:
-//                summary.append(generateKeyAttemptsForMedium(game));
-                break;
-            case HARD:
-//                summary.append(generateKeyAttemptsForHard(game));
+            case MEDIUM, HARD:
+                summary.append(generateKeyAttemptsForMediumAndHard(game));
                 break;
         }
         // Game outcome
@@ -116,6 +113,91 @@ public class GameSummaryGenerator {
         return attemptString.toString();
     }
 
+    // Method for generating attempts summary for medium difficulty
+    private String generateKeyAttemptsForMediumAndHard(Game game) {
+        StringBuilder attemptsSummary = new StringBuilder();
+        int attemptNumber = 1;
+        int firstCorrect = -1;
+        int bestAttemptNum = -1;
+        int maxCorrect = 0;
+        int maxCorrectPosition = 0;
+
+        for (GameHistory history : game.getGameHistory()) {
+            String attempt = generateAttemptString(history, game, attemptNumber);
+            int correctCount = countCorrectPositions(history, game);
+            int correctColors = countCorrectGuesses(history, game);
+
+            // Check for the first correct attempt (either position or color)
+            if (firstCorrect == -1 && (correctCount > 0 || correctColors > 0)) {
+                firstCorrect = attemptNumber;
+                attemptsSummary.append("🔑 First Correct: ").append(attempt).append("\n");
+            }
+
+            // Define a milestone for significant progress, e.g., more than half correct
+            int significantProgressThreshold = game.getSolution().size() / 2;
+
+            // Check for the significant progress
+            if (correctCount >= significantProgressThreshold && bestAttemptNum == -1) {
+                bestAttemptNum = attemptNumber;
+            }
+
+            attemptNumber++;
+        }
+
+        // If no significant progress has been made, choose the attempt with the most correct guesses
+        if (bestAttemptNum == -1 && game.getGameHistory().size() > 1) {
+            // Default to the last attempt before the final attempt
+            bestAttemptNum = game.getGameHistory().size() - 1;
+        }
+
+// Append best attempt if it's different from the first correct and not the final attempt
+        if (bestAttemptNum > 0 && bestAttemptNum != firstCorrect && bestAttemptNum < game.getGameHistory().size()) {
+            GameHistory bestAttemptHistory = game.getGameHistory().get(bestAttemptNum - 1);
+            String bestAttempt = generateAttemptString(bestAttemptHistory, game, bestAttemptNum);
+            attemptsSummary.append("🌟 Significant Progress: ").append(bestAttempt).append("\n");
+        }
+
+        // Append final attempt
+        GameHistory finalAttemptHistory = game.getGameHistory().get(game.getGameHistory().size() - 1);
+        String finalAttempt = generateAttemptString(finalAttemptHistory, game, game.getGameHistory().size());
+        attemptsSummary.append("🏁 Final Attempt: ").append(finalAttempt).append("\n");
+
+        return attemptsSummary.toString();
+    }
+
+    // Helper method to count correct colors in the wrong positions (yellow squares)
+    private int countCorrectGuesses(GameHistory history, Game game) {
+        List<String> guess = history.getUserGuessList();
+        List<String> solution = new ArrayList<>(game.getSolution()); // Copy to manipulate
+
+        // Create a frequency map for the solution to handle duplicates
+        Map<String, Integer> solutionFrequency = new HashMap<>();
+        for (String color : solution) {
+            solutionFrequency.put(color, solutionFrequency.getOrDefault(color, 0) + 1);
+        }
+
+        int correctGuesses = 0;
+        for (int i = 0; i < guess.size(); i++) {
+            if (!guess.get(i).equals(solution.get(i)) && solutionFrequency.getOrDefault(guess.get(i), 0) > 0) {
+                correctGuesses++;
+                // Decrement the frequency count to prevent double counting
+                solutionFrequency.put(guess.get(i), solutionFrequency.get(guess.get(i)) - 1);
+            }
+        }
+        return correctGuesses;
+    }
+
+    private int countCorrectPositions(GameHistory history, Game game) {
+        List<String> guess = history.getUserGuessList();
+        List<String> solution = game.getSolution();
+        int correctCount = 0;
+        for (int i = 0; i < guess.size(); i++) {
+            if (guess.get(i).equals(solution.get(i))) {
+                correctCount++;
+            }
+        }
+        return correctCount;
+    }
 
 }
 
