@@ -69,6 +69,15 @@ function addSettingsModalEventListener() {
     const settingsIcon = document.getElementById('settings-icon');
     const gameSettings = document.getElementById('game-settings');
     const closeSettings = document.getElementById('close-settings');
+    if (settingsIcon === null) {
+        return;
+    }
+    if (gameSettings === null) {
+        return;
+    }
+    if (closeSettings === null) {
+        return;
+    }
     // Open the settings if btn is clicked and close if user clicked anywhere else
     document.addEventListener('click', (event) => {
         if (event.target.id === 'settings-icon') {
@@ -109,6 +118,15 @@ function addModalEventListener() {
     const settingsIcon = document.getElementById('rules-icon');
     const gameSettings = document.getElementById('game-rules');
     const closeSettings = document.getElementById('close-rules');
+    if (settingsIcon === null) {
+        return;
+    }
+    if (gameSettings === null) {
+        return;
+    }
+    if (closeSettings === null) {
+        return;
+    }
     // Open the settings if btn is clicked and close if user clicked anywhere else
     document.addEventListener('click', (event) => {
         if (event.target.id === 'rules-icon') {
@@ -224,14 +242,24 @@ function deleteLastInput() {
 
 // End of handle delete button
 
-// add event listener to delete button
+// add event listener to delete button digit
 document.addEventListener("DOMContentLoaded", () => {
-    const deleteBtn = document.getElementById('delete-button');
-    if (deleteBtn === null) {
+    const deleteBtnDigit = document.querySelector('.delete-btn-digit');
+    if (deleteBtnDigit === null) {
         return;
     }
-    deleteBtn.addEventListener('click', deleteLastInput);
+    deleteBtnDigit.addEventListener('click', deleteLastInput);
 });
+
+// add event listener to delete button color
+document.addEventListener("DOMContentLoaded", () => {
+    const deleteBtnColor = document.querySelector('.delete-btn-color');
+    if (deleteBtnColor === null) {
+        return;
+    }
+    deleteBtnColor.addEventListener('click', deleteLastInput);
+});
+// End of add event listener to delete button color
 
 // handle share button
 document.addEventListener('DOMContentLoaded', (event) => {

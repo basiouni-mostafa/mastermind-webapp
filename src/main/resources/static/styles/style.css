@@ -197,18 +197,12 @@ form {
     box-shadow: 0 4px 6px rgba(0, 0, 0, 0.2);
 }
 
-.delete-btn-class {
-    border: none;
-    /*border-radius: 5px;*/
-    text-align: center;
-    font-size: 2rem;
-    cursor: pointer;
-    transition: box-shadow 0.5s;
-}
-
-.delete-btn-class:hover {
-    scale: 1.05;
-    color: rgba(0, 0, 0, 0.60);
+#delete-button span {
+    font-variation-settings: 'FILL' 0,
+    'wght' 400,
+    'GRAD' 0,
+    'opsz' 24;
+    color: transparent;
 }
 
 .badge {
@@ -386,7 +380,6 @@ form {
 }
 
 
-
 /*small screens only*/
 @media only screen and (max-width: 480px), only screen and (max-width: 990px) {
     .nav-link::before {
@@ -464,7 +457,6 @@ form {
     /*    left: 12.5rem;*/
     /*    top: 6rem;*/
     /*}*/
-
     .bottom-half {
         position: relative;
         /*top: 10rem;*/
