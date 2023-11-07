@@ -10,6 +10,7 @@ import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.bind.support.SessionStatus;
 
+import javax.servlet.http.HttpServletRequest;
 import java.util.*;
 
 @Controller
@@ -26,10 +27,12 @@ public class GameController {
     }
 
     @GetMapping("/")
-    public String homePage(Model model) {
+    public String homePage(Model model, HttpServletRequest request) {
         User currentUser = userService.getCurrentUser();
         Game game = gameManager.createGame(GameDifficulty.EASY, GameType.NUMBERS);
         addAttributes(game, model, currentUser);
+        boolean isMobile = request.getHeader("User-Agent").matches(".*(iPhone|Android|Mobile).*");
+        model.addAttribute("isMobile", isMobile);
         return "index";
     }
 
@@ -70,6 +73,7 @@ public class GameController {
         model.addAttribute("originalGuessCount", game.getOriginalGuessCount());
         if (game.getGameState() == GameState.WON || game.getGameState() == GameState.LOST) {
             model.addAttribute("solution", String.join(", ", game.getSolution()));
+            model.addAttribute("gameSummary", game.getGameSummary());
         }
         model.addAttribute("gameType", game.getGameType().toString());
         model.addAttribute("gameDifficulty", game.getGameDifficulty().toString());

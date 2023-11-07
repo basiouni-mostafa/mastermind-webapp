@@ -1,6 +1,5 @@
 package com.mostafawahied.mastermindwebapp.model;
 
-import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
@@ -39,9 +38,20 @@ public class User {
     private int threeConsecutiveWinsCount = 0;
     private int fiveConsecutiveWinsCount = 0;
     private int tenConsecutiveWinsCount = 0;
-    private boolean StreakChampionAchievement = false;
-    private boolean veteranAchievement = false;
-    private boolean mastermindAchievement = false;
+    private boolean threeConsecutiveWinsAchievement = false; // 3 consecutive wins
+    private boolean fiveConsecutiveWinsAchievement = false; // 5 consecutive wins
+    private boolean streakChampionAchievement = false; // 10 consecutive wins
+    private boolean newcomerAchievement = false; // 10 games played
+    private boolean rookieAchievement = false; // 20 games played
+    private boolean enthusiastAchievement = false; // 50 games played
+    private boolean veteranAchievement = false; // 100 games played
+    private boolean winnerAchievement = false; // 10 games won
+    private boolean championAchievement = false; // 50 games won
+    private boolean grandmasterAchievement = false; // 100 games won
+    private boolean legendAchievement = false; // 200 games won
+    private boolean mastermindAchievement = false; // 500 games won
+    @ElementCollection
+    private List<String> achievements = new ArrayList<>();
 
     private static final int THREE_CONSECUTIVE_WINS = 3;
     private static final int FIVE_CONSECUTIVE_WINS = 5;
@@ -71,6 +81,8 @@ public class User {
         List<String> achievements = new ArrayList<>();
         checkForConsecutiveWinsAchievements().ifPresent(achievements::add);
         checkForTotalWinsAchievements().ifPresent(achievements::add);
+        checkForGamesPlayedAchievements().ifPresent(achievements::add);
+
         return achievements.isEmpty() ? Optional.empty() : Optional.of(String.join(" ", achievements));
     }
 
@@ -86,19 +98,46 @@ public class User {
         } else if (this.consecutiveWins == TEN_CONSECUTIVE_WINS) {
             this.addScore(REWARD_10_CONSECUTIVE_WINS);
             this.tenConsecutiveWinsCount++;
-            this.StreakChampionAchievement = true;
-            return Optional.of("Streak Champion Achievement Unlocked! 10 Consecutive Wins! +200 extra points!");
+            this.streakChampionAchievement = true;
+            achievements.add("Streak Champion");
+            return Optional.of("Streak Champion Achievement Unlocked!<br>10 Consecutive Wins! +200 extra points!");
+        }
+        return Optional.empty();
+    }
+
+    private Optional<String> checkForGamesPlayedAchievements() {
+        if (this.gamesPlayed >= 10 && !this.newcomerAchievement) {
+            this.newcomerAchievement = true;
+            return Optional.of("Newcomer Achievement Unlocked! 10 Games Played!");
+        } else if (this.gamesPlayed >= 20 && !this.rookieAchievement) {
+            this.rookieAchievement = true;
+            return Optional.of("Rookie Achievement Unlocked! 20 Games Played!");
+        } else if (this.gamesPlayed >= 50 && !this.enthusiastAchievement) {
+            this.enthusiastAchievement = true;
+            return Optional.of("Enthusiast Achievement Unlocked! 50 Games Played!");
+        } else if (this.gamesPlayed >= 100 && !this.veteranAchievement) {
+            this.veteranAchievement = true;
+            return Optional.of("Veteran Achievement Unlocked! 100 Games Played!");
         }
         return Optional.empty();
     }
 
     private Optional<String> checkForTotalWinsAchievements() {
-        if (this.gamesWon >= 50 && !this.veteranAchievement) {
-            this.veteranAchievement = true;
-            return Optional.of("Veteran Achievement Unlocked! 50 Wins!");
-        } else if (this.gamesWon >= 100 && !this.mastermindAchievement) {
+        if (this.gamesWon >= 15 && !this.winnerAchievement) {
+            this.winnerAchievement = true;
+            return Optional.of("Winner Achievement Unlocked! 10 Wins!");
+        } else if (this.gamesWon >= 50 && !this.championAchievement) {
+            this.championAchievement = true;
+            return Optional.of("Champion Achievement Unlocked! 50 Wins!");
+        } else if (this.gamesWon >= 100 && !this.grandmasterAchievement) {
+            this.grandmasterAchievement = true;
+            return Optional.of("Grandmaster Achievement Unlocked! 100 Wins!");
+        } else if (this.gamesWon >= 200 && !this.legendAchievement) {
+            this.legendAchievement = true;
+            return Optional.of("Legend Achievement Unlocked! 200 Wins!");
+        } else if (this.gamesWon >= 500 && !this.mastermindAchievement) {
             this.mastermindAchievement = true;
-            return Optional.of("Mastermind Achievement Unlocked! 100 Wins!");
+            return Optional.of("Mastermind Achievement Unlocked! 500 Wins!");
         }
         return Optional.empty();
     }
@@ -137,5 +176,59 @@ public class User {
         }
         return Math.round((double) this.score / this.gamesPlayed * 100.0) / 100.0;
     }
+
+    // Method to update achievements based on games played and won
+    public void updateAchievements() {
+        if (this.gamesPlayed >= 500 && !this.mastermindAchievement) {
+            this.mastermindAchievement = true;
+            achievements.add("Mastermind");
+        }
+        if (this.gamesPlayed >= 200 && !this.legendAchievement) {
+            this.legendAchievement = true;
+            achievements.add("Legend");
+        }
+        if (this.gamesPlayed >= 100 && !this.grandmasterAchievement) {
+            this.grandmasterAchievement = true;
+            achievements.add("Grandmaster");
+        }
+        if (this.gamesWon >= 50 && !this.championAchievement) {
+            this.championAchievement = true;
+            achievements.add("Champion");
+        }
+        if (this.gamesWon >= 15 && !this.winnerAchievement) {
+            this.winnerAchievement = true;
+            achievements.add("Winner");
+        }
+        if (this.gamesPlayed >= 100 && !this.veteranAchievement) {
+            this.veteranAchievement = true;
+            achievements.add("Veteran");
+        }
+        if (this.gamesPlayed >= 50 && !this.enthusiastAchievement) {
+            this.enthusiastAchievement = true;
+            achievements.add("Enthusiast");
+        }
+        if (this.gamesPlayed >= 20 && !this.rookieAchievement) {
+            this.rookieAchievement = true;
+            achievements.add("Rookie");
+        }
+        if (this.gamesPlayed >= 10 && !this.newcomerAchievement) {
+            this.newcomerAchievement = true;
+            achievements.add("Newcomer");
+        }
+
+//        winnerAchievement = false;
+
+    }
+
+    // Method to get the latest achievement
+    public String getLatestAchievement() {
+//        updateAchievements();
+        if (!achievements.isEmpty()) {
+            return achievements.get(achievements.size() - 1); // Return the last achievement in the list
+        } else {
+            return "Newbie"; // Return Newbie if the user has no achievements
+        }
+    }
+
 
 }

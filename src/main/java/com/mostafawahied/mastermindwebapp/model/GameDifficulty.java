@@ -6,9 +6,9 @@ public enum GameDifficulty {
 
     EASY(4, 10, TimeUnit.DAYS.toMillis(100), 100, 25),
 
-    MEDIUM(5, 20, TimeUnit.MINUTES.toMillis(20), 150, 40),
+    MEDIUM(5, 20, TimeUnit.MINUTES.toMillis(20), 200, 40),
 
-    HARD(6, 40, TimeUnit.MINUTES.toMillis(30), 200, 50);
+    HARD(6, 40, TimeUnit.MINUTES.toMillis(30), 400, 60);
 
     public final int guessLength;
     public final int numOfGuesses;

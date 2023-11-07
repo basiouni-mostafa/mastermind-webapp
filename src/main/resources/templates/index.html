@@ -278,13 +278,16 @@
                     <p>You guessed the correct number combination in <span
                             th:text="${originalGuessCount - remainingAttempts}"></span> attempts</p>
                     <p>The correct number combination was (<span class="correct_result"
-                                                                th:text="${solution}"></span>)</p>
+                                                                 th:text="${solution}"></span>)</p>
                     <div class="win-animation d-flex justify-content-center">
                         <script src="https://unpkg.com/@lottiefiles/lottie-player@latest/dist/lottie-player.js"></script>
                         <lottie-player src="https://assets2.lottiefiles.com/packages/lf20_yAh844.json"
                                        background="transparent" speed="1" style="width: 170px; height: 170px;"
                                        autoplay></lottie-player>
                     </div>
+<!--                    &lt;!&ndash; add game summary string &ndash;&gt;-->
+<!--                    <p class="fs-6" th:utext="${gameSummary}"></p>-->
+<!--                    &lt;!&ndash; end of game summary string &ndash;&gt;                -->
                 </div>
                 <!-- End of GameState WON-->
                 <!-- GameState == LOST-->
@@ -299,8 +302,30 @@
                                           background="transparent" speed="1" style="width: 170px; height: 170px;"
                                           autoplay></dotlottie-player>
                     </div>
+<!--                    &lt;!&ndash; add game summary string &ndash;&gt;-->
+<!--                    <p class="fs-6" th:utext="${gameSummary}"></p>-->
+<!--                    &lt;!&ndash; end of game summary string &ndash;&gt;-->
                 </div>
                 <!-- End of GameState LOST-->
+                <!-- Game Summary -->
+                <button th:if="${gameState != 'IN_PROGRESS'}" id="shareButton" class="btn btn-success mb-2">
+                    <i class="fas fa-share-alt"></i> Share
+                </button>
+
+                <!-- Hidden input to hold the text for copying to clipboard -->
+                <p id="gameSummary" th:value="${gameSummary}" th:text="${gameSummary}"
+                       style="display: none"></p>
+
+                <!--  -->
+                <div th:data-is-mobile="${isMobile}"></div>
+
+                <!-- Notification element -->
+                <div id="copyNotification"
+                     style="display: none; position: fixed; bottom: 20px; right: 20px; background-color: #5cb85c; color: white; padding: 10px; border-radius: 5px;">
+                    Text copied to clipboard!
+                </div>
+                <!-- End of Game Summary -->
+
                 <!--Validation and Error messages -->
                 <div class="error-text d-flex justify-content-center">
                     <div class="col-md-6 col-md-offset-3 error-text validation-class"
@@ -357,9 +382,10 @@
                     <button type="submit" class="btn btn-primary mb-3"><b>Play</b>
                     </button>
                     <!-- consecutive win notification -->
-                    <div th:if="${notification != '' && notification != null}" th:text="${notification}" id="notification"
+                    <div th:if="${notification != '' && notification != null}" th:text="${notification}"
+                         id="notification"
                          class="notification"></div>
-                    <p th:text="${notification}"></p>
+                    <p th:utext="${notification}"></p>
                     <!-- end of consecutive win notification -->
                 </form>
                 <!-- end of new game form -->

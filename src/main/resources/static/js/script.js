@@ -33,8 +33,12 @@ function addColor(color) {
 // End of handling adding colors
 
 // Stop the form from submitting if all inputs are not filled
+// when the document is loaded
 function addFormEventListener() {
     const form = document.getElementById("guess-form");
+    if (form === null) {
+        return;
+    }
     form.addEventListener("submit", event => {
         // Select the input elements
         const inputs = document.querySelectorAll("input[name='userGuesses']");
@@ -75,17 +79,24 @@ function addSettingsModalEventListener() {
                 gameSettings.style.display = 'block';
             }
         } else {
-            gameSettings.style.display = 'none';
+            if (gameSettings !== null) {
+                gameSettings.style.display = 'none';
+            }
         }
     });
     // exclude the game settings modal from the area that will close the modal
-    gameSettings.addEventListener('click', function (event) {
-        event.stopPropagation();
-    });
+    if (gameSettings !== null) {
+
+        gameSettings.addEventListener('click', function (event) {
+            event.stopPropagation();
+        });
+    }
     // close the modal if the close btn is clicked
-    closeSettings.addEventListener('click', () => {
-        gameSettings.style.display = 'none';
-    });
+    if (closeSettings !== null) {
+        closeSettings.addEventListener('click', () => {
+            gameSettings.style.display = 'none';
+        });
+    }
 }
 
 // I had to wrap it in a function "addFormEventListener()" and
@@ -108,17 +119,24 @@ function addModalEventListener() {
                 gameSettings.style.display = 'block';
             }
         } else {
-            gameSettings.style.display = 'none';
+            if (gameSettings !== null) {
+                gameSettings.style.display = 'none';
+            }
         }
     });
     // exclude the game settings modal from the area that will close the modal
-    gameSettings.addEventListener('click', function (event) {
-        event.stopPropagation();
-    });
-    // close the modal if the close btn is clicked
-    closeSettings.addEventListener('click', () => {
-        gameSettings.style.display = 'none';
-    });
+    if (gameSettings !== null) {
+        gameSettings.addEventListener('click', function (event) {
+            event.stopPropagation();
+        });
+    }
+
+// close the modal if the close btn is clicked
+    if (closeSettings !== null) {
+        closeSettings.addEventListener('click', () => {
+            gameSettings.style.display = 'none';
+        });
+    }
 }
 
 // I had to wrap it in a function "addFormEventListener()" and
@@ -129,6 +147,9 @@ document.addEventListener("DOMContentLoaded", addModalEventListener);
 // Removing the lost animation after it's done
 function removeAnimation() {
     const animation = document.getElementById('lost-animation');
+    if (animation === null) {
+        return;
+    }
     animation.addEventListener('complete', () => {
         const container = animation.closest('.lose-animation');
         container.remove();
@@ -173,12 +194,13 @@ function closeIntro() {
     });
     sessionStorage.setItem("animationPlayed", "true");
 }
+
 // End of intro animation
 
 // consecutive wins notification
-document.addEventListener('DOMContentLoaded', function() {
+document.addEventListener('DOMContentLoaded', function () {
     const notification = document.getElementById('notification');
-    if(notification) {
+    if (notification) {
         setTimeout(() => {
             notification.classList.add('hidden'); // Add the "hidden" class to make it fade
         }, 3000);
@@ -199,10 +221,71 @@ function deleteLastInput() {
         }
     }
 }
+
 // End of handle delete button
 
 // add event listener to delete button
 document.addEventListener("DOMContentLoaded", () => {
     const deleteBtn = document.getElementById('delete-button');
+    if (deleteBtn === null) {
+        return;
+    }
     deleteBtn.addEventListener('click', deleteLastInput);
 });
+
+// handle share button
+document.addEventListener('DOMContentLoaded', (event) => {
+    const isMobile = document.body.getAttribute('data-is-mobile') === 'true';
+
+    if (document.getElementById('shareButton') === null) {
+        return;
+    }
+    document.getElementById('shareButton').addEventListener('click', () => {
+        const gameSummary = document.getElementById('gameSummary').textContent;
+        console.log("gameSummary = " + gameSummary);
+
+        if (isMobile && navigator.share) {
+            navigator.share({
+                text: gameSummary
+            }).then(() => {
+                showNotification('Game summary shared successfully!');
+            }).catch((error) => {
+                console.error('Error sharing:', error);
+                copyTextToClipboard(gameSummary);
+            });
+        } else {
+            copyTextToClipboard(gameSummary);
+        }
+    });
+
+    function copyTextToClipboard(text) {
+        console.log("copyTextToClipboard function called");
+        const textArea = document.createElement('textarea');
+        console.log("textArea = " + textArea);
+        textArea.value = text;
+        console.log("textArea.value = " + textArea.value);
+        document.body.appendChild(textArea);
+        textArea.select();
+        document.execCommand('copy');
+        document.body.removeChild(textArea);
+
+        showNotification('Game summary copied to clipboard!');
+    }
+
+    function showNotification(message) {
+        console.log("showNotification function called");
+        const notification = document.getElementById('copyNotification');
+        console.log("notification = " + notification);
+        if (notification) {
+            notification.textContent = message;
+            notification.style.display = 'block';
+
+            setTimeout(() => {
+                notification.style.display = 'none';
+            }, 3000); // Hide after 3 seconds
+        }
+    }
+});
+
+
+// End of handle share button

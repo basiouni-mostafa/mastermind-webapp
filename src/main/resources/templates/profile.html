@@ -180,23 +180,77 @@
                                         <div class="container px-5">
                                             <h2 class="fw-bolder fs-5 mb-4 text-center">Achievements</h2>
                                             <div class="row">
-                                                <!-- Streak Champion -->
-                                                <div class="d-flex align-items-center justify-content-center mb-3">
+
+                                                <!-- Newcomer -->
+                                                <div th:if="${newcomerAchievement}"
+                                                     class="d-flex align-items-center justify-content-center mb-2">
                                                             <span class="badge rounded-pill text-bg-warning p-2 px-3"
-                                                                  th:text="${streakChampionAchievement ? 'STREAK CHAMPION' : ''}"></span>
+                                                                  th:text="${'NEWCOMER'}"></span>
+                                                </div>
+
+                                                <!-- Rookie -->
+                                                <div th:if="${rookieAchievement}"
+                                                     class="d-flex align-items-center justify-content-center mb-2">
+                                                            <span class="badge rounded-pill text-bg-warning p-2 px-3"
+                                                                  th:text="${'ROOKIE'}"></span>
+                                                </div>
+
+                                                <!-- Enthusiast -->
+                                                <div th:if="${enthusiastAchievement}"
+                                                     class="d-flex align-items-center justify-content-center mb-2">
+                                                            <span class="badge rounded-pill text-bg-warning p-2 px-3"
+                                                                  th:text="${'ENTHUSIAST'}"></span>
+                                                </div>
+
+                                                <!-- Winner -->
+                                                <div th:if="${winnerAchievement}"
+                                                     class="d-flex align-items-center justify-content-center mb-2">
+                                                            <span class="badge rounded-pill text-bg-warning p-2 px-3"
+                                                                  th:text="${'WINNER'}"></span>
+                                                </div>
+
+                                                <!-- Streak Champion -->
+                                                <div th:if="${streakChampionAchievement}"
+                                                     class="d-flex align-items-center justify-content-center mb-2">
+                                                            <span class="badge rounded-pill text-bg-warning p-2 px-3"
+                                                                  th:text="${'STREAK CHAMPION'}"></span>
                                                 </div>
 
                                                 <!-- Veteran -->
-                                                <div class="d-flex align-items-center justify-content-center mb-3">
+                                                <div th:if="${veteranAchievement}"
+                                                     class="d-flex align-items-center justify-content-center mb-2">
                                                             <span class="badge rounded-pill text-bg-warning p-2 px-3"
-                                                                  th:text="${veteranAchievement ? 'VETERAN' : ''}"></span>
+                                                                  th:text="${'VETERAN'}"></span>
+                                                </div>
+
+                                                <!-- Champion -->
+                                                <div th:if="${championAchievement}"
+                                                     class="d-flex align-items-center justify-content-center mb-2">
+                                                            <span class="badge rounded-pill text-bg-warning p-2 px-3"
+                                                                  th:text="${'CHAMPION'}"></span>
+                                                </div>
+
+                                                <!-- Grandmaster -->
+                                                <div th:if="${grandmasterAchievement}"
+                                                     class="d-flex align-items-center justify-content-center mb-2">
+                                                            <span class="badge rounded-pill text-bg-warning p-2 px-3"
+                                                                  th:text="${'GRANDMASTER'}"></span>
+                                                </div>
+
+                                                <!-- Legend -->
+                                                <div th:if="${legendAchievement}"
+                                                     class="d-flex align-items-center justify-content-center mb-2">
+                                                            <span class="badge rounded-pill text-bg-warning p-2 px-3"
+                                                                  th:text="${'LEGEND'}"></span>
                                                 </div>
 
                                                 <!-- Mastermind -->
-                                                <div class="d-flex align-items-center justify-content-center mb-3">
+                                                <div th:if="${mastermindAchievement}"
+                                                     class="d-flex align-items-center justify-content-center mb-2">
                                                             <span class="badge rounded-pill text-bg-warning p-2 px-3"
-                                                                  th:text="${mastermindAchievement ? 'MASTERMIND' : ''}"></span>
+                                                                  th:text="${'MASTERMIND'}"></span>
                                                 </div>
+
                                                 <!-- If no achievements -->
                                                 <div class="d-flex align-items-center justify-content-center mb-3">
                                                             <span class="text-muted p-2 px-3"

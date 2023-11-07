@@ -18,6 +18,7 @@ public class GameManager {
     private final UserService userService;
     private final SolutionGeneratorRetriever solutionGeneratorRetriever;
     private final GuessValidatorRetriever guessValidationRetriever;
+    private final GameSummaryGenerator gameSummaryGenerator = new GameSummaryGenerator();
     private static final org.slf4j.Logger logger = LoggerFactory.getLogger(GameManager.class);
 
     public GameManager(UserService userService, SolutionGeneratorRetriever solutionGeneratorRetriever, GuessValidatorRetriever guessValidationRetriever) {
@@ -48,6 +49,7 @@ public class GameManager {
         GameResult gameResult = calculateGameResult(game, userGuessList);
         updateGameHistory(game, gameResult, userGuessList);
         updateGameState(game, gameResult.getCorrectLocations(), currentUser);
+        game.setGameSummary(gameSummaryGenerator.generateGameSummary(game, currentUser));
         return game;
     }
 

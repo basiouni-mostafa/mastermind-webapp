@@ -24,7 +24,6 @@
             <div class="collapse navbar-collapse" id="navbarNav">
                 <ul class="navbar-nav ms-auto me-3 mb-2 mb-lg-0">
                     <li class="nav-item">
-<!--                        <a class="nav-link btn fw-bolder" th:href="@{/leaderboard}">Leaderboard</a>-->
                         <a class=" btn btn-secondary" th:href="@{/leaderboard}">Leaderboard</a>
                     </li>
                 </ul>
@@ -67,6 +66,7 @@
                                 <div class="col-10 ms-2">
                                     <p class="fw-semibold my-0" th:text="${name}" style="font-size: 0.75rem"></p>
                                     <p class="text-muted my-0" th:text="${email}" style="font-size: 0.7rem"></p>
+                                    <p class="text-dark my-0" th:text="${latestBadge}" style="font-size: 0.85rem"></p>
                                 </div>
                             </a>
 
@@ -75,7 +75,7 @@
                             </li>
 
                             <a sec:authorize="isAuthenticated()" th:href="@{/logout}"
-                                class="d-flex gap-2 dropdown-item" style="cursor: pointer">
+                               class="d-flex gap-2 dropdown-item" style="cursor: pointer">
                                 <div class="col-2">
                                     <span class="material-symbols-outlined logout-google-icon"
                                           style="font-size: 1.3rem">logout</span>
