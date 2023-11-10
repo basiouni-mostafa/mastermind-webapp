@@ -313,16 +313,17 @@ document.addEventListener("DOMContentLoaded", () => {
 //     }
 // });
 // End of handle share button
+function isMobileDevice() {
+    const userAgent = navigator.userAgent || navigator.vendor || window.opera;
+    return /android|webos|iphone|ipad|ipod|blackberry|iemobile|opera mini/i.test(userAgent);
+}
 
 
 function handleShare(gameSummary) {
-    const isMobile = document.body.getAttribute('data-is-mobile') === 'true';
     console.log("handleShare function called");
     try {
-        console.log("Device is mobile");
-        console.log("navigator.share = " + navigator.share)
-        if (isMobile) {
-            console.log("navigator.share is available");
+        if (isMobileDevice() && navigator.share) {
+            console.log("Mobile device and navigator.share is available");
             navigator.share({
                 text: gameSummary
             }).then(() => {
@@ -332,8 +333,7 @@ function handleShare(gameSummary) {
                 copyTextToClipboard(gameSummary);
             });
         } else {
-            console.log("navigator.share is not available");
-            // testNavigatorShare();
+            console.log("Either not a mobile device or navigator.share is not available");
             copyTextToClipboard(gameSummary);
         }
     } catch (error) {
@@ -372,7 +372,7 @@ function testNavigatorShare() {
     console.log(`TEST navigator.share: ${typeof navigator.share}`);
     if (navigator.share) {
         console.log('TEst Attempting to use navigator.share');
-        navigator.share({ text: 'Test share' })
+        navigator.share({text: 'Test share'})
             .then(() => console.log('TEst Share was successful'))
             .catch((error) => console.error(`TEst Share failed: ${error}`));
     } else {
@@ -389,7 +389,6 @@ document.getElementById('shareButton').addEventListener('click', () => {
     console.log("gameSummary = " + gameSummary);
     handleShare(gameSummary);
 });
-
 
 
 // // share this
