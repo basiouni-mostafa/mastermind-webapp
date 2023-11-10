@@ -31,8 +31,6 @@ public class GameController {
         User currentUser = userService.getCurrentUser();
         Game game = gameManager.createGame(GameDifficulty.EASY, GameType.NUMBERS);
         addAttributes(game, model, currentUser);
-        boolean isMobile = request.getHeader("User-Agent").matches(".*(iPhone|Android|Mobile).*");
-        model.addAttribute("isMobile", isMobile);
         return "index";
     }
 
