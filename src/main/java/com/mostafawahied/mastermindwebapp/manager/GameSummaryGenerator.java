@@ -11,25 +11,20 @@ import java.util.*;
 @Component
 public class GameSummaryGenerator {
     public String generateGameSummary(Game game, User currentUser) {
-        if (currentUser == null) {
-            return "";
-        }
 
         StringBuilder summary = new StringBuilder();
-        int points = 0;
-        if (game.getGameState() == GameState.WON) {
-            points = game.getGameDifficulty().winPoints;
+        int points = game.getGameState() == GameState.WON ? game.getGameDifficulty().winPoints : game.getGameDifficulty().losePoints;
+
+        if (currentUser == null) {
+            summary.append("👤 Player's Game:\n");
         } else {
-            points = game.getGameDifficulty().losePoints;
+            String badge = currentUser.getLatestAchievement();
+            // Player's name and game details
+            summary.append(String.format("👤 %s's Game:\n", currentUser.getUsername()));
+            // Badge, Score and points
+            summary.append(String.format("%s 💰 Score: %d | 🎖️ %s\n",
+                    !Objects.equals(badge, "") ? "🏆 " + badge + " | " : "", currentUser.getScore(), game.getGameState() == GameState.WON ? "+" + points : "-" + points));
         }
-        String badge = currentUser.getLatestAchievement();
-        // Player's name and game details
-//        summary.append(String.format("👤 %s's Game: (%s, %s)\n",
-//                currentUser.getUsername(), game.getGameDifficulty(), game.getGameType()));
-        summary.append(String.format("👤 %s's Game:\n", currentUser.getUsername()));
-        // Badge, Score and points
-        summary.append(String.format("%s 💰 Score: %d | 🎖️ %s\n",
-                !Objects.equals(badge, "") ? "🏆 " + badge + " | " : "", currentUser.getScore(), game.getGameState() == GameState.WON ? "+" + points : "-" + points));
         // Game attempts and results
         switch (game.getGameDifficulty()) {
             case EASY:
@@ -109,10 +104,22 @@ public class GameSummaryGenerator {
             attemptString.append("\n");
         }
 
-        // Prepend the attempt number at the start
-        attemptString.insert(0, String.format("%d️⃣ ", attemptNumber));
+//        // Prepend the attempt number as an emoji at the start
+//        String attemptNumberEmoji = numberToEmoji(attemptNumber);
+//        attemptString.insert(0, attemptNumberEmoji + " ");
+
         return attemptString.toString();
     }
+
+    private String numberToEmoji(int number) {
+        StringBuilder emojiBuilder = new StringBuilder();
+        String numberStr = String.valueOf(number);
+        for (char digit : numberStr.toCharArray()) {
+            emojiBuilder.append(digit).append("\u20E3"); // Combining Enclosing Keycap
+        }
+        return emojiBuilder.toString();
+    }
+
 
     // Method for generating attempts summary for medium difficulty
     private String generateKeyAttemptsForMediumAndHard(Game game) {
