@@ -314,6 +314,7 @@ document.addEventListener("DOMContentLoaded", () => {
 // });
 // End of handle share button
 
+
 function handleShare(gameSummary) {
     const isMobile = document.body.getAttribute('data-is-mobile') === 'true';
     console.log("handleShare function called");
