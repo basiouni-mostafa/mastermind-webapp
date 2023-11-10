@@ -320,7 +320,8 @@ function handleShare(gameSummary) {
     console.log("handleShare function called");
     try {
         console.log("Device is mobile");
-        if (isMobile && navigator.share) {
+        console.log("navigator.share = " + navigator.share)
+        if (isMobile) {
             console.log("navigator.share is available");
             navigator.share({
                 text: gameSummary
@@ -391,28 +392,28 @@ document.getElementById('shareButton').addEventListener('click', () => {
 
 
 
-// share this
-
-// Function to update ShareThis configuration
-window.__sharethis__ = undefined;
-
-function updateShareData(gameSummary) {
-    // Assuming gameSummary is a string you want to share
-    const shareConfig = {
-        url: window.location.href, // URL to share
-        title: 'Check out my game summary!', // Title for sharing
-        description: gameSummary, // Description for sharing
-        // image: 'path_to_image_if_any.jpg' // Image for sharing
-    };
-
-    // Initialize ShareThis with the new configuration
-    window.__sharethis__.load('inline-share-buttons', shareConfig);
-}
-
-// Example of triggering the update
-document.addEventListener('DOMContentLoaded', function() {
-    // Get gameSummary from the model attribute
-    const gameSummary = document.getElementById('gameSummary').textContent;
-    updateShareData(gameSummary);
-});
-// End of share this
+// // share this
+//
+// // Function to update ShareThis configuration
+// window.__sharethis__ = undefined;
+//
+// function updateShareData(gameSummary) {
+//     // Assuming gameSummary is a string you want to share
+//     const shareConfig = {
+//         url: window.location.href, // URL to share
+//         title: 'Check out my game summary!', // Title for sharing
+//         description: gameSummary, // Description for sharing
+//         // image: 'path_to_image_if_any.jpg' // Image for sharing
+//     };
+//
+//     // Initialize ShareThis with the new configuration
+//     window.__sharethis__.load('inline-share-buttons', shareConfig);
+// }
+//
+// // Example of triggering the update
+// document.addEventListener('DOMContentLoaded', function() {
+//     // Get gameSummary from the model attribute
+//     const gameSummary = document.getElementById('gameSummary').textContent;
+//     updateShareData(gameSummary);
+// });
+// // End of share this
