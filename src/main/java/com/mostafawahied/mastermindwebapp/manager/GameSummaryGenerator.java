@@ -24,8 +24,9 @@ public class GameSummaryGenerator {
         }
         String badge = currentUser.getLatestAchievement();
         // Player's name and game details
-        summary.append(String.format("👤 %s's Game: (%s, %s)\n",
-                currentUser.getUsername(), game.getGameDifficulty(), game.getGameType()));
+//        summary.append(String.format("👤 %s's Game: (%s, %s)\n",
+//                currentUser.getUsername(), game.getGameDifficulty(), game.getGameType()));
+        summary.append(String.format("👤 %s's Game:\n", currentUser.getUsername()));
         // Badge, Score and points
         summary.append(String.format("%s 💰 Score: %d | 🎖️ %s\n",
                 !Objects.equals(badge, "") ? "🏆 " + badge + " | " : "", currentUser.getScore(), game.getGameState() == GameState.WON ? "+" + points : "-" + points));
@@ -105,7 +106,7 @@ public class GameSummaryGenerator {
 
         // Append the pipe character only if it's not the last attempt
         if (attemptNumber < game.getGameHistory().size() || game.getGameState() != GameState.WON) {
-            attemptString.append(" | ");
+            attemptString.append("\n");
         }
 
         // Prepend the attempt number at the start

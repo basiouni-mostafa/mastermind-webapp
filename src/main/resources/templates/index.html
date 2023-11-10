@@ -2,6 +2,11 @@
 <html lang="en" xmlns:th="http://www.thymeleaf.org"
       xmlns:sec="http://www.thymeleaf.org/thymeleaf-extras-springsecurity3">
 <head>
+    <!-- Share this script -->
+    <script type="text/javascript"
+            src="https://platform-api.sharethis.com/js/sharethis.js#property=654dee642398960013d901e2&product=inline-share-buttons&source=platform"
+            async="async"></script>
+    <!-- End of share this script -->
     <!--    <link rel="icon" type="image/x-icon" th:href="@{/image/favicon.ico}">-->
 
     <!--    <link rel="icon" type="image/x-icon" th:href="@{/image/favicon.ico}">-->
@@ -209,24 +214,27 @@
                             <button type="button" th:text="3" onclick="addDigit(3)" class="mx-1"></button>
                         </div>
                         <div class="second_digits_row d-flex justify-content-center">
-<!--                            <button type="submit" value="Submit" id="small-submit-button" ></button>-->
+                            <!--                            <button type="submit" value="Submit" id="small-submit-button" ></button>-->
                             <button class="d-flex bg-secondary justify-content-center align-items-center" type="submit">
-                                <span class="material-symbols-outlined text-light" style="font-size: 1.7rem">check</span>
+                                <span class="material-symbols-outlined text-light"
+                                      style="font-size: 1.7rem">check</span>
                             </button>
-<!--                            <button type="button" th:text="ENTER" class="mx-1" id="small-submit-button"></button>-->
+                            <!--                            <button type="button" th:text="ENTER" class="mx-1" id="small-submit-button"></button>-->
 
                             <button type="button" th:text="4" onclick="addDigit(4)" class="mx-1"></button>
                             <button type="button" th:text="5" onclick="addDigit(5)" class="mx-1"></button>
                             <button type="button" th:text="6" onclick="addDigit(6)" class="mx-1"></button>
                             <button type="button" th:text="7" onclick="addDigit(7)" class="mx-1"></button>
-                            <button id="delete-button-number" class="delete-btn-digit d-flex bg-secondary justify-content-center align-items-center" type="button">
+                            <button id="delete-button-number"
+                                    class="delete-btn-digit d-flex bg-secondary justify-content-center align-items-center"
+                                    type="button">
                                 <span class="material-symbols-outlined text-light">keyboard_backspace</span>
                             </button>
                         </div>
                     </div>
-<!--                    <a id="delete-button" class="btn">-->
-<!--                        <span class="material-symbols-outlined delete-btn-class">backspace</span>-->
-<!--                    </a>-->
+                    <!--                    <a id="delete-button" class="btn">-->
+                    <!--                        <span class="material-symbols-outlined delete-btn-class">backspace</span>-->
+                    <!--                    </a>-->
                     <!-- Show color buttons if gameType is "colors" -->
                     <div class="colors" th:if="${gameType == 'COLORS'}">
                         <div class="first_color_row d-flex justify-content-center mb-2">
@@ -237,19 +245,22 @@
                         </div>
                         <div class="second_color_row d-flex justify-content-center">
                             <button class="d-flex bg-secondary justify-content-center align-items-center" type="submit">
-                                <span class="material-symbols-outlined text-light" style="font-size: 1.7rem">check</span>
+                                <span class="material-symbols-outlined text-light"
+                                      style="font-size: 1.7rem">check</span>
                             </button>
                             <button type="button" onclick="addColor('blue')" class="mx-1"></button>
                             <button type="button" onclick="addColor('purple')" class="mx-1"></button>
                             <button type="button" onclick="addColor('orange')" class="mx-1"></button>
                             <button type="button" onclick="addColor('black')" class="mx-1"></button>
-                            <button id="delete-button-color" class="delete-btn-color d-flex bg-secondary justify-content-center align-items-center" type="button">
+                            <button id="delete-button-color"
+                                    class="delete-btn-color d-flex bg-secondary justify-content-center align-items-center"
+                                    type="button">
                                 <span class="material-symbols-outlined text-light">keyboard_backspace</span>
                             </button>
                         </div>
                     </div>
                     <br>
-<!--                    <input class="btn btn-primary mb-2" type="submit" value="Submit"/>-->
+                    <!--                    <input class="btn btn-primary mb-2" type="submit" value="Submit"/>-->
                 </form>
                 <div th:if="${gameState == 'IN_PROGRESS'}">
                     <div th:text="${hint}" id="hint" style="display:none"></div>
@@ -300,9 +311,9 @@
                                        background="transparent" speed="1" style="width: 170px; height: 170px;"
                                        autoplay></lottie-player>
                     </div>
-<!--                    &lt;!&ndash; add game summary string &ndash;&gt;-->
-<!--                    <p class="fs-6" th:utext="${gameSummary}"></p>-->
-<!--                    &lt;!&ndash; end of game summary string &ndash;&gt;                -->
+                    <!--                    &lt;!&ndash; add game summary string &ndash;&gt;-->
+                    <!--                    <p class="fs-6" th:utext="${gameSummary}"></p>-->
+                    <!--                    &lt;!&ndash; end of game summary string &ndash;&gt;                -->
                 </div>
                 <!-- End of GameState WON-->
                 <!-- GameState == LOST-->
@@ -317,9 +328,9 @@
                                           background="transparent" speed="1" style="width: 170px; height: 170px;"
                                           autoplay></dotlottie-player>
                     </div>
-<!--                    &lt;!&ndash; add game summary string &ndash;&gt;-->
-<!--                    <p class="fs-6" th:utext="${gameSummary}"></p>-->
-<!--                    &lt;!&ndash; end of game summary string &ndash;&gt;-->
+                    <!--                    &lt;!&ndash; add game summary string &ndash;&gt;-->
+                    <!--                    <p class="fs-6" th:utext="${gameSummary}"></p>-->
+                    <!--                    &lt;!&ndash; end of game summary string &ndash;&gt;-->
                 </div>
                 <!-- End of GameState LOST-->
                 <!-- Game Summary -->
@@ -327,9 +338,12 @@
                     <i class="fas fa-share-alt"></i> Share
                 </button>
 
+                <div  class="sharethis-inline-share-buttons"></div>
+
+
                 <!-- Hidden input to hold the text for copying to clipboard -->
                 <p id="gameSummary" th:value="${gameSummary}" th:text="${gameSummary}"
-                       style="display: none"></p>
+                   style="display: none"></p>
 
                 <!--  div to hold the mobile status and pass it to the script.js file -->
                 <div th:data-is-mobile="${isMobile}"></div>

@@ -262,17 +262,65 @@ document.addEventListener("DOMContentLoaded", () => {
 // End of add event listener to delete button color
 
 // handle share button
-document.addEventListener('DOMContentLoaded', (event) => {
+// document.addEventListener('DOMContentLoaded', (event) => {
+//     const isMobile = document.body.getAttribute('data-is-mobile') === 'true';
+//
+//     if (document.getElementById('shareButton') === null) {
+//         return;
+//     }
+//     document.getElementById('shareButton').addEventListener('click', () => {
+//         const gameSummary = document.getElementById('gameSummary').textContent;
+//         console.log("gameSummary = " + gameSummary);
+//
+//         if (isMobile && navigator.share) {
+//             navigator.share({
+//                 text: gameSummary
+//             }).then(() => {
+//                 showNotification('Game summary shared successfully!');
+//             }).catch((error) => {
+//                 console.error('Error sharing:', error);
+//                 copyTextToClipboard(gameSummary);
+//             });
+//         } else {
+//             copyTextToClipboard(gameSummary);
+//         }
+//     });
+//
+//     function copyTextToClipboard(text) {
+//         console.log("copyTextToClipboard function called");
+//         const textArea = document.createElement('textarea');
+//         textArea.value = text;
+//         document.body.appendChild(textArea);
+//         textArea.select();
+//         document.execCommand('copy');
+//         document.body.removeChild(textArea);
+//
+//         showNotification('Game summary copied to clipboard!');
+//     }
+//
+//     function showNotification(message) {
+//         console.log("showNotification function called");
+//         const notification = document.getElementById('copyNotification');
+//         console.log("notification = " + notification);
+//         if (notification) {
+//             notification.textContent = message;
+//             notification.style.display = 'block';
+//
+//             setTimeout(() => {
+//                 notification.style.display = 'none';
+//             }, 3000); // Hide after 3 seconds
+//         }
+//     }
+// });
+// End of handle share button
+
+function handleShare(gameSummary) {
     const isMobile = document.body.getAttribute('data-is-mobile') === 'true';
-
-    if (document.getElementById('shareButton') === null) {
-        return;
-    }
-    document.getElementById('shareButton').addEventListener('click', () => {
-        const gameSummary = document.getElementById('gameSummary').textContent;
-        console.log("gameSummary = " + gameSummary);
-
+    console.log("handleShare function called");
+    try {
+        console.log("Device is mobile");
         if (isMobile && navigator.share) {
+            console.log("navigator.share is available");
             navigator.share({
                 text: gameSummary
             }).then(() => {
@@ -282,36 +330,88 @@ document.addEventListener('DOMContentLoaded', (event) => {
                 copyTextToClipboard(gameSummary);
             });
         } else {
+            console.log("navigator.share is not available");
+            // testNavigatorShare();
             copyTextToClipboard(gameSummary);
         }
-    });
-
-    function copyTextToClipboard(text) {
-        console.log("copyTextToClipboard function called");
-        const textArea = document.createElement('textarea');
-        textArea.value = text;
-        document.body.appendChild(textArea);
-        textArea.select();
-        document.execCommand('copy');
-        document.body.removeChild(textArea);
-
-        showNotification('Game summary copied to clipboard!');
+    } catch (error) {
+        console.error('Unhandled error:', error);
     }
+}
 
-    function showNotification(message) {
-        console.log("showNotification function called");
-        const notification = document.getElementById('copyNotification');
-        console.log("notification = " + notification);
-        if (notification) {
-            notification.textContent = message;
-            notification.style.display = 'block';
+function copyTextToClipboard(text) {
+    console.log("copyTextToClipboard function called");
+    const textArea = document.createElement('textarea');
+    textArea.value = text;
+    document.body.appendChild(textArea);
+    textArea.select();
+    document.execCommand('copy');
+    document.body.removeChild(textArea);
 
-            setTimeout(() => {
-                notification.style.display = 'none';
-            }, 3000); // Hide after 3 seconds
-        }
+    showNotification('Game summary copied to clipboard!');
+}
+
+function showNotification(message) {
+    console.log("showNotification function called");
+    const notification = document.getElementById('copyNotification');
+    console.log("notification = " + notification);
+    if (notification) {
+        notification.textContent = message;
+        notification.style.display = 'block';
+
+        setTimeout(() => {
+            notification.style.display = 'none';
+        }, 3000); // Hide after 3 seconds
     }
+}
+
+// Simplified Test for navigator.share
+function testNavigatorShare() {
+    console.log(`TEST navigator.share: ${typeof navigator.share}`);
+    if (navigator.share) {
+        console.log('TEst Attempting to use navigator.share');
+        navigator.share({ text: 'Test share' })
+            .then(() => console.log('TEst Share was successful'))
+            .catch((error) => console.error(`TEst Share failed: ${error}`));
+    } else {
+        console.log('TEst navigator.share is not available');
+    }
+}
+
+// Event listener for the share button
+document.getElementById('shareButton').addEventListener('click', () => {
+    const gameSummary = document.getElementById('gameSummary').textContent;
+    if (gameSummary === null) {
+        return;
+    }
+    console.log("gameSummary = " + gameSummary);
+    handleShare(gameSummary);
 });
 
 
-// End of handle share button
+
+// share this
+
+// Function to update ShareThis configuration
+window.__sharethis__ = undefined;
+
+function updateShareData(gameSummary) {
+    // Assuming gameSummary is a string you want to share
+    const shareConfig = {
+        url: window.location.href, // URL to share
+        title: 'Check out my game summary!', // Title for sharing
+        description: gameSummary, // Description for sharing
+        // image: 'path_to_image_if_any.jpg' // Image for sharing
+    };
+
+    // Initialize ShareThis with the new configuration
+    window.__sharethis__.load('inline-share-buttons', shareConfig);
+}
+
+// Example of triggering the update
+document.addEventListener('DOMContentLoaded', function() {
+    // Get gameSummary from the model attribute
+    const gameSummary = document.getElementById('gameSummary').textContent;
+    updateShareData(gameSummary);
+});
+// End of share this
