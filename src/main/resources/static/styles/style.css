@@ -468,6 +468,9 @@ form {
         height: 70px;
         top: 0.6rem;
     }
+    .mastermind_hero_logo {
+        max-height: 100px;
+    }
 }
 
 @media only screen and (max-width: 1200px) {
