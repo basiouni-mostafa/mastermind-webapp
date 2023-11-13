@@ -7,6 +7,7 @@ import com.mostafawahied.mastermindwebapp.manager.solutiongenerator.SolutionGene
 import com.mostafawahied.mastermindwebapp.manager.solutiongenerator.SolutionGeneratorRetriever;
 import com.mostafawahied.mastermindwebapp.model.*;
 import com.mostafawahied.mastermindwebapp.service.UserService;
+import com.mostafawahied.mastermindwebapp.util.Utility;
 import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Component;
 
@@ -109,15 +110,25 @@ public class GameManager {
         return new GameResult(correctNumbers, correctLocations);
     }
 
-    public String getHint(Game game, List<String> userGuessList) {
-        List<String> correctResult = game.getSolution();
-        List<String> hints = new ArrayList<>(correctResult);
-        hints.removeAll(userGuessList);
+    public String getHint(Game game, List<GameHistory> gameHistory) {
+        if (gameHistory.isEmpty()) {
+            // no hints available if no guesses have been made
+            return "Hint available after first guess";
+        }
+        List<String> hints = new ArrayList<>(game.getSolution());
+        for (GameHistory history : gameHistory) {
+            List<String> guess = history.getUserGuessList();
+            hints.removeAll(guess);
+        }
         if (hints.isEmpty()) {
-            return "No hints available. Try a different combination.";
+            return "No hints available";
         }
         ThreadLocalRandom random = ThreadLocalRandom.current();
-        return hints.get(random.nextInt(hints.size()));
+        if (game.getGameType() == GameType.NUMBERS) {
+            return Utility.mapNumberToEmoji(hints.get(random.nextInt(hints.size())));
+        } else {
+            return hints.get(random.nextInt(hints.size()));
+        }
     }
 
 }

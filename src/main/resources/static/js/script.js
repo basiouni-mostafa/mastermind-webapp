@@ -332,3 +332,24 @@ function addShareButtonEventListener() {
 }
 document.addEventListener("DOMContentLoaded", addShareButtonEventListener);
 // End of handle share button
+
+// handle hint button
+function toggleHintVisibility() {
+    // Textual hint
+    const hintText = document.getElementById('hint-text');
+    if (hintText && hintText.style.display === 'none') {
+        hintText.style.display = 'block';
+    }
+
+    // Digit hint for Numbers game
+    const hintDigit = document.getElementById('hint-digit');
+    if (hintDigit && hintDigit.style.display === 'none') {
+        hintDigit.style.display = 'block';
+    }
+
+    // Color hint for Colors game
+    const hintColor = document.getElementById('hint-color');
+    if (hintColor && hintColor.style.display === 'none') {
+        hintColor.style.display = 'block';
+    }
+}

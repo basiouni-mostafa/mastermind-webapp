@@ -43,8 +43,7 @@ public class GameController {
         User currentUser = userService.getCurrentUser();
         game = gameManager.processUserGuess(game, guesses, currentUser);
         addAttributes(game, model, currentUser);
-        String hintString = gameManager.getHint(game, guesses);
-        model.addAttribute("hint", hintString);
+//        String hintString = gameManager.getHint(game, guesses);
         if (!game.getGameState().equals(GameState.IN_PROGRESS)) {
             status.setComplete();
         }
@@ -75,7 +74,7 @@ public class GameController {
         }
         model.addAttribute("gameType", game.getGameType().toString());
         model.addAttribute("gameDifficulty", game.getGameDifficulty().toString());
-        model.addAttribute("hint", "Hint available after first guess");
+        model.addAttribute("hint", gameManager.getHint(game, game.getGameHistory()));
         if (currentUser != null) {
             model.addAttribute("score", currentUser.getScore());
             model.addAttribute("consecutiveWins", currentUser.getConsecutiveWins());

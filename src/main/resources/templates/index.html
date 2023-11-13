@@ -2,7 +2,7 @@
 <html lang="en" xmlns:th="http://www.thymeleaf.org"
       xmlns:sec="http://www.thymeleaf.org/thymeleaf-extras-springsecurity3">
 <head>
-        <link rel="icon" type="image/x-icon" th:href="@{/image/logo.png}">
+    <link rel="icon" type="image/x-icon" th:href="@{/image/logo.png}">
     <!--animate.css cdn-->
     <link rel="stylesheet"
           href="https://cdnjs.cloudflare.com/ajax/libs/animate.css/4.1.1/animate.min.css"/>
@@ -255,10 +255,25 @@
                     <br>
                     <!--                    <input class="btn btn-primary mb-2" type="submit" value="Submit"/>-->
                 </form>
-                <div th:if="${gameState == 'IN_PROGRESS'}">
-                    <div th:text="${hint}" id="hint" style="display:none"></div>
+                <div th:if="${gameState == 'IN_PROGRESS'}" class="text-center">
+                    <!-- Textual hints like 'No hints available' or 'Hint available after first guess' -->
+                    <p th:if="${hint == 'No hints available' || hint == 'Hint available after first guess'}"
+                       id="hint-text" th:text="${hint}" style="display:none"></p>
+
+                    <!-- Emoji or color box hints -->
+                    <div th:if="${gameType == 'NUMBERS'}">
+                        <p th:unless="${hint == 'No hints available' || hint == 'Hint available after first guess'}"
+                           id="hint-digit" th:utext="${hint}" th:class="${hint + ' mb-2 mx-auto text-center'}"
+                           style="display:none"></p>
+                    </div>
+                    <div th:if="${gameType == 'COLORS'}">
+                        <p th:unless="${hint == 'No hints available' || hint == 'Hint available after first guess'}"
+                             id="hint-color" th:class="${hint + ' mb-2 mx-auto text-center'}"
+                             style="display:none"></p>
+                    </div>
+                    <!-- Hint button -->
                     <button class="btn btn-secondary"
-                            onclick="document.getElementById('hint').style.display = 'block'">Hint
+                            onclick="toggleHintVisibility()">Hint
                     </button>
                 </div>
                 <!-- End of current game form -->
