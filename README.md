@@ -1,6 +1,6 @@
 ## Project Overview
 
-Click to play the game [here](https://mastermind-webapp-kst2.onrender.com/)
+Click to play the game [here](https://mastermind.mostafawahied.com/)
 
 (**Note**: There may be a short wait time when accessing the game, as it is hosted on Render.com, which may put the app to sleep during periods of inactivity.)
 
@@ -44,7 +44,7 @@ players by score. The game is designed to be responsive and mobile-friendly.
 
 ### Live Website
 
-Click to play the game [here](https://mastermind-webapp-kst2.onrender.com/)
+Click to play the game [here](https://mastermind.mostafawahied.com/)
 
 (**Note**: There may be a short wait time when accessing the game, as it is hosted on Render.com, which may put the app to sleep during periods of inactivity.)
 
