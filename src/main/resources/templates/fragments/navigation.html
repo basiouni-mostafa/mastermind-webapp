@@ -24,7 +24,6 @@
             <div class="collapse navbar-collapse" id="navbarNav">
                 <ul class="navbar-nav ms-auto me-3 mb-2 mb-lg-0">
                     <li class="nav-item">
-<!--                        <a class="nav-link btn fw-bolder" th:href="@{/leaderboard}">Leaderboard</a>-->
                         <a class=" btn btn-secondary" th:href="@{/leaderboard}">Leaderboard</a>
                     </li>
                 </ul>
@@ -67,6 +66,7 @@
                                 <div class="col-10 ms-2">
                                     <p class="fw-semibold my-0" th:text="${name}" style="font-size: 0.75rem"></p>
                                     <p class="text-muted my-0" th:text="${email}" style="font-size: 0.7rem"></p>
+                                    <p class="text-dark my-0" th:text="${latestBadge}" style="font-size: 0.85rem"></p>
                                 </div>
                             </a>
 
@@ -75,7 +75,7 @@
                             </li>
 
                             <a sec:authorize="isAuthenticated()" th:href="@{/logout}"
-                                class="d-flex gap-2 dropdown-item" style="cursor: pointer">
+                               class="d-flex gap-2 dropdown-item" style="cursor: pointer">
                                 <div class="col-2">
                                     <span class="material-symbols-outlined logout-google-icon"
                                           style="font-size: 1.3rem">logout</span>
@@ -102,127 +102,132 @@
                 </div>
                 <div class="modal-body">
                     <!-- Place your game rules content here -->
-                    <h5>Game Rules</h5>
-                    <ul class="fs-6">
-                        <li>Guess the number or color combination set by the computer</li>
-                        <li>The computer will give you feedback on correct guesses and their positions
+                    <h5><strong>Game Rules</strong></h5>
+                    <ol class="fs-6">
+                        <li><strong>Objective:</strong> Guess the secret combination set by the computer. The
+                            combination could be either numbers or colors.
                         </li>
-                        <li>"Correct guesses" are digits or colors that exist in your guess but are in the
-                            wrong
-                            position
+                        <li><strong>Feedback:</strong>
+                            <ul>
+                                <li><strong>Correct Guesses:</strong> These are elements (digits or colors) in your
+                                    guess that are correct but positioned incorrectly.
+                                </li>
+                                <li><strong>Correct Locations:</strong> These are elements (digits or colors) in your
+                                    guess that are both correct and correctly positioned.
+                                </li>
+                                <li>If no correct elements are guessed, the feedback will be '0 correct guess(es) - 0
+                                    correct location(s)'.
+                                </li>
+                            </ul>
+                    </ol>
+                    <div class=" mt-4">
+                        <h5><strong>Game Modes</strong></h5>
+                        <ul>
+                            <li><strong>Numbers Mode:</strong> Guess the correct number combination.</li>
+                            <li><strong>Colors Mode:</strong> Guess the correct color combination.</li>
+                        </ul>
+                    </div>
+
+                    <div class=" mt-4">
+                    <h5><strong>Game Difficulty Levels</strong></h5>
+                    <ul>
+                        <li><strong>Easy:</strong>
+                            <ul>
+                                <li>Combination: <strong>4 </strong>elements(digits or colors)</li>
+                                <li>Attempts: Up to <strong>10</strong> attempts</li>
+                                <li>Time Limit: None</li>
+                            </ul>
                         </li>
-                        <li>"Correct locations" are digits or colors that exist in your guess and are in the
-                            correct position
+                        <li><strong>Medium:</strong>
+                            <ul>
+                                <li>Combination: <strong>5 </strong>elements</li>
+                                <li>Attempts: Up to <strong>20</strong> attempts</li>
+                                <li>Time Limit: <strong>20</strong> minutes</li>
+                            </ul>
                         </li>
-                        <li>If you don't guess any correct guesses, the computer will show '0 correct
-                            guess(es) - 0 correct location(s)'
+                        <li><strong>Hard:</strong>
+                            <ul>
+                                <li>Combination: <strong>6</strong> elements</li>
+                                <li>Attempts: Up to <strong>30</strong> attempts</li>
+                                <li>Time Limit: <strong>30</strong> minutes</li>
+                            </ul>
                         </li>
                     </ul>
-                    <div class=" mt-4">
-                        <h5>Game Modes</h5>
-                        <p>Game Type: <span style="font-weight: 500"
-                                            th:text="${#strings.capitalize(#strings.toLowerCase(gameType))}"></span>
-                            |
-                            Remaining Attempts: <span th:text="${remainingAttempts}"
-                                                      style="font-weight: 500"></span></p>
-
-                        <p>
-                            Game Difficulty: <span style="font-weight: 500">Easy</span><br>
-                            <span><span style="font-weight: 500">4</span> Digits combination</span> |
-                            <span><span style="font-weight: 500">10</span> User guesses allowed</span> |
-                            <span style="font-weight: 500">No time limit</span>
-                        </p>
-                        <p>
-                            Game Difficulty: <span style="font-weight: 500">Medium</span><br>
-                            <span><span style="font-weight: 500">5</span> digits combination</span> |
-                            <span><span style="font-weight: 500">20</span> user guesses allowed</span> |
-                            <span><span style="font-weight: 500">20</span> minutes game duration</span>
-                        </p>
-                        <p>
-                            Game Difficulty: <span style="font-weight: 500">Hard</span><br>
-                            <span><span style="font-weight: 500">6</span> digits combination</span> |
-                            <span><span style="font-weight: 500">40</span> user guesses allowed</span> |
-                            <span><span style="font-weight: 500">30</span> minutes game duration</span>
-                        </p>
-                    </div>
-                    <div class="text-center d-flex justify-content-center">
-                        <a id="close-rules" class="close-button"><span
-                                class="material-symbols-outlined mt-5">close</span></a>
-                    </div>
                 </div>
             </div>
         </div>
     </div>
+</div>
 
-    <!-- Game Settings Modal -->
-    <div class="modal fade" id="settingsModal" tabindex="-1" aria-labelledby="settingsModalLabel" aria-hidden="true">
-        <div class="modal-dialog modal-dialog-centered">
-            <div class="modal-content">
-                <div class="modal-header">
-                    <h5 class="modal-title" id="settingsModalLabel">Game Settings</h5>
-                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
-                </div>
-                <div class="modal-body">
-                    <!-- Place your game settings content here -->
-                    <form action="#" th:action="@{/new_game}" method="get">
-                        <div class="justify-content-center">
-                            <div class="text-center">
-                                <label class="h4 mt-4" for="gameDifficulty">Game Difficulty</label>
-                                <div class="d-flex justify-content-evenly transparent-bg p-3 m-2"
-                                     aria-label="Game Difficulty">
-                                    <div class="custom-control custom-radio">
-                                        <label><input type="radio" name="difficulty"
-                                                      value="EASY"
-                                                      class="custom-control-input" checked></label>
-                                        <label class="custom-control-label"
-                                               for="difficulty-easy">Easy</label>
-                                    </div>
-                                    <div class="custom-control custom-radio">
-                                        <label><input type="radio" name="difficulty"
-                                                      value="MEDIUM"
-                                                      class="custom-control-input"></label>
-                                        <label class="custom-control-label"
-                                               for="difficulty-medium">Medium</label>
-                                    </div>
-                                    <div class="custom-control custom-radio">
-                                        <label><input type="radio" name="difficulty"
-                                                      value="HARD"
-                                                      class="custom-control-input"></label>
-                                        <label class="custom-control-label"
-                                               for="difficulty-hard">Hard</label>
-                                    </div>
+<!-- Game Settings Modal -->
+<div class="modal fade" id="settingsModal" tabindex="-1" aria-labelledby="settingsModalLabel" aria-hidden="true">
+    <div class="modal-dialog modal-dialog-centered">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="settingsModalLabel">Game Settings</h5>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div class="modal-body">
+                <!-- Place your game settings content here -->
+                <form action="#" th:action="@{/new_game}" method="get">
+                    <div class="justify-content-center">
+                        <div class="text-center">
+                            <label class="h4 mt-4" for="gameDifficulty">Game Difficulty</label>
+                            <div class="d-flex justify-content-evenly transparent-bg p-3 m-2"
+                                 aria-label="Game Difficulty">
+                                <div class="custom-control custom-radio">
+                                    <label><input type="radio" name="difficulty"
+                                                  value="EASY"
+                                                  class="custom-control-input" checked></label>
+                                    <label class="custom-control-label"
+                                           for="difficulty-easy">Easy</label>
                                 </div>
-                            </div>
-                            <div class="text-center">
-                                <label class="h4 mt-3" for="gameType">Game Type</label>
-                                <div class="d-flex justify-content-evenly transparent-bg p-3 m-2"
-                                     aria-label="Game Type">
-                                    <div class="custom-control custom-radio">
-                                        <label><input type="radio" name="type"
-                                                      value="NUMBERS"
-                                                      class="custom-control-input" checked></label>
-                                        <label class="custom-control-label"
-                                               for="type-numbers">Numbers</label>
-                                    </div>
-                                    <div class="custom-control custom-radio">
-                                        <label><input type="radio" name="type" value="COLORS"
-                                                      class="custom-control-input"></label>
-                                        <label class="custom-control-label"
-                                               for="type-colors">Colors</label>
-                                    </div>
+                                <div class="custom-control custom-radio">
+                                    <label><input type="radio" name="difficulty"
+                                                  value="MEDIUM"
+                                                  class="custom-control-input"></label>
+                                    <label class="custom-control-label"
+                                           for="difficulty-medium">Medium</label>
+                                </div>
+                                <div class="custom-control custom-radio">
+                                    <label><input type="radio" name="difficulty"
+                                                  value="HARD"
+                                                  class="custom-control-input"></label>
+                                    <label class="custom-control-label"
+                                           for="difficulty-hard">Hard</label>
                                 </div>
                             </div>
                         </div>
                         <div class="text-center">
-
-                            <button type="submit" class="btn btn-primary mb-3"><b>New Game</b>
-                            </button>
+                            <label class="h4 mt-3" for="gameType">Game Type</label>
+                            <div class="d-flex justify-content-evenly transparent-bg p-3 m-2"
+                                 aria-label="Game Type">
+                                <div class="custom-control custom-radio">
+                                    <label><input type="radio" name="type"
+                                                  value="NUMBERS"
+                                                  class="custom-control-input" checked></label>
+                                    <label class="custom-control-label"
+                                           for="type-numbers">Numbers</label>
+                                </div>
+                                <div class="custom-control custom-radio">
+                                    <label><input type="radio" name="type" value="COLORS"
+                                                  class="custom-control-input"></label>
+                                    <label class="custom-control-label"
+                                           for="type-colors">Colors</label>
+                                </div>
+                            </div>
                         </div>
-                    </form>
-                </div>
+                    </div>
+                    <div class="text-center">
+
+                        <button type="submit" class="btn btn-primary mb-3"><b>New Game</b>
+                        </button>
+                    </div>
+                </form>
             </div>
         </div>
     </div>
+</div>
 
 </div>
 

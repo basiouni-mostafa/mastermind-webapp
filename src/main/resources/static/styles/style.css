@@ -43,18 +43,6 @@ body {
     color: rgba(0, 0, 0, 0.55);
 }
 
-/* navbar */
-/*.nav-link::before {*/
-/*    content: "";*/
-/*    position: absolute;*/
-/*    width: 40%;*/
-/*    height: 1px;*/
-/*    bottom: 30%;*/
-/*    right: 2%;*/
-/*    background-color: rgb(128, 128, 128);*/
-/*    visibility: visible;*/
-/*}*/
-
 .nav-text {
     color: rgba(0, 0, 0, 0.55);
 }
@@ -62,11 +50,6 @@ body {
 .bg-light {
     --bs-bg-opacity: 0 !important;
 }
-
-/* end of navbar */
-/*hr {*/
-/*    width: 20%;*/
-/*}*/
 
 .error-text {
     text-align: center;
@@ -106,17 +89,32 @@ body {
 }
 
 .history_text {
-    /*color: var(--main-font-color);*/
     font-size: 0.8rem;
 }
 
-#hint {
+#hint-text {
+    font-size: 1.2rem;
+}
+
+#hint-color {
     color: black;
-    font-size: 2rem;
+    /*font-size: 2rem;*/
+    width: 2.3rem;
+    height: 2.3rem;
+    border: none;
+    border-radius: 5px;
+    text-align: center;
+    font-size: 20px;
+    /*cursor: pointer;*/
+    transition: box-shadow 0.5s;
+}
+
+#hint-digit {
+    color: black;
+    font-size: 1.8rem;
 }
 
 form {
-    /*display: flex;*/
     flex-wrap: wrap;
     justify-content: center;
 }
@@ -146,7 +144,6 @@ form {
     width: 3.5rem;
     height: 2.3rem;
     color: white;
-    /*border: 2px solid rgba(0, 0, 0, 0.26);*/
     border: none;
     border-radius: 5px;
     text-align: center;
@@ -157,7 +154,6 @@ form {
 #remaining_seconds {
     width: 4.5rem;
     font-size: 1rem;
-    /*font-weight: bold;*/
 }
 
 .new-game {
@@ -197,18 +193,12 @@ form {
     box-shadow: 0 4px 6px rgba(0, 0, 0, 0.2);
 }
 
-.delete-btn-class {
-    border: none;
-    /*border-radius: 5px;*/
-    text-align: center;
-    font-size: 2rem;
-    cursor: pointer;
-    transition: box-shadow 0.5s;
-}
-
-.delete-btn-class:hover {
-    scale: 1.05;
-    color: rgba(0, 0, 0, 0.60);
+#delete-button span {
+    font-variation-settings: 'FILL' 0,
+    'wght' 400,
+    'GRAD' 0,
+    'opsz' 24;
+    color: transparent;
 }
 
 .badge {
@@ -386,7 +376,6 @@ form {
 }
 
 
-
 /*small screens only*/
 @media only screen and (max-width: 480px), only screen and (max-width: 990px) {
     .nav-link::before {
@@ -457,17 +446,8 @@ form {
         top: 7.5rem;
     }
 
-    /*.img-cloud {*/
-    /*    display: none;*/
-    /*    position: relative;*/
-    /*    width: 160px;*/
-    /*    left: 12.5rem;*/
-    /*    top: 6rem;*/
-    /*}*/
-
     .bottom-half {
         position: relative;
-        /*top: 10rem;*/
     }
 
     #logo {
@@ -475,6 +455,9 @@ form {
         width: 70px;
         height: 70px;
         top: 0.6rem;
+    }
+    .mastermind_hero_logo {
+        max-height: 100px;
     }
 }
 

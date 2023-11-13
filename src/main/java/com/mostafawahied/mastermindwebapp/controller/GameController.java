@@ -10,6 +10,7 @@ import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.bind.support.SessionStatus;
 
+import javax.servlet.http.HttpServletRequest;
 import java.util.*;
 
 @Controller
@@ -26,7 +27,7 @@ public class GameController {
     }
 
     @GetMapping("/")
-    public String homePage(Model model) {
+    public String homePage(Model model, HttpServletRequest request) {
         User currentUser = userService.getCurrentUser();
         Game game = gameManager.createGame(GameDifficulty.EASY, GameType.NUMBERS);
         addAttributes(game, model, currentUser);
@@ -42,8 +43,7 @@ public class GameController {
         User currentUser = userService.getCurrentUser();
         game = gameManager.processUserGuess(game, guesses, currentUser);
         addAttributes(game, model, currentUser);
-        String hintString = gameManager.getHint(game, guesses);
-        model.addAttribute("hint", hintString);
+//        String hintString = gameManager.getHint(game, guesses);
         if (!game.getGameState().equals(GameState.IN_PROGRESS)) {
             status.setComplete();
         }
@@ -70,10 +70,11 @@ public class GameController {
         model.addAttribute("originalGuessCount", game.getOriginalGuessCount());
         if (game.getGameState() == GameState.WON || game.getGameState() == GameState.LOST) {
             model.addAttribute("solution", String.join(", ", game.getSolution()));
+            model.addAttribute("gameSummary", game.getGameSummary());
         }
         model.addAttribute("gameType", game.getGameType().toString());
         model.addAttribute("gameDifficulty", game.getGameDifficulty().toString());
-        model.addAttribute("hint", "Hint available after first guess");
+        model.addAttribute("hint", gameManager.getHint(game, game.getGameHistory()));
         if (currentUser != null) {
             model.addAttribute("score", currentUser.getScore());
             model.addAttribute("consecutiveWins", currentUser.getConsecutiveWins());

@@ -9,7 +9,6 @@ import org.springframework.security.authentication.AnonymousAuthenticationToken;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.core.userdetails.UserDetails;
-import org.springframework.security.oauth2.client.authentication.OAuth2AuthenticationToken;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.ControllerAdvice;
 import org.springframework.web.bind.annotation.ExceptionHandler;
@@ -48,6 +47,7 @@ public class MyControllerAdvice {
                 name = customOAuth2User.getName();
                 email = customOAuth2User.getEmail();
                 pictureUrl = customOAuth2User.getAttributes().get("picture").toString();
+                model.addAttribute("latestBadge", user.getLatestAchievement());
                 model.addAttribute("score", user.getScore());
                 model.addAttribute("consecutiveWins", user.getConsecutiveWins());
                 model.addAttribute("loggedIn", true);
@@ -57,6 +57,7 @@ public class MyControllerAdvice {
                 user = userService.findUserByEmail(((UserDetails) principal).getUsername());
                 name = user.getUsername();
                 email = user.getEmail();
+                model.addAttribute("latestBadge", user.getLatestAchievement());
                 model.addAttribute("score", user.getScore());
                 model.addAttribute("consecutiveWins", user.getConsecutiveWins());
                 model.addAttribute("loggedIn", true);

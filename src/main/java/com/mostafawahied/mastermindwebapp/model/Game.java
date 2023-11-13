@@ -19,10 +19,12 @@ public class Game {
     private List<GameHistory> gameHistory;
     private GameType gameType;
     private GameDifficulty gameDifficulty;
+    private GameResult gameResult;
     private GameState gameState;
     private long gameStartTime;
     private long gameEndTime;
     private String notification;
+    private String gameSummary;
 
     public Game(List<String> solution, GameType type, GameDifficulty gameDifficulty) { // 10
         this.solution = solution;

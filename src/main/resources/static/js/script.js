@@ -33,8 +33,12 @@ function addColor(color) {
 // End of handling adding colors
 
 // Stop the form from submitting if all inputs are not filled
+// when the document is loaded
 function addFormEventListener() {
     const form = document.getElementById("guess-form");
+    if (form === null) {
+        return;
+    }
     form.addEventListener("submit", event => {
         // Select the input elements
         const inputs = document.querySelectorAll("input[name='userGuesses']");
@@ -65,6 +69,15 @@ function addSettingsModalEventListener() {
     const settingsIcon = document.getElementById('settings-icon');
     const gameSettings = document.getElementById('game-settings');
     const closeSettings = document.getElementById('close-settings');
+    if (settingsIcon === null) {
+        return;
+    }
+    if (gameSettings === null) {
+        return;
+    }
+    if (closeSettings === null) {
+        return;
+    }
     // Open the settings if btn is clicked and close if user clicked anywhere else
     document.addEventListener('click', (event) => {
         if (event.target.id === 'settings-icon') {
@@ -75,17 +88,24 @@ function addSettingsModalEventListener() {
                 gameSettings.style.display = 'block';
             }
         } else {
-            gameSettings.style.display = 'none';
+            if (gameSettings !== null) {
+                gameSettings.style.display = 'none';
+            }
         }
     });
     // exclude the game settings modal from the area that will close the modal
-    gameSettings.addEventListener('click', function (event) {
-        event.stopPropagation();
-    });
+    if (gameSettings !== null) {
+
+        gameSettings.addEventListener('click', function (event) {
+            event.stopPropagation();
+        });
+    }
     // close the modal if the close btn is clicked
-    closeSettings.addEventListener('click', () => {
-        gameSettings.style.display = 'none';
-    });
+    if (closeSettings !== null) {
+        closeSettings.addEventListener('click', () => {
+            gameSettings.style.display = 'none';
+        });
+    }
 }
 
 // I had to wrap it in a function "addFormEventListener()" and
@@ -98,6 +118,15 @@ function addModalEventListener() {
     const settingsIcon = document.getElementById('rules-icon');
     const gameSettings = document.getElementById('game-rules');
     const closeSettings = document.getElementById('close-rules');
+    if (settingsIcon === null) {
+        return;
+    }
+    if (gameSettings === null) {
+        return;
+    }
+    if (closeSettings === null) {
+        return;
+    }
     // Open the settings if btn is clicked and close if user clicked anywhere else
     document.addEventListener('click', (event) => {
         if (event.target.id === 'rules-icon') {
@@ -108,17 +137,24 @@ function addModalEventListener() {
                 gameSettings.style.display = 'block';
             }
         } else {
-            gameSettings.style.display = 'none';
+            if (gameSettings !== null) {
+                gameSettings.style.display = 'none';
+            }
         }
     });
     // exclude the game settings modal from the area that will close the modal
-    gameSettings.addEventListener('click', function (event) {
-        event.stopPropagation();
-    });
-    // close the modal if the close btn is clicked
-    closeSettings.addEventListener('click', () => {
-        gameSettings.style.display = 'none';
-    });
+    if (gameSettings !== null) {
+        gameSettings.addEventListener('click', function (event) {
+            event.stopPropagation();
+        });
+    }
+
+// close the modal if the close btn is clicked
+    if (closeSettings !== null) {
+        closeSettings.addEventListener('click', () => {
+            gameSettings.style.display = 'none';
+        });
+    }
 }
 
 // I had to wrap it in a function "addFormEventListener()" and
@@ -129,6 +165,9 @@ document.addEventListener("DOMContentLoaded", addModalEventListener);
 // Removing the lost animation after it's done
 function removeAnimation() {
     const animation = document.getElementById('lost-animation');
+    if (animation === null) {
+        return;
+    }
     animation.addEventListener('complete', () => {
         const container = animation.closest('.lose-animation');
         container.remove();
@@ -173,12 +212,13 @@ function closeIntro() {
     });
     sessionStorage.setItem("animationPlayed", "true");
 }
+
 // End of intro animation
 
 // consecutive wins notification
-document.addEventListener('DOMContentLoaded', function() {
+document.addEventListener('DOMContentLoaded', function () {
     const notification = document.getElementById('notification');
-    if(notification) {
+    if (notification) {
         setTimeout(() => {
             notification.classList.add('hidden'); // Add the "hidden" class to make it fade
         }, 3000);
@@ -199,10 +239,117 @@ function deleteLastInput() {
         }
     }
 }
+
 // End of handle delete button
 
-// add event listener to delete button
+// add event listener to delete button digit
 document.addEventListener("DOMContentLoaded", () => {
-    const deleteBtn = document.getElementById('delete-button');
-    deleteBtn.addEventListener('click', deleteLastInput);
+    const deleteBtnDigit = document.querySelector('.delete-btn-digit');
+    if (deleteBtnDigit === null) {
+        return;
+    }
+    deleteBtnDigit.addEventListener('click', deleteLastInput);
 });
+
+// add event listener to delete button color
+document.addEventListener("DOMContentLoaded", () => {
+    const deleteBtnColor = document.querySelector('.delete-btn-color');
+    if (deleteBtnColor === null) {
+        return;
+    }
+    deleteBtnColor.addEventListener('click', deleteLastInput);
+});
+// End of add event listener to delete button color
+
+// handle share button
+// Check if the device is mobile
+function isMobileDevice() {
+    const userAgent = navigator.userAgent || navigator.vendor || window.opera;
+    return /android|webos|iphone|ipad|ipod|blackberry|iemobile|opera mini/i.test(userAgent);
+}
+
+function handleShare(gameSummary) {
+    console.log("handleShare function called");
+    try {
+        if (isMobileDevice() && navigator.share) {
+            console.log("Mobile device and navigator.share is available");
+            navigator.share({
+                text: gameSummary
+            }).then(() => {
+                showNotification('Game summary shared successfully!');
+            }).catch((error) => {
+                console.error('Error sharing:', error);
+                copyTextToClipboard(gameSummary);
+            });
+        } else {
+            console.log("Either not a mobile device or navigator.share is not available");
+            copyTextToClipboard(gameSummary);
+        }
+    } catch (error) {
+        console.error('Unhandled error:', error);
+    }
+}
+
+function copyTextToClipboard(text) {
+    console.log("copyTextToClipboard function called");
+    const textArea = document.createElement('textarea');
+    textArea.value = text;
+    document.body.appendChild(textArea);
+    textArea.select();
+    document.execCommand('copy');
+    document.body.removeChild(textArea);
+
+    showNotification('Game summary copied to clipboard!');
+}
+
+function showNotification(message) {
+    console.log("showNotification function called");
+    const notification = document.getElementById('copyNotification');
+    console.log("notification = " + notification);
+    if (notification) {
+        notification.textContent = message;
+        notification.style.display = 'block';
+
+        setTimeout(() => {
+            notification.style.display = 'none';
+        }, 3000); // Hide after 3 seconds
+    }
+}
+
+function addShareButtonEventListener() {
+    const shareButton = document.getElementById('shareButton');
+    if (shareButton === null) {
+        return;
+    }
+    shareButton.addEventListener('click', () => {
+        const gameSummary = document.getElementById('gameSummary').textContent;
+        if (gameSummary === null) {
+            return;
+        }
+        console.log("gameSummary = " + gameSummary);
+        handleShare(gameSummary);
+    });
+}
+document.addEventListener("DOMContentLoaded", addShareButtonEventListener);
+// End of handle share button
+
+// handle hint button
+function toggleHintVisibility() {
+    // Textual hint
+    const hintText = document.getElementById('hint-text');
+    if (hintText && hintText.style.display === 'none') {
+        hintText.style.display = 'block';
+    }
+
+    // Digit hint for Numbers game
+    const hintDigit = document.getElementById('hint-digit');
+    if (hintDigit && hintDigit.style.display === 'none') {
+        hintDigit.style.display = 'block';
+    }
+
+    // Color hint for Colors game
+    const hintColor = document.getElementById('hint-color');
+    if (hintColor && hintColor.style.display === 'none') {
+        hintColor.style.display = 'block';
+    }
+}

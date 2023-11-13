@@ -1,18 +1,13 @@
 package com.mostafawahied.mastermindwebapp.controller;
 
-import com.mostafawahied.mastermindwebapp.config.CustomOAuth2User;
 import com.mostafawahied.mastermindwebapp.dto.UserRegistrationDto;
 import com.mostafawahied.mastermindwebapp.model.User;
-import com.mostafawahied.mastermindwebapp.repository.UserRepository;
 import com.mostafawahied.mastermindwebapp.service.LeaderboardService;
 import com.mostafawahied.mastermindwebapp.service.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.security.core.Authentication;
-import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PostMapping;
 
 @Controller
 public class MainController {
@@ -62,6 +57,13 @@ public class MainController {
             model.addAttribute("streakChampionAchievement", user.isStreakChampionAchievement());
             model.addAttribute("veteranAchievement", user.isVeteranAchievement());
             model.addAttribute("mastermindAchievement", user.isMastermindAchievement());
+            model.addAttribute("legendAchievement", user.isLegendAchievement());
+            model.addAttribute("grandmasterAchievement", user.isGrandmasterAchievement());
+            model.addAttribute("championAchievement", user.isChampionAchievement());
+            model.addAttribute("winnerAchievement", user.isWinnerAchievement());
+            model.addAttribute("enthusiastAchievement", user.isEnthusiastAchievement());
+            model.addAttribute("rookieAchievement", user.isRookieAchievement());
+            model.addAttribute("newcomerAchievement", user.isNewcomerAchievement());
             model.addAttribute("winPercentage", user.getWinPercentage());
             model.addAttribute("averageScore", user.getAverageScore());
         }
